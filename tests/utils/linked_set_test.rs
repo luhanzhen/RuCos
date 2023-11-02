@@ -1,4 +1,19 @@
 /*
+ * <p>@project_name: CConstraintSolver
+ * </p>
+ * <p>@author: luhan zhen
+ * </p>
+ * <p>@date:  2023/11/2 13:58
+ * </p>
+ * <p>@email: zhenlh20@mails.jlu.edu.cn
+ * </p>
+ * <p>@version: 1.0
+ * </p>
+ * <p>@description:
+ * </p>
+ */
+
+/*
 * <p>@project_name: CConstraintSolver
 * </p>
 * <p>@author: luhan zhen
@@ -9,16 +24,16 @@
 * </p>
 * <p>@version: 1.0
 * </p>
- * <p>@description: test for the SpareSet
+ * <p>@description: test for the LinkedSet
 * </p>
  */
 
-use CConstraintSolver::utils::spare_set::SpareSet;
+use CConstraintSolver::utils::linked_set::LinkedSet;
 use CConstraintSolver::utils::trait_set::Set;
 
 #[test]
 fn add() {
-    let mut set = SpareSet::new(40);
+    let mut set = LinkedSet::new(40);
     set.add(33);
     set.add(23);
     set.add(4);
@@ -28,7 +43,7 @@ fn add() {
 
 #[test]
 fn contain() {
-    let set = SpareSet::new_with_fill(40);
+    let set = LinkedSet::new_with_fill(40);
     for i in 0..40usize {
         assert_eq!(set.contains(i), true);
     }
@@ -36,7 +51,7 @@ fn contain() {
 
 #[test]
 fn index() {
-    let set = SpareSet::new_with_fill(40);
+    let set = LinkedSet::new_with_fill(40);
     for i in 0..40usize {
         assert_eq!(set[i], i)
     }
@@ -44,7 +59,7 @@ fn index() {
 
 #[test]
 fn get_position() {
-    let mut set = SpareSet::new_with_fill(40);
+    let mut set = LinkedSet::new_with_fill(40);
     for i in 0..40usize {
         set.delete(i / 2);
     }
@@ -55,7 +70,7 @@ fn get_position() {
 
 #[test]
 fn reduce_to() {
-    let mut set = SpareSet::new_with_fill(40);
+    let mut set = LinkedSet::new_with_fill(40);
     set.reduce_to(20);
     assert_eq!(set.contains(20), true);
     for i in 0..40usize {
@@ -67,7 +82,7 @@ fn reduce_to() {
 
 #[test]
 fn delete() {
-    let mut set = SpareSet::new_with_fill(40);
+    let mut set = LinkedSet::new_with_fill(40);
     set.delete(30);
     assert_eq!(set.contains(30), false);
 }
@@ -75,13 +90,13 @@ fn delete() {
 #[test]
 #[should_panic]
 fn add_over_max() {
-    let mut set = SpareSet::new_with_fill(40);
+    let mut set = LinkedSet::new_with_fill(40);
     set.add(50);
 }
 
 #[test]
 fn clone() {
-    let mut set = SpareSet::new_with_fill(40);
+    let mut set = LinkedSet::new_with_fill(40);
     for i in 0..40usize {
         set.delete(i / 2);
     }
@@ -101,7 +116,7 @@ fn clone() {
 
 #[test]
 fn is_empty() {
-    let mut set = SpareSet::new(40);
+    let mut set = LinkedSet::new(40);
     assert_eq!(set.is_empty(), true);
     for i in 0..40usize {
         set.add(i / 2);
@@ -113,7 +128,7 @@ fn is_empty() {
 
 #[test]
 fn size() {
-    let mut set = SpareSet::new_with_fill(40);
+    let mut set = LinkedSet::new_with_fill(40);
     assert_eq!(set.size(), 40);
     assert_eq!(set.max_size(), 40);
     for i in 0..40usize {

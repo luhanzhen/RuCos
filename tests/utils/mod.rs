@@ -13,6 +13,7 @@
 * </p>
  */
 
+pub mod linked_set_test;
 pub mod spare_set_counter_test;
 pub mod spare_set_of_multi_level_test;
 pub mod spare_set_test;

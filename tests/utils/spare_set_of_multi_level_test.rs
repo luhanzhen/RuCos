@@ -13,9 +13,5 @@
  * </p>
  */
 
-use CConstraintSolver::utils::spare_set::SpareSet;
-
-struct SpareSetMultiLevel {
-    set: SpareSet,
-    _counter: Box<Vec<usize>>,
-}
+#[test]
+pub fn add() {}

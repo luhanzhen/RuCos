@@ -12,3 +12,10 @@
  * <p>@description:
  * </p>
  */
+
+use crate::utils::spare_set::SpareSet;
+
+struct SpareSetMultiLevel {
+    set: SpareSet,
+    _counter: Box<Vec<usize>>,
+}

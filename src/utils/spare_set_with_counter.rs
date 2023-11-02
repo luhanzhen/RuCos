@@ -16,9 +16,9 @@
 use crate::utils::spare_set::{SpareSet, SpareSetIter};
 use crate::utils::trait_set::Set;
 use std::fmt::{Display, Formatter};
-use std::ops::{Index, IndexMut};
+use std::ops::Index;
 
-struct SpareSetCounter {
+pub struct SpareSetCounter {
     set: SpareSet,
     _counter: Box<Vec<usize>>,
 }
@@ -39,11 +39,9 @@ impl Display for SpareSetCounter {
 
 impl Clone for SpareSetCounter {
     fn clone(&self) -> Self {
-        let mut _counter = Box::new(vec![]);
-        _counter.copy_from_slice(&**self._counter);
         Self {
             set: self.set.clone(),
-            _counter,
+            _counter: self._counter.clone(),
         }
     }
 }
@@ -52,17 +50,17 @@ impl Index<usize> for SpareSetCounter {
     type Output = usize;
 
     fn index(&self, index: usize) -> &Self::Output {
-        assert!(index < self.max_size());
+        debug_assert!(index < self.max_size());
         &self.set[index]
     }
 }
 
-impl IndexMut<usize> for SpareSetCounter {
-    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
-        assert!(index < self.max_size());
-        &mut self.set[index]
-    }
-}
+// impl IndexMut<usize> for SpareSetCounter {
+//     fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+//         debug_assert!(index < self.max_size());
+//         &mut self.set[index]
+//     }
+// }
 
 #[allow(dead_code)]
 impl SpareSetCounter {
@@ -76,7 +74,7 @@ impl SpareSetCounter {
     }
     pub fn new_with_fill(size: usize) -> Self {
         let mut _counter = Box::new(vec![]);
-        _counter.resize(size, 0usize);
+        _counter.resize(size, 1usize);
         Self {
             set: SpareSet::new_with_fill(size),
             _counter,
@@ -88,7 +86,12 @@ impl SpareSetCounter {
     }
 
     pub fn counter(&self, ele: usize) -> usize {
+        debug_assert!(ele < self.max_size());
         return self._counter[ele];
+    }
+
+    pub fn reduce_to(&mut self, ele: usize) {
+        self.set.reduce_to(ele)
     }
 }
 
@@ -103,7 +106,10 @@ impl Set for SpareSetCounter {
     }
 
     fn delete(&mut self, ele: usize) {
-        self.set.delete(ele)
+        if self.set.contains(ele) {
+            self._counter[ele] -= 1;
+            self.set.delete(ele)
+        }
     }
 
     fn contains(&self, ele: usize) -> bool {
@@ -115,7 +121,8 @@ impl Set for SpareSetCounter {
     }
 
     fn clear(&mut self) {
-        self.set.clear()
+        self.set.clear();
+        self._counter.fill(0usize);
     }
 
     fn is_empty(&self) -> bool {

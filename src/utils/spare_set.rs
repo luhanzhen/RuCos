@@ -15,7 +15,7 @@
 
 use crate::utils::trait_set::Set;
 use std::fmt::{Display, Formatter};
-use std::ops::{Index, IndexMut};
+use std::ops::Index;
 
 pub struct SpareSet {
     positions: Box<Vec<usize>>,
@@ -38,13 +38,9 @@ impl Display for SpareSet {
 
 impl Clone for SpareSet {
     fn clone(&self) -> Self {
-        let mut elements = Box::new(vec![]);
-        let mut positions = Box::new(vec![]);
-        elements.copy_from_slice(&**self.elements);
-        positions.copy_from_slice(&**self.positions);
         Self {
-            positions: elements,
-            elements: positions,
+            positions: self.positions.clone(),
+            elements: self.elements.clone(),
             limit: self.limit,
             capacity: self.capacity,
         }
@@ -60,12 +56,12 @@ impl Iterator for SpareSetIter<'_> {
     type Item = usize;
 
     fn next(&mut self) -> Option<Self::Item> {
-        if self.index < self.value.limit {
+        return if self.index < self.value.limit {
             self.index += 1;
-            return Some(self.value.elements[self.index - 1]);
+            Some(self.value[self.index - 1])
         } else {
-            return None;
-        }
+            None
+        };
     }
 }
 
@@ -73,17 +69,17 @@ impl Index<usize> for SpareSet {
     type Output = usize;
 
     fn index(&self, index: usize) -> &Self::Output {
-        assert!(index < self.max_size());
+        debug_assert!(index < self.max_size());
         &self.elements[index]
     }
 }
 
-impl IndexMut<usize> for SpareSet {
-    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
-        assert!(index < self.max_size());
-        &mut self.elements[index]
-    }
-}
+// impl IndexMut<usize> for SpareSet {
+//     fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+//         debug_assert!(index < self.max_size());
+//         &mut self.elements[index]
+//     }
+// }
 
 #[allow(dead_code)]
 impl SpareSet {
@@ -110,7 +106,6 @@ impl SpareSet {
             elements[i] = i;
             positions[i] = i;
         }
-
         Self {
             positions,
             elements,
@@ -122,23 +117,24 @@ impl SpareSet {
         }
     }
 
-    pub fn reduce_to(&mut self, ele: usize) {
-        self.clear();
-        self.add(ele);
-    }
     pub fn get_position(&self, ele: usize) -> usize {
-        assert!(ele < self.max_size());
+        debug_assert!(ele < self.max_size());
         self.positions[ele]
     }
 
     pub fn fill(&mut self) {
         self.limit = self.capacity
     }
+
+    pub(crate) fn reduce_to(&mut self, ele: usize) {
+        self.clear();
+        self.add(ele);
+    }
 }
 
 impl Set for SpareSet {
     fn add(&mut self, ele: usize) {
-        assert!(ele < self.max_size());
+        debug_assert!(ele < self.max_size());
         if self.contains(ele) {
             return;
         }
@@ -154,7 +150,7 @@ impl Set for SpareSet {
     }
 
     fn delete(&mut self, ele: usize) {
-        assert!(ele < self.max_size());
+        debug_assert!(ele < self.max_size());
         if !self.contains(ele) {
             return;
         }
@@ -169,7 +165,7 @@ impl Set for SpareSet {
     }
 
     fn contains(&self, ele: usize) -> bool {
-        assert!(ele <= self.max_size());
+        debug_assert!(ele <= self.max_size());
         self.positions[ele] < self.limit
     }
 
