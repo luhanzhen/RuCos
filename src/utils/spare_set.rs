@@ -13,6 +13,7 @@
 * </p>
  */
 
+use crate::utils::trait_set::Set;
 use std::fmt::{Display, Formatter};
 use std::ops::{Index, IndexMut};
 
@@ -84,6 +85,7 @@ impl IndexMut<usize> for SpareSet {
     }
 }
 
+#[allow(dead_code)]
 impl SpareSet {
     pub fn iter(&self) -> SpareSetIter {
         SpareSetIter {
@@ -105,8 +107,8 @@ impl SpareSet {
         elements.resize(size, 0usize);
         positions.resize(size, 0usize);
         for i in 0..size {
-            elements[i] = i as usize;
-            positions[i] = i as usize;
+            elements[i] = i;
+            positions[i] = i;
         }
 
         Self {
@@ -120,13 +122,28 @@ impl SpareSet {
         }
     }
 
-    pub fn add(&mut self, ele: usize) {
-        assert!(ele < self.max_size() as usize);
+    pub fn reduce_to(&mut self, ele: usize) {
+        self.clear();
+        self.add(ele);
+    }
+    pub fn get_position(&self, ele: usize) -> usize {
+        assert!(ele < self.max_size());
+        self.positions[ele]
+    }
+
+    pub fn fill(&mut self) {
+        self.limit = self.capacity
+    }
+}
+
+impl Set for SpareSet {
+    fn add(&mut self, ele: usize) {
+        assert!(ele < self.max_size());
         if self.contains(ele) {
             return;
         }
         let tmp = self.elements[self.limit];
-        let pos = self.positions[ele as usize];
+        let pos = self.positions[ele];
 
         self.positions[tmp] = pos;
         self.elements[pos] = tmp;
@@ -135,16 +152,9 @@ impl SpareSet {
         self.positions[ele] = self.limit;
         self.limit += 1;
     }
-    pub fn reduce_to(&mut self, ele: usize) {
-        self.clear();
-        self.add(ele);
-    }
-    pub fn get_position(&self, ele: usize) -> usize {
-        assert!(ele < self.max_size() as usize);
-        self.positions[ele]
-    }
-    pub fn del(&mut self, ele: usize) {
-        assert!(ele < self.max_size() as usize);
+
+    fn delete(&mut self, ele: usize) {
+        assert!(ele < self.max_size());
         if !self.contains(ele) {
             return;
         }
@@ -158,25 +168,21 @@ impl SpareSet {
         self.positions[ele] = self.limit;
     }
 
-    pub fn contains(&self, ele: usize) -> bool {
-        assert!(ele <= self.max_size() as usize);
+    fn contains(&self, ele: usize) -> bool {
+        assert!(ele <= self.max_size());
         self.positions[ele] < self.limit
     }
 
-    pub fn max_size(&self) -> usize {
-        self.capacity
-    }
-    pub fn size(&self) -> usize {
+    fn size(&self) -> usize {
         self.limit
     }
-    pub fn is_empty(&self) -> bool {
-        self.limit == 0
-    }
-    pub fn clear(&mut self) {
+    fn clear(&mut self) {
         self.limit = 0
     }
-
-    pub fn fill(&mut self) {
-        self.limit = self.capacity
+    fn is_empty(&self) -> bool {
+        self.limit == 0
+    }
+    fn max_size(&self) -> usize {
+        self.capacity
     }
 }
