@@ -126,7 +126,7 @@ impl SpareSet {
         self.limit = self.capacity
     }
 
-    pub(crate) fn reduce_to(&mut self, ele: usize) {
+    pub fn reduce_to(&mut self, ele: usize) {
         self.clear();
         self.add(ele);
     }

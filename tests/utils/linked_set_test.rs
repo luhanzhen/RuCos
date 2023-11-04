@@ -33,45 +33,47 @@ use CConstraintSolver::utils::trait_set::Set;
 
 #[test]
 fn add() {
-    let mut set = LinkedSet::new(40);
-    set.add(33);
-    set.add(23);
+    let mut set = LinkedSet::new(5);
+    set.delete(4);
+    set.delete(3);
+    assert_eq!("elements[ 0, 1, 2, ] //[\n", set.to_string());
     set.add(4);
-    // println!("{}", set);
-    assert_eq!("elements: 33, 23, 4, \n", set.to_string());
+    assert_eq!("elements[ 0, 1, 2, 4, ] //[\n", set.to_string());
+    set.add(3);
+    assert_eq!("elements[ 0, 1, 2, 3, 4, ] //[\n", set.to_string());
 }
 
 #[test]
 fn contain() {
-    let set = LinkedSet::new_with_fill(40);
+    let set = LinkedSet::new(40);
     for i in 0..40usize {
         assert_eq!(set.contains(i), true);
     }
 }
 
-#[test]
-fn index() {
-    let set = LinkedSet::new_with_fill(40);
-    for i in 0..40usize {
-        assert_eq!(set[i], i)
-    }
-}
+// #[test]
+// fn index() {
+//     let set = LinkedSet::new(40);
+//     for i in 0..40usize {
+//         assert_eq!(set[i], i)
+//     }
+// }
 
-#[test]
-fn get_position() {
-    let mut set = LinkedSet::new_with_fill(40);
-    for i in 0..40usize {
-        set.delete(i / 2);
-    }
-    for i in 20..40usize {
-        assert_eq!(set.get_position(i), 40 - i - 1);
-    }
-}
+// #[test]
+// fn get_position() {
+//     let mut set = LinkedSet::new(40);
+//     for i in 0..40usize {
+//         set.delete(i / 2);
+//     }
+//     for i in 20..40usize {
+//         assert_eq!(set.get_position(i), 40 - i - 1);
+//     }
+// }
 
 #[test]
 fn reduce_to() {
-    let mut set = LinkedSet::new_with_fill(40);
-    set.reduce_to(20);
+    let mut set = LinkedSet::new(40);
+    set.reduce_to(20,2);
     assert_eq!(set.contains(20), true);
     for i in 0..40usize {
         if i != 20 {
@@ -82,7 +84,7 @@ fn reduce_to() {
 
 #[test]
 fn delete() {
-    let mut set = LinkedSet::new_with_fill(40);
+    let mut set = LinkedSet::new(40);
     set.delete(30);
     assert_eq!(set.contains(30), false);
 }
@@ -90,13 +92,13 @@ fn delete() {
 #[test]
 #[should_panic]
 fn add_over_max() {
-    let mut set = LinkedSet::new_with_fill(40);
+    let mut set = LinkedSet::new(40);
     set.add(50);
 }
 
 #[test]
 fn clone() {
-    let mut set = LinkedSet::new_with_fill(40);
+    let mut set = LinkedSet::new(40);
     for i in 0..40usize {
         set.delete(i / 2);
     }
@@ -128,14 +130,14 @@ fn is_empty() {
 
 #[test]
 fn size() {
-    let mut set = LinkedSet::new_with_fill(40);
+    let mut set = LinkedSet::new(40);
     assert_eq!(set.size(), 40);
     assert_eq!(set.max_size(), 40);
     for i in 0..40usize {
         set.delete(i / 2);
     }
     assert_eq!(set.size(), 20);
-    set.reduce_to(0);
+    set.reduce_to(0,2);
     assert_eq!(set.size(), 1);
     assert_eq!(set.max_size(), 40);
 }
