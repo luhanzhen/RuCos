@@ -16,9 +16,6 @@
 use crate::utils::trait_set::Set;
 use std::fmt::{Display, Formatter};
 
-
-// const NOT_STORE: i32 = -1;
-
 pub struct LinkedSet {
     size: usize,
     first: usize,
@@ -51,6 +48,12 @@ impl LinkedSet {
                 }
             }
         }
+        // for e in self.iter()
+        // {
+        //       if e != ele {
+        //                 self.delete_at_level(e, level)
+        //       }
+        // }
 
         last_size
     }
@@ -126,19 +129,19 @@ impl LinkedSet {
 
     pub fn iter(&self) -> LinkedSetIter {
         LinkedSetIter {
-            index: 0,
+            index: self.first,
             value: &self,
         }
     } // pub fn new(size: usize) -> Self {
-    //     LinkedSet::get(size, )
-    // }
+      //     LinkedSet::get(size, )
+      // }
 
     // pub fn new_with_fill(size: usize) -> Self {
     //     LinkedSet::get(size, true)
     // }
 
     pub fn new(size: usize) -> Self {
-        let  limit = Box::new(vec![]);
+        let limit = Box::new(vec![]);
         let mut prev = Box::new(Vec::with_capacity(size));
         let mut removed_levels = Box::new(Vec::with_capacity(size));
         let mut prev_removed = Box::new(Vec::with_capacity(size));
@@ -153,6 +156,7 @@ impl LinkedSet {
             prev[i] = i - 1;
             next[i] = i + 1;
         }
+
         next[size - 1] = INVALID;
         prev_removed.fill(INVALID);
         removed_levels.fill(INVALID);
@@ -174,20 +178,9 @@ impl LinkedSet {
 impl Display for LinkedSet {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         let mut str = String::from("elements[ ");
-        let mut i = self.first;
-        loop {
-            match self.next(i) {
-                None => { break; }
-                Some(n) => {
-                    str.push_str(&*i.to_string());
-                    str.push_str(", ");
-                    i = n;
-                    if n == INVALID
-                    {
-                        break;
-                    }
-                }
-            }
+        for e in self.iter() {
+            str.push_str(&e.to_string());
+            str.push_str(", ");
         }
         str.push_str("] //[");
 
@@ -299,6 +292,17 @@ pub struct LinkedSetIter<'a> {
 impl Iterator for LinkedSetIter<'_> {
     type Item = usize;
     fn next(&mut self) -> Option<Self::Item> {
-        todo!()
+         let ret = self.index;
+         if ret == INVALID {
+             return None;
+         }
+         match self.value.next(self.index)
+         {
+             None => {}
+             Some(n) => {
+                 self.index = n;
+             }
+         }
+        Some(ret)
     }
 }
