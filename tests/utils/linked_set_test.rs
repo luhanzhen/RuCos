@@ -34,48 +34,36 @@ use CConstraintSolver::utils::trait_set::Set;
 #[test]
 fn add() {
     let mut set = LinkedSet::new(5);
-    assert_eq!("elements[ 0, 1, 2, 3, 4, ] //[\n", set.to_string());
-    set.delete(4);
-    set.delete(3);
-    assert_eq!("elements[ 0, 1, 2, ] //[\n", set.to_string());
-    set.add(4);
-    // assert_eq!("elements[ 0, 1, 2, 4, ] //[\n", set.to_string());
-    set.add(3);
-    assert_eq!("elements[ 0, 1, 2, 3, 4, ] //[\n", set.to_string());
+    assert_eq!("elements[ 0, 1, 2, 3, 4, ] deleted[]\n", set.to_string());
+    set.delete_at_level(3,0);
+    set.delete_at_level(4,1);
+    assert_eq!("elements[ 0, 1, 2, ] deleted[3, 4, ]\n", set.to_string());
+    set.restore_last_dropped();
+    assert_eq!("elements[ 0, 1, 2, 4, ] deleted[3, ]\n", set.to_string());
+    set.restore_last_dropped();
+    assert_eq!("elements[ 0, 1, 2, 3, 4, ] deleted[]\n", set.to_string());
 }
 
 #[test]
 fn contain() {
-    let set = LinkedSet::new(40);
+    let mut set = LinkedSet::new(40);
+    set.delete_at_level(3,0);
+    set.delete_at_level(4,4);
     for i in 0..40usize {
-        assert_eq!(set.contains(i), true);
+        if i != 3 && i != 4 {
+            assert_eq!(set.contains(i), true);
+        }
+
     }
 }
-
-// #[test]
-// fn index() {
-//     let set = LinkedSet::new(40);
-//     for i in 0..40usize {
-//         assert_eq!(set[i], i)
-//     }
-// }
-
-// #[test]
-// fn get_position() {
-//     let mut set = LinkedSet::new(40);
-//     for i in 0..40usize {
-//         set.delete(i / 2);
-//     }
-//     for i in 20..40usize {
-//         assert_eq!(set.get_position(i), 40 - i - 1);
-//     }
-// }
 
 #[test]
 fn reduce_to() {
     let mut set = LinkedSet::new(40);
     set.reduce_to(20,2);
     assert_eq!(set.contains(20), true);
+    // println!("{}",set);
+    assert_eq!("elements[ 20, ] deleted[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, ]\n", set.to_string());
     for i in 0..40usize {
         if i != 20 {
             assert_eq!(set.contains(i), false);
@@ -86,24 +74,32 @@ fn reduce_to() {
 #[test]
 fn delete() {
     let mut set = LinkedSet::new(40);
-    set.delete(30);
-    assert_eq!(set.contains(30), false);
+      for i in 0..40usize {
+        if i % 2 == 0 {
+           set.delete_at_level(i,i/2);
+        }
+    }
+     for i in 0..40usize {
+        if i % 2 == 1 {
+           assert_eq!(set.contains(i), true);
+        }
+    }
+
 }
 
 #[test]
 #[should_panic]
 fn add_over_max() {
     let mut set = LinkedSet::new(40);
-    set.add(50);
+    set.delete_at_level(50,0);
 }
 
 #[test]
 fn clone() {
     let mut set = LinkedSet::new(40);
     for i in 0..40usize {
-        set.delete(i / 2);
+        set.delete_at_level(i / 2,0);
     }
-
     let set1 = set.clone();
     for i in 0..40usize {
         assert_eq!(set1.contains(i / 2), false);
@@ -111,9 +107,9 @@ fn clone() {
     for i in 20..40usize {
         assert_eq!(set1.contains(i), true);
     }
-    set.clear();
-    for i in 20..40usize {
-        assert_eq!(set1.contains(i), true);
+
+    for i in 0..20usize {
+        assert_eq!(set1.contains(i), false);
     }
 }
 
@@ -122,13 +118,15 @@ fn clone() {
 #[test]
 fn is_empty() {
     let mut set = LinkedSet::new(40);
-    assert_eq!(set.is_empty(), true);
-    for i in 0..40usize {
-        set.add(i / 2);
+    assert_eq!(set.is_empty(), false);
+    for i in 0..39usize {
+         set.delete_at_level(i,0);
         assert_eq!(set.is_empty(), false);
     }
-    set.clear();
+    set.delete_at_level(39,0);
     assert_eq!(set.is_empty(), true);
+    set.restore_last_dropped();
+    assert_eq!(set.is_empty(), false);
 }
 
 #[test]
@@ -137,10 +135,11 @@ fn size() {
     assert_eq!(set.size(), 40);
     assert_eq!(set.max_size(), 40);
     for i in 0..40usize {
-        set.delete(i / 2);
+        set.delete_at_level(i / 2,i/2);
     }
     assert_eq!(set.size(), 20);
-    set.reduce_to(0,2);
+    assert_eq!(set.reduce_to(23,33), 20);
+    // println!("{}",set);
     assert_eq!(set.size(), 1);
     assert_eq!(set.max_size(), 40);
 }
