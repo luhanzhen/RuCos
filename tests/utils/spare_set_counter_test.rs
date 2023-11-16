@@ -1,5 +1,5 @@
 /*
- * <p>@project_name: CConstraintSolver
+ * <p>@project_name: constraint_solver
  * </p>
  * <p>@author: luhan zhen
  * </p>
@@ -12,8 +12,8 @@
  * <p>@description:
  * </p>
  */
-use CConstraintSolver::utils::spare_set_with_counter::SpareSetCounter;
-use CConstraintSolver::utils::trait_set::SetTrait;
+use constraint_solver::utils::spare_set_with_counter::SpareSetCounter;
+use constraint_solver::utils::trait_set::SetTrait;
 
 #[test]
 pub fn add() {

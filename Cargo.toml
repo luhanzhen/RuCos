@@ -1,5 +1,5 @@
 [package]
-name = "CConstraintSolver"
+name = "constraint_solver"
 version = "0.1.0"
 edition = "2021"
 
@@ -10,10 +10,10 @@ edition = "2021"
 
 
 [lib]
-name = "CConstraintSolver"
+name = "constraint_solver"
 path = "src/lib.rs"
 
 
 [[test]]
-name = "CConstraintSolver_test"
+name = "constraint_solver_test"
 path = "tests/lib.rs"

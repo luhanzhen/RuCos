@@ -1,5 +1,5 @@
 /*
- * <p>@project_name: CConstraintSolver
+ * <p>@project_name: constraint_solver
  * </p>
  * <p>@author: luhan zhen
  * </p>
@@ -14,7 +14,7 @@
  */
 
 /*
-* <p>@project_name: CConstraintSolver
+* <p>@project_name: constraint_solver
 * </p>
 * <p>@author: luhan zhen
 * </p>
@@ -28,8 +28,8 @@
 * </p>
  */
 
-use CConstraintSolver::utils::linked_set::LinkedSet;
-use CConstraintSolver::utils::trait_set::SetTrait;
+use constraint_solver::utils::linked_set::LinkedSet;
+use constraint_solver::utils::trait_set::SetTrait;
 
 #[test]
 fn add() {

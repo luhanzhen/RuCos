@@ -1,5 +1,5 @@
 /*
-* <p>@project_name: CConstraintSolver
+* <p>@project_name: constraint_solver
 * </p>
 * <p>@author: luhan zhen
 * </p>
@@ -18,6 +18,7 @@ pub mod utils;
 
 pub mod problem;
 
-pub mod variable;
+pub(crate) mod variable;
 
 pub mod constraint;
+pub mod solver;

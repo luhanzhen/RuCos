@@ -1,5 +1,5 @@
 /*
- * <p>@project_name: CConstraintSolver
+ * <p>@project_name: constraint_solver
  * </p>
  * <p>@author: luhan zhen
  * </p>
@@ -54,8 +54,7 @@ impl<'a, T> IndexMut<usize> for SparseSetOfTemplate<'a, T> {
     }
 }
 #[allow(dead_code)]
-impl<'a, T> SparseSetOfTemplate<'a, T>
-{
+impl<'a, T> SparseSetOfTemplate<'a, T> {
     // fn new(size: usize, fill: bool) -> Self {
     //
     // }

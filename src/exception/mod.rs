@@ -1,5 +1,5 @@
 /*
- * <p>@project_name: CConstraintSolver
+ * <p>@project_name: constraint_solver
  * </p>
  * <p>@author: luhan zhen
  * </p>
@@ -13,4 +13,5 @@
  * </p>
  */
 
+mod empty_domain_exception;
 mod exception_trait;

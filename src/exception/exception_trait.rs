@@ -1,5 +1,5 @@
 /*
- * <p>@project_name: CConstraintSolver
+ * <p>@project_name: constraint_solver
  * </p>
  * <p>@author: luhan zhen
  * </p>
@@ -16,23 +16,22 @@
 pub enum ExceptionLevel {
     Ignorable,
     Minor,
-    Major,
-    // you have to handle this error
+    Major, // you have to handle this error
     Fatal, // you have to handle this error
 }
 
-trait ExceptionTrait {
-    fn message(&self) -> str;
+pub trait ExceptionTrait {
+    fn message(&self) -> &str;
 
     fn new() -> Self;
 
-    fn exception_level(&self) -> ExceptionLevel;
+    fn exception_level(&self) -> &ExceptionLevel;
 
     fn is_fatal(&self) -> bool {
-         match self.exception_level() {
+        match self.exception_level() {
             ExceptionLevel::Major => true,
             ExceptionLevel::Fatal => true,
-             _ => false
-         }
+            _ => false,
+        }
     }
 }
