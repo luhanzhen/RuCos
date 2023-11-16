@@ -12,8 +12,12 @@
   * <p>@description: 
  * </p>
  */
- 
- 
+
+
+pub trait VariableTrait
+{
+
+}
  
  
  

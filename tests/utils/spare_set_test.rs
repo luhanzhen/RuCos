@@ -14,11 +14,11 @@
  */
 
 use CConstraintSolver::utils::spare_set::SpareSet;
-use CConstraintSolver::utils::trait_set::Set;
+use CConstraintSolver::utils::trait_set::SetTrait;
 
 #[test]
 fn add() {
-    let mut set = SpareSet::new(40);
+    let mut set = SpareSet::new_without_fill(40);
     set.add(33);
     set.add(23);
     set.add(4);
@@ -101,7 +101,7 @@ fn clone() {
 
 #[test]
 fn is_empty() {
-    let mut set = SpareSet::new(40);
+    let mut set = SpareSet::new_without_fill(40);
     assert_eq!(set.is_empty(), true);
     for i in 0..40usize {
         set.add(i / 2);

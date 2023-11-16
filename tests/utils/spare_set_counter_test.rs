@@ -13,11 +13,11 @@
  * </p>
  */
 use CConstraintSolver::utils::spare_set_with_counter::SpareSetCounter;
-use CConstraintSolver::utils::trait_set::Set;
+use CConstraintSolver::utils::trait_set::SetTrait;
 
 #[test]
 pub fn add() {
-    let mut set = SpareSetCounter::new(40);
+    let mut set = SpareSetCounter::new_without_fill(40);
     set.add(33);
     set.add(23);
     set.add(4);

@@ -13,7 +13,7 @@
 * </p>
  */
 
-use crate::utils::trait_set::Set;
+use crate::utils::trait_set::SetTrait;
 use std::fmt::{Display, Formatter};
 use std::ops::Index;
 
@@ -21,7 +21,7 @@ pub struct SpareSet {
     positions: Box<Vec<usize>>,
     elements: Box<Vec<usize>>,
     limit: usize,
-    capacity: usize,
+    max_size: usize,
 }
 
 impl Display for SpareSet {
@@ -42,7 +42,7 @@ impl Clone for SpareSet {
             positions: self.positions.clone(),
             elements: self.elements.clone(),
             limit: self.limit,
-            capacity: self.capacity,
+            max_size: self.max_size,
         }
     }
 }
@@ -83,21 +83,24 @@ impl Index<usize> for SpareSet {
 
 #[allow(dead_code)]
 impl SpareSet {
+    pub(crate) fn limit(&mut self) -> &mut usize {
+        &mut self.limit
+    }
     pub fn iter(&self) -> SpareSetIter {
         SpareSetIter {
             index: 0,
             value: &self,
         }
     }
-    pub fn new(size: usize) -> Self {
-        SpareSet::get(size, false)
+    pub fn new_without_fill(size: usize) -> Self {
+        SpareSet::new(size, false)
     }
 
     pub fn new_with_fill(size: usize) -> Self {
-        SpareSet::get(size, true)
+        SpareSet::new(size, true)
     }
 
-    fn get(size: usize, fill: bool) -> Self {
+    fn new(size: usize, fill: bool) -> Self {
         let mut elements = Box::new(vec![]);
         let mut positions = Box::new(vec![]);
         elements.resize(size, 0usize);
@@ -113,7 +116,7 @@ impl SpareSet {
                 true => size,
                 false => 0,
             },
-            capacity: size,
+            max_size: size,
         }
     }
 
@@ -123,7 +126,7 @@ impl SpareSet {
     }
 
     pub fn fill(&mut self) {
-        self.limit = self.capacity
+        self.limit = self.max_size
     }
 
     pub fn reduce_to(&mut self, ele: usize) {
@@ -132,7 +135,7 @@ impl SpareSet {
     }
 }
 
-impl Set for SpareSet {
+impl SetTrait<usize> for SpareSet {
     fn add(&mut self, ele: usize) {
         debug_assert!(ele < self.max_size());
         if self.contains(ele) {
@@ -179,6 +182,6 @@ impl Set for SpareSet {
         self.limit == 0
     }
     fn max_size(&self) -> usize {
-        self.capacity
+        self.max_size
     }
 }

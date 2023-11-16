@@ -12,11 +12,25 @@
   * <p>@description: 
  * </p>
  */
- 
- pub mod problem;
- 
- 
- 
+
+
+use crate::utils::linked_set::LinkedSet;
+
+pub struct Domain
+{
+    elements: LinkedSet,
+}
+
+
+impl Domain
+{
+    fn new(size: usize) -> Self
+    {
+        Self {
+            elements: LinkedSet::new_with_fill(size)
+        }
+    }
+}
  
  
  

@@ -13,4 +13,11 @@
 * </p>
  */
 
+pub mod exception;
 pub mod utils;
+
+pub mod problem;
+
+pub mod variable;
+
+pub mod constraint;

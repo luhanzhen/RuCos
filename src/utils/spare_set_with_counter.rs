@@ -14,7 +14,7 @@
  */
 
 use crate::utils::spare_set::{SpareSet, SpareSetIter};
-use crate::utils::trait_set::Set;
+use crate::utils::trait_set::SetTrait;
 use std::fmt::{Display, Formatter};
 use std::ops::Index;
 
@@ -64,11 +64,11 @@ impl Index<usize> for SpareSetCounter {
 
 #[allow(dead_code)]
 impl SpareSetCounter {
-    pub fn new(size: usize) -> Self {
+    pub fn new_without_fill(size: usize) -> Self {
         let mut _counter = Box::new(vec![]);
         _counter.resize(size, 0usize);
         Self {
-            set: SpareSet::new(size),
+            set: SpareSet::new_without_fill(size),
             _counter,
         }
     }
@@ -95,7 +95,7 @@ impl SpareSetCounter {
     }
 }
 
-impl Set for SpareSetCounter {
+impl SetTrait<usize> for SpareSetCounter {
     fn add(&mut self, ele: usize) {
         if self.contains(ele) {
             self._counter[ele] += 1

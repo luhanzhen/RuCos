@@ -13,7 +13,7 @@
  * </p>
  */
 
-use crate::utils::trait_set::Set;
+use crate::utils::trait_set::SetTrait;
 use std::fmt::{Display, Formatter};
 
 pub struct LinkedSet {
@@ -22,7 +22,7 @@ pub struct LinkedSet {
     last: usize,
     last_removed: usize,
     nb_levels: usize,
-    limit: Box<Vec<usize>>,
+    limits: Box<Vec<usize>>,
     prev: Box<Vec<usize>>,
     removed_levels: Box<Vec<usize>>,
     prev_removed: Box<Vec<usize>>,
@@ -44,7 +44,7 @@ impl LinkedSet {
                         self.delete_at_level(e, level)
                     }
                     if ee == INVALID {
-                        break
+                        break;
                     }
                     e = ee;
                 }
@@ -73,13 +73,12 @@ impl LinkedSet {
         Some(next)
     }
 
-
     pub fn record_limit(&mut self, level: usize) {
-        if level >= self.limit.len() {
-            self.limit.resize(self.limit.len() + 1, INVALID);
+        if level >= self.limits.len() {
+            self.limits.resize(self.limits.len() + 1, INVALID);
         }
-        debug_assert!(self.limit[level] == INVALID);
-        self.limit[level] = self.size
+        debug_assert!(self.limits[level] == INVALID);
+        self.limits[level] = self.size
     }
 
     pub fn restore_last_dropped(&mut self) {
@@ -90,7 +89,7 @@ impl LinkedSet {
     }
 
     pub fn is_limit_recorded_at_level(&self, level: usize) -> bool {
-        level < self.limit.len() && self.limit[level] != INVALID
+        level < self.limits.len() && self.limits[level] != INVALID
     }
     pub fn last_removed_level(&self) -> usize {
         match self.last_removed == INVALID {
@@ -139,7 +138,7 @@ impl LinkedSet {
     //     LinkedSet::get(size, true)
     // }
 
-    pub fn new(size: usize) -> Self {
+    pub fn new_with_fill(size: usize) -> Self {
         let limit = Box::new(vec![]);
         let mut prev = Box::new(Vec::with_capacity(size));
         let mut removed_levels = Box::new(Vec::with_capacity(size));
@@ -165,7 +164,7 @@ impl LinkedSet {
             last: size - 1,
             last_removed: INVALID,
             nb_levels: 0,
-            limit,
+            limits: limit,
             prev,
             removed_levels,
             prev_removed,
@@ -182,9 +181,8 @@ impl Display for LinkedSet {
             str.push_str(", ");
         }
         str.push_str("] deleted[");
-        for i in 0..self.max_size()
-        {
-            if !self.contains(i){
+        for i in 0..self.max_size() {
+            if !self.contains(i) {
                 str.push_str(&i.to_string());
                 str.push_str(", ");
             }
@@ -203,7 +201,7 @@ impl Clone for LinkedSet {
             last: self.last,
             last_removed: self.last_removed,
             nb_levels: self.nb_levels,
-            limit: self.limit.clone(),
+            limits: self.limits.clone(),
             prev: self.prev.clone(),
             removed_levels: self.removed_levels.clone(),
             prev_removed: self.prev_removed.clone(),
@@ -212,7 +210,7 @@ impl Clone for LinkedSet {
     }
 }
 
-impl Set for LinkedSet {
+impl SetTrait<usize> for LinkedSet {
     fn add(&mut self, ele: usize) {
         debug_assert!(ele == self.last_removed);
         let prev = self.prev[ele];
@@ -298,17 +296,16 @@ pub struct LinkedSetIter<'a> {
 impl Iterator for LinkedSetIter<'_> {
     type Item = usize;
     fn next(&mut self) -> Option<Self::Item> {
-         let ret = self.index;
-         if ret == INVALID {
-             return None;
-         }
-         match self.value.next(self.index)
-         {
-             None => {}
-             Some(n) => {
-                 self.index = n;
-             }
-         }
+        let ret = self.index;
+        if ret == INVALID {
+            return None;
+        }
+        match self.value.next(self.index) {
+            None => {}
+            Some(n) => {
+                self.index = n;
+            }
+        }
         Some(ret)
     }
 }

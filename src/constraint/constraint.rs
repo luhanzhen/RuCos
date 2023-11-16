@@ -15,7 +15,10 @@
  
  
  
- 
+ pub trait ConstraintTrait
+ {
+
+ }
  
  
  

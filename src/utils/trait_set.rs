@@ -13,10 +13,10 @@
  * </p>
  */
 
-pub trait Set {
-    fn add(&mut self, ele: usize);
+pub trait SetTrait<T> {
+    fn add(&mut self, ele: T);
 
-    fn delete(&mut self, ele: usize);
+    fn delete(&mut self, ele: T);
 
     fn contains(&self, ele: usize) -> bool;
 
