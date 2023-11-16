@@ -35,7 +35,6 @@ const INVALID: usize = usize::MAX;
 impl LinkedSet {
     pub fn reduce_to(&mut self, ele: usize, level: usize) -> usize {
         let last_size = self.size;
-
         let mut e = self.first;
         loop {
             match self.next(e) {
@@ -44,16 +43,13 @@ impl LinkedSet {
                     if e != ele {
                         self.delete_at_level(e, level)
                     }
+                    if ee == INVALID {
+                        break
+                    }
                     e = ee;
                 }
             }
         }
-        // for e in self.iter()
-        // {
-        //       if e != ele {
-        //                 self.delete_at_level(e, level)
-        //       }
-        // }
 
         last_size
     }
@@ -68,7 +64,7 @@ impl LinkedSet {
         }
         let mut next = self.next[ele];
         if next == INVALID || next > self.last {
-            return None;
+            return Some(INVALID);
         }
         while self.removed_levels[next] != INVALID {
             next = self.next[next];
@@ -77,12 +73,12 @@ impl LinkedSet {
         Some(next)
     }
 
+
     pub fn record_limit(&mut self, level: usize) {
         if level >= self.limit.len() {
             self.limit.resize(self.limit.len() + 1, INVALID);
         }
-
-        debug_assert!(self.limit[level] != INVALID);
+        debug_assert!(self.limit[level] == INVALID);
         self.limit[level] = self.size
     }
 
@@ -112,7 +108,7 @@ impl LinkedSet {
         }
         let mut prev = self.prev[ele];
         if prev < self.first {
-            return None;
+            return Some(INVALID);
         }
         while self.removed_levels[prev] != INVALID {
             prev = self.prev[prev];
@@ -122,6 +118,9 @@ impl LinkedSet {
 
     pub fn delete_at_level(&mut self, ele: usize, level: usize) {
         debug_assert!(ele < self.removed_levels.len());
+        if !self.contains(ele) {
+            return;
+        }
         self.removed_levels[ele] = level;
         self.size -= 1;
         self.delete(ele);
@@ -182,8 +181,15 @@ impl Display for LinkedSet {
             str.push_str(&e.to_string());
             str.push_str(", ");
         }
-        str.push_str("] //[");
-
+        str.push_str("] deleted[");
+        for i in 0..self.max_size()
+        {
+            if !self.contains(i){
+                str.push_str(&i.to_string());
+                str.push_str(", ");
+            }
+        }
+        str.push_str("]");
         str.push_str("\n");
         write!(f, "{}", str)
     }
@@ -208,7 +214,7 @@ impl Clone for LinkedSet {
 
 impl Set for LinkedSet {
     fn add(&mut self, ele: usize) {
-        debug_assert!(ele < self.max_size());
+        debug_assert!(ele == self.last_removed);
         let prev = self.prev[ele];
         let next = self.next[ele];
         if prev == INVALID {
@@ -252,7 +258,7 @@ impl Set for LinkedSet {
     }
 
     fn clear(&mut self) {
-        todo!()
+        //todo
     }
 
     fn is_empty(&self) -> bool {
