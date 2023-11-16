@@ -3,7 +3,7 @@
 * </p>
 * <p>@author: luhan zhen
 * </p>
-* <p>@date:  2023/11/1 22:00
+* <p>@date:  2023/11/16 22:06
 * </p>
 * <p>@email: 940864649@qq.com
 * </p>
@@ -13,8 +13,5 @@
 * </p>
  */
 
-pub mod linked_set_test;
-pub mod spare_set_counter_test;
-pub mod spare_set_of_multi_level_test;
-pub mod spare_set_of_template_test;
-pub mod spare_set_test;
+#[test]
+fn new() {}

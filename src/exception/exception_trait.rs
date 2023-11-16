@@ -23,7 +23,7 @@ pub enum ExceptionLevel {
 pub trait ExceptionTrait {
     fn message(&self) -> &str;
 
-    fn new() -> Self;
+    fn new(msg: &str) -> Self;
 
     fn exception_level(&self) -> &ExceptionLevel;
 

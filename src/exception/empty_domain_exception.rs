@@ -25,8 +25,11 @@ impl ExceptionTrait for EmptyDomainException {
         &self.message
     }
 
-    fn new() -> Self {
-        todo!()
+    fn new(msg: &str) -> Self {
+        Self {
+            message: String::from(msg),
+            level: ExceptionLevel::Fatal,
+        }
     }
 
     fn exception_level(&self) -> &ExceptionLevel {

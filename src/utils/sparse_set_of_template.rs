@@ -55,9 +55,26 @@ impl<'a, T> IndexMut<usize> for SparseSetOfTemplate<'a, T> {
 }
 #[allow(dead_code)]
 impl<'a, T> SparseSetOfTemplate<'a, T> {
-    // fn new(size: usize, fill: bool) -> Self {
-    //
-    // }
+    fn new(size: usize, fill: bool) -> Self {
+        let mut elements = Box::new(vec![]);
+        let mut positions = Box::new(vec![]);
+        // elements.resize(size, 0usize);
+
+        positions.resize(size, 0usize);
+        for i in 0..size {
+            // elements[i] = i;
+            positions[i] = i;
+        }
+        Self {
+            positions,
+            elements,
+            limit: match fill {
+                true => size,
+                false => 0,
+            },
+            max_size: size,
+        }
+    }
 }
 impl<'a, T> SetTrait<&'a T> for SparseSetOfTemplate<'a, T> {
     fn add(&mut self, ele: &'a T) {

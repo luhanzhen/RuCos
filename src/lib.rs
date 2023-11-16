@@ -18,7 +18,7 @@ pub mod utils;
 
 pub mod problem;
 
-pub(crate) mod variable;
+pub mod variable;
 
 pub mod constraint;
 pub mod solver;
