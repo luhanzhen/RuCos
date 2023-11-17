@@ -15,4 +15,5 @@
 
 pub mod utils;
 
+pub mod problem;
 pub mod variable;

@@ -15,9 +15,23 @@
 
 use crate::constraint::constraint::ConstraintTrait;
 use crate::variable::variable::VariableTrait;
+use std::rc::Rc;
+use std::sync::Arc;
 
+// pub struct Problem<X, C> where X: VariableTrait, C: ConstraintTrait {
 pub struct Problem {
     name: String,
-    constraints: Box<Vec<Box<dyn ConstraintTrait>>>,
-    variables: Box<Vec<Box<dyn VariableTrait>>>,
+    variables: Box<Vec<Rc<Arc<dyn VariableTrait>>>>,
+    constraints: Box<Vec<Rc<Arc<dyn ConstraintTrait>>>>,
+}
+
+// impl<X, C> Problem<X, C> where X: VariableTrait, C: ConstraintTrait
+impl Problem {
+    pub fn new() -> Problem {
+        Self {
+            name: String::new(),
+            variables: Box::new(vec![]),
+            constraints: Box::new(vec![]),
+        }
+    }
 }
