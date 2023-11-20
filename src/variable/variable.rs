@@ -13,4 +13,7 @@
  * </p>
  */
 
-pub trait VariableTrait {}
+pub trait VariableTrait {
+
+
+}

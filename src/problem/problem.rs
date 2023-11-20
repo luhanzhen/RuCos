@@ -13,16 +13,17 @@
  * </p>
  */
 
+use std::cell::RefCell;
 use crate::constraint::constraint::ConstraintTrait;
 use crate::variable::variable::VariableTrait;
 use std::rc::Rc;
-use std::sync::Arc;
+
 
 // pub struct Problem<X, C> where X: VariableTrait, C: ConstraintTrait {
 pub struct Problem {
     name: String,
-    variables: Box<Vec<Rc<Arc<dyn VariableTrait>>>>,
-    constraints: Box<Vec<Rc<Arc<dyn ConstraintTrait>>>>,
+    variables: Box<Vec<Rc<RefCell<Box<dyn VariableTrait>>>>>,
+    constraints: Box<Vec<Rc<RefCell<Box<dyn ConstraintTrait>>>>>,
 }
 
 // impl<X, C> Problem<X, C> where X: VariableTrait, C: ConstraintTrait
@@ -33,5 +34,13 @@ impl Problem {
             variables: Box::new(vec![]),
             constraints: Box::new(vec![]),
         }
+    }
+
+    pub fn add_variable(&mut self, name: Box<dyn VariableTrait>) {
+        self.variables.push(Rc::new(RefCell::new(name)))
+    }
+
+     pub fn add_constraint(&mut self, name: Box<dyn ConstraintTrait>) {
+        self.constraints.push(Rc::new(RefCell::new(name)))
     }
 }
