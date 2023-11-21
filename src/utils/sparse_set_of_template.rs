@@ -76,6 +76,7 @@ impl<'a, T> SparseSetOfTemplate<'a, T> {
         }
     }
 }
+
 impl<'a, T> SetTrait<&'a T> for SparseSetOfTemplate<'a, T> {
     fn add(&mut self, ele: &'a T) {
         todo!()

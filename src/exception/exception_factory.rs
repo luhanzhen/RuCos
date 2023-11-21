@@ -1,4 +1,4 @@
-/*
+/**
  * <p>@project_name: constraint_solver
  * </p>
  * <p>@author: luhan zhen
@@ -11,8 +11,7 @@
  * </p>
  * <p>@description:
  * </p>
- */
-
+ **/
 use crate::exception::empty_domain_exception::EmptyDomainException;
 use crate::exception::ExceptionType;
 

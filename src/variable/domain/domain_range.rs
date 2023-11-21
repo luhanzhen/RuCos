@@ -3,7 +3,7 @@
  * </p>
  * <p>@author: luhan zhen
  * </p>
- * <p>@date:  2023/11/16 13:21
+ * <p>@date:  2023/11/21 20:00
  * </p>
  * <p>@email: zhenlh20@mails.jlu.edu.cn
  * </p>
@@ -12,7 +12,3 @@
  * <p>@description:
  * </p>
  */
-
-pub mod domain_range;
-pub mod domain_trait;
-pub mod domain_values;
