@@ -17,3 +17,7 @@ path = "src/lib.rs"
 [[test]]
 name = "constraint_solver_test"
 path = "tests/lib.rs"
+
+#[[bench]]
+#name = "constraint_solver_bench"
+#path = "benchit/benchs.rs"

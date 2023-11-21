@@ -13,11 +13,10 @@
  * </p>
  */
 
-use std::cell::RefCell;
 use crate::constraint::constraint::ConstraintTrait;
 use crate::variable::variable::VariableTrait;
+use std::cell::RefCell;
 use std::rc::Rc;
-
 
 // pub struct Problem<X, C> where X: VariableTrait, C: ConstraintTrait {
 pub struct Problem {
@@ -40,7 +39,7 @@ impl Problem {
         self.variables.push(Rc::new(RefCell::new(name)))
     }
 
-     pub fn add_constraint(&mut self, name: Box<dyn ConstraintTrait>) {
+    pub fn add_constraint(&mut self, name: Box<dyn ConstraintTrait>) {
         self.constraints.push(Rc::new(RefCell::new(name)))
     }
 }

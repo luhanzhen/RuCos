@@ -31,6 +31,8 @@
 use constraint_solver::utils::linked_set::LinkedSet;
 use constraint_solver::utils::trait_set::SetTrait;
 
+
+
 #[test]
 fn add() {
     let mut set = LinkedSet::new_with_fill(5);

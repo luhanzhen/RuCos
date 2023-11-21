@@ -13,17 +13,10 @@
  * </p>
  */
 
-pub enum ExceptionLevel {
-    Ignorable,
-    Minor,
-    Major, // you have to handle this error
-    Fatal, // you have to handle this error
-}
+use crate::exception::ExceptionLevel;
 
 pub trait ExceptionTrait {
     fn message(&self) -> &str;
-
-    fn new(msg: &str) -> Self;
 
     fn exception_level(&self) -> &ExceptionLevel;
 

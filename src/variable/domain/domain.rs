@@ -1,3 +1,4 @@
+use futures::executor::ThreadPool;
 /**
  * <p>@project_name: constraint_solver
  * </p>
@@ -20,6 +21,7 @@ pub struct Domain {
 
 impl Domain {
     fn new(size: usize) -> Self {
+
         Self {
             elements: LinkedSet::new_with_fill(size),
         }

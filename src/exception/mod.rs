@@ -13,5 +13,18 @@
  * </p>
  */
 
-mod empty_domain_exception;
-mod exception_trait;
+pub mod empty_domain_exception;
+pub mod exception_factory;
+pub mod exception_trait;
+pub mod invalid_variable_exception;
+
+pub enum ExceptionType {
+    EmptyDomainExceptionType,
+    InvalidVariableExceptionType,
+}
+pub enum ExceptionLevel {
+    Ignorable,
+    Minor,
+    Major, // you have to handle this error
+    Fatal, // you have to handle this error
+}

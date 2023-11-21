@@ -15,5 +15,6 @@
 
 pub mod utils;
 
+pub mod exception;
 pub mod problem;
 pub mod variable;
