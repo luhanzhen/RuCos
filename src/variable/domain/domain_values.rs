@@ -17,7 +17,6 @@ use crate::utils::linked_set::LinkedSet;
 use crate::variable::domain::domain_trait::DomainTrait;
 use std::collections::HashMap;
 use std::fmt::{Display, Formatter};
-use std::hash::{Hash, Hasher};
 
 pub struct DomainValues {
     elements: LinkedSet,
@@ -52,6 +51,10 @@ impl DomainTrait for DomainValues {
 
     fn is_idx_correspond_to_values(&self) -> bool {
         todo!()
+    }
+
+    fn hash(&self) -> usize {
+        // let range:Range<usize> = 0..10;
     }
 
     fn get_elements(&self) -> &LinkedSet {
