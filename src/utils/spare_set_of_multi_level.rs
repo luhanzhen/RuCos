@@ -13,8 +13,8 @@
  * </p>
  */
 
+use crate::utils::set_trait::SetTrait;
 use crate::utils::spare_set::{SpareSet, SpareSetIter};
-use crate::utils::trait_set::SetTrait;
 use std::fmt::{Display, Formatter};
 use std::ops::Index;
 

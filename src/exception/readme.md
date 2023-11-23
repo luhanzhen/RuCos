@@ -32,6 +32,7 @@ direction LR
 
     class ExceptionTrait {
         <<Trait>>
+        
         fn message(&self)  &str;
 
         fn exception_level(&self)  &ExceptionLevel;
@@ -51,15 +52,17 @@ direction LR
     ExceptionTrait ..o ExceptionLevel
 
 
-
-
     class InvalidVariableException {
         <<Struct>>
+        message: String,
+        level: ExceptionLevel,
         +  fn new(&str)->Self
     }
 
     class EmptyDomainException {
         <<Struct>>
+        message: String,
+        level: ExceptionLevel,
         +  fn new(&str)->Self
     }
 

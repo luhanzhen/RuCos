@@ -29,7 +29,7 @@
  */
 
 use constraint_solver::utils::linked_set::LinkedSet;
-use constraint_solver::utils::trait_set::SetTrait;
+use constraint_solver::utils::set_trait::SetTrait;
 
 #[test]
 fn add() {

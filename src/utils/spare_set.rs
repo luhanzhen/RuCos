@@ -13,7 +13,7 @@
 * </p>
  */
 
-use crate::utils::trait_set::SetTrait;
+use crate::utils::set_trait::SetTrait;
 use std::fmt::{Display, Formatter};
 use std::ops::Index;
 
