@@ -22,7 +22,7 @@ const INVALID: usize = usize::MAX;
 
 struct SpareSetMultiLevel {
     set: SpareSet,
-    limits: Box<Vec<usize>>,
+    limits: Vec<usize>,
 }
 
 #[allow(dead_code)]
@@ -34,13 +34,13 @@ impl SpareSetMultiLevel {
     pub fn new_without_fill(size: usize) -> Self {
         Self {
             set: SpareSet::new_without_fill(size),
-            limits: Box::new(vec![]),
+            limits: vec![],
         }
     }
     pub fn new_with_fill(size: usize) -> Self {
         Self {
             set: SpareSet::new_with_fill(size),
-            limits: Box::new(vec![]),
+            limits: vec![],
         }
     }
     pub fn record_limit(&mut self, level: usize) {

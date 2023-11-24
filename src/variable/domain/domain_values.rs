@@ -37,7 +37,9 @@ impl DomainValues {
 }
 
 impl Display for DomainValues {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {}
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{:?}", self.map)
+    }
 }
 
 impl DomainTrait for DomainValues {
@@ -55,6 +57,7 @@ impl DomainTrait for DomainValues {
 
     fn hash(&self) -> usize {
         // let range:Range<usize> = 0..10;
+        0
     }
 
     fn get_elements(&self) -> &LinkedSet {

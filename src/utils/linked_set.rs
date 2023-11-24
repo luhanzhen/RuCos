@@ -22,11 +22,11 @@ pub struct LinkedSet {
     last: usize,
     last_removed: usize,
     nb_levels: usize,
-    limits: Box<Vec<usize>>,
-    prev: Box<Vec<usize>>,
-    removed_levels: Box<Vec<usize>>,
-    prev_removed: Box<Vec<usize>>,
-    next: Box<Vec<usize>>,
+    limits: Vec<usize>,
+    prev: Vec<usize>,
+    removed_levels: Vec<usize>,
+    prev_removed: Vec<usize>,
+    next: Vec<usize>,
 }
 
 const INVALID: usize = usize::MAX;
@@ -139,11 +139,11 @@ impl LinkedSet {
     // }
 
     pub fn new_with_fill(size: usize) -> Self {
-        let limit = Box::new(vec![]);
-        let mut prev = Box::new(Vec::with_capacity(size));
-        let mut removed_levels = Box::new(Vec::with_capacity(size));
-        let mut prev_removed = Box::new(Vec::with_capacity(size));
-        let mut next = Box::new(Vec::with_capacity(size));
+        let limit = vec![];
+        let mut prev = Vec::with_capacity(size);
+        let mut removed_levels = Vec::with_capacity(size);
+        let mut prev_removed = Vec::with_capacity(size);
+        let mut next = Vec::with_capacity(size);
         prev.resize(size, INVALID);
         removed_levels.resize(size, INVALID);
         prev_removed.resize(size, INVALID);

@@ -14,18 +14,20 @@
  */
 
 use crate::utils::set_trait::SetTrait;
+use std::cell::RefCell;
 use std::fmt::{Display, Formatter};
 use std::ops::{Index, IndexMut};
+use std::rc::Rc;
 
-struct SparseSetOfTemplate<'a, T>
+struct SparseSetOfReference<T>
 // where T: Clone
 {
-    positions: Box<Vec<usize>>,
-    elements: Box<Vec<&'a T>>,
+    positions: Vec<usize>,
+    elements: Vec<Rc<RefCell<T>>>,
     limit: usize,
     max_size: usize,
 }
-impl<'a, T> Display for SparseSetOfTemplate<'a, T> {
+impl<T> Display for SparseSetOfReference<T> {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         let mut str = String::from("elements[limits]: ");
         // for i in self.iter() {
@@ -38,8 +40,8 @@ impl<'a, T> Display for SparseSetOfTemplate<'a, T> {
         write!(f, "{}", str)
     }
 }
-impl<'a, T> Index<usize> for SparseSetOfTemplate<'a, T> {
-    type Output = &'a T;
+impl<T> Index<usize> for SparseSetOfReference<T> {
+    type Output = Rc<RefCell<T>>;
 
     fn index(&self, index: usize) -> &Self::Output {
         debug_assert!(index < self.max_size());
@@ -47,17 +49,17 @@ impl<'a, T> Index<usize> for SparseSetOfTemplate<'a, T> {
     }
 }
 
-impl<'a, T> IndexMut<usize> for SparseSetOfTemplate<'a, T> {
+impl<T> IndexMut<usize> for SparseSetOfReference<T> {
     fn index_mut(&mut self, index: usize) -> &mut Self::Output {
         debug_assert!(index < self.max_size());
         &mut self.elements[index]
     }
 }
 #[allow(dead_code)]
-impl<'a, T> SparseSetOfTemplate<'a, T> {
+impl<T> SparseSetOfReference<T> {
     fn new(size: usize, fill: bool) -> Self {
-        let mut elements = Box::new(vec![]);
-        let mut positions = Box::new(vec![]);
+        let mut elements = vec![];
+        let mut positions = vec![];
         // elements.resize(size, 0usize);
 
         positions.resize(size, 0usize);
@@ -77,12 +79,18 @@ impl<'a, T> SparseSetOfTemplate<'a, T> {
     }
 }
 
-impl<'a, T> SetTrait<&'a T> for SparseSetOfTemplate<'a, T> {
-    fn add(&mut self, ele: &'a T) {
+impl<T> Clone for SparseSetOfReference<T> {
+    fn clone(&self) -> Self {
+        todo!()
+    }
+}
+
+impl<T> SetTrait<T> for SparseSetOfReference<T> {
+    fn add(&mut self, ele: T) {
         todo!()
     }
 
-    fn delete(&mut self, ele: &'a T) {
+    fn delete(&mut self, ele: T) {
         todo!()
     }
 

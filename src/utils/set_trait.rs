@@ -13,7 +13,10 @@
  * </p>
  */
 
-pub trait SetTrait<T> {
+use std::fmt::Display;
+use std::ops::{Index, IndexMut};
+
+pub trait SetTrait<T>: Clone + Display {
     fn add(&mut self, ele: T);
 
     fn delete(&mut self, ele: T);

@@ -18,8 +18,8 @@ use std::fmt::{Display, Formatter};
 use std::ops::Index;
 
 pub struct SpareSet {
-    positions: Box<Vec<usize>>,
-    elements: Box<Vec<usize>>,
+    positions: Vec<usize>,
+    elements: Vec<usize>,
     limit: usize,
     max_size: usize,
 }
@@ -101,8 +101,8 @@ impl SpareSet {
     }
 
     fn new(size: usize, fill: bool) -> Self {
-        let mut elements = Box::new(vec![]);
-        let mut positions = Box::new(vec![]);
+        let mut elements = vec![];
+        let mut positions = vec![];
         elements.resize(size, 0usize);
         positions.resize(size, 0usize);
         for i in 0..size {

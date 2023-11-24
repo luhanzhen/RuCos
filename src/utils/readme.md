@@ -5,6 +5,18 @@
 classDiagram
 direction LR
 
+class Clone {
+<<Trait>>
+}
+
+    class Display {
+        <<Trait>>
+    }
+    
+
+    SetTrait --* Display
+SetTrait --* Clone
+
     class SetTrait {
         <<Trait>>
         + fn add(&mut self, ele: T);
@@ -23,37 +35,93 @@ direction LR
     }
 
 
-   
-   
+   class SparseSetOfReference {
+    <<Struct>>
+    
+    
+    + fn record_limit(&mut self, level: usize)
+    + fn reduce_to(&mut self, ele: usize, level: usize) -> usize
+    + fn next(&self, ele: usize) -> Option<usize>
 
 
+}
     class LinkedSet {
         <<Struct>>
-         size: usize,
-         first: usize,
-         last: usize,
-         last_removed: usize,
-         nb_levels: usize,
-         limits: Box<Vec<usize>>,
-         prev: Box<Vec<usize>>,
-         removed_levels: Box<Vec<usize>>,
-         prev_removed: Box<Vec<usize>>,
-         next: Box<Vec<usize>>,
-
-        pub fn record_limit(&mut self, level: usize)
+       
+        + fn record_limit(&mut self, level: usize)
         + fn reduce_to(&mut self, ele: usize, level: usize) -> usize
-        pub fn next(&self, ele: usize) -> Option<usize>
-        
+        + fn next(&self, ele: usize) -> Option<usize>
         
     }
 
-    class EmptyDomainException {
+    class SpareSetMultiLevel {
         <<Struct>>
-        +  fn new(&str)->Self
+    + fn record_limit(&mut self, level: usize) 
+    + fn is_limit_recorded_at_level(&self, level: usize) -> bool
+    
+    + fn restore_limit(&mut self, level: usize)
+
+        + fn new_without_fill(size: usize) -> Self
+
+        + fn new_with_fill(size: usize) -> Self
     }
 
 
-    EmptyDomainException  ..|>  SetTrait
+    class SpareSet {
+        <<Struct>>
+    - fn limit(&mut self) -> &mut usize 
+    
+    + fn iter(&self) -> SpareSetIter
+    
+    + fn new_without_fill(size: usize) -> Self 
+    
+    + fn new_with_fill(size: usize) -> Self 
+    
+    - fn new(size: usize, fill: bool) -> Self 
+    
+    + fn get_position(&self, ele: usize) -> usize 
+    
+    + fn fill(&mut self)
+    
+    + fn reduce_to(&mut self, ele: usize) 
+    }
+    
+    class SpareSetCounter {
+        <<Struct>>
++ fn new_without_fill(size: usize) -> Self 
+    
++ fn new_with_fill(size: usize) -> Self 
+
++ fn iter(&self) -> SpareSetIter 
+
++ fn counter(&self, ele: usize) -> usize 
+
++ fn reduce_to(&mut self, ele: usize) 
+    }
+
+
+    SpareSetCounter  --|>  SpareSet
+
+    SpareSetMultiLevel  --|>  SpareSet
+    
     LinkedSet  ..|>   SetTrait
+
+    SpareSet  ..|>   SetTrait
+
+    SparseSetOfReference  ..|>   SetTrait
+
+
+    class Index {
+        <<Trait>>
+    }
+    class IndexMut {
+        <<Trait>>
+    }
+
+    SpareSet  ..|>   Index
+
+    SparseSetOfReference  ..|>   IndexMut
+
+    SparseSetOfReference  ..|>   Index
 
 ```

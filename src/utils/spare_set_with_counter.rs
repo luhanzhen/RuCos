@@ -20,7 +20,7 @@ use std::ops::Index;
 
 pub struct SpareSetCounter {
     set: SpareSet,
-    _counter: Box<Vec<usize>>,
+    _counter: Vec<usize>,
 }
 
 impl Display for SpareSetCounter {
@@ -65,7 +65,7 @@ impl Index<usize> for SpareSetCounter {
 #[allow(dead_code)]
 impl SpareSetCounter {
     pub fn new_without_fill(size: usize) -> Self {
-        let mut _counter = Box::new(vec![]);
+        let mut _counter = vec![];
         _counter.resize(size, 0usize);
         Self {
             set: SpareSet::new_without_fill(size),
@@ -73,7 +73,7 @@ impl SpareSetCounter {
         }
     }
     pub fn new_with_fill(size: usize) -> Self {
-        let mut _counter = Box::new(vec![]);
+        let mut _counter = vec![];
         _counter.resize(size, 1usize);
         Self {
             set: SpareSet::new_with_fill(size),
