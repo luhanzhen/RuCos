@@ -2,7 +2,7 @@
 # <font color = "#FF8000">Ru</font>st <font color = "#FF0000">Co</font>nstraint <font color = "#FF0000">S</font>olver(<font color = "#FF8000">Ru</font><font color = "#FF0000">Cos</font>)
 
 
-# <font color = "#FF8000">Ru</font><font color = "#FF0000">Cos</font> is an extreme high-performance parallel constraint solver implemented by Rust.
+# <font color = "#FF8000">Ru</font><font color = "#FF0000">Cos</font> is an extremely high-performance parallel constraint solver implemented by Rust.
 
 # <font color = "#FF8000">Ru</font><font color = "#FF0000">Cos</font>  is implemented by safe, elegant and lower-level code with zero-cost abstraction. 
 

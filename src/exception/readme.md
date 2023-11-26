@@ -2,18 +2,16 @@
 # the class diagram about the *ExceptionFactory*
 
 ```mermaid
+
 classDiagram
-direction BT
+    
+direction LR
 
     class ExceptionFactory {
         <<Service>>
-
+        
         + fn new(exception_type: ExceptionType, msg: &str)  Box~dyn ExceptionTrait~
     }
-
-    ExceptionFactory --* ExceptionType
-    
-    
 
     class  ExceptionType {
         <<Enumeration>>
@@ -21,6 +19,7 @@ direction BT
         + InvalidVariableExceptionType,
     }
 
+    ExceptionFactory --* ExceptionType
 ```
 
 # the class diagram about the *ExceptionTrait*
