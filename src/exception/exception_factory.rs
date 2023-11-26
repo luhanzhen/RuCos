@@ -17,6 +17,7 @@ use crate::exception::ExceptionType;
 
 use crate::exception::exception_trait::ExceptionTrait;
 use crate::exception::invalid_variable_exception::InvalidVariableException;
+use crate::exception::unsatisfied_constraint_exception::UnsatisfiedConstraintException;
 
 pub struct ExceptionFactory();
 
@@ -24,6 +25,9 @@ impl ExceptionFactory {
     pub fn new(exception_type: ExceptionType, msg: &str) -> Box<dyn ExceptionTrait> {
         match exception_type {
             ExceptionType::EmptyDomainExceptionType => Box::new(EmptyDomainException::new(msg)),
+            ExceptionType::UnsatisfiedConstraintException => {
+                Box::new(UnsatisfiedConstraintException::new(msg))
+            }
             ExceptionType::InvalidVariableExceptionType => {
                 Box::new(InvalidVariableException::new(msg))
             }

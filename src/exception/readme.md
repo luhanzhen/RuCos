@@ -65,7 +65,13 @@ direction LR
         +  fn new(&str)->Self
     }
 
-
+class UnsatisfiedConstraintException {
+        <<Struct>>
+        message: String,
+        level: ExceptionLevel,
+        +  fn new(&str)->Self
+    }
+    UnsatisfiedConstraintException  ..|>  ExceptionTrait
     EmptyDomainException  ..|>  ExceptionTrait
     InvalidVariableException  ..|>   ExceptionTrait
 

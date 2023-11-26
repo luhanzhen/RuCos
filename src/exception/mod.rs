@@ -17,10 +17,12 @@ pub mod empty_domain_exception;
 pub mod exception_factory;
 pub mod exception_trait;
 pub mod invalid_variable_exception;
+pub mod unsatisfied_constraint_exception;
 
 pub enum ExceptionType {
     EmptyDomainExceptionType,
     InvalidVariableExceptionType,
+    UnsatisfiedConstraintException,
 }
 pub enum ExceptionLevel {
     Ignorable,
