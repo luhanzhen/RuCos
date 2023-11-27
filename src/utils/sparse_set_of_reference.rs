@@ -27,6 +27,7 @@ struct SparseSetOfReference<T>
     limit: usize,
     max_size: usize,
 }
+
 impl<T> Display for SparseSetOfReference<T> {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         let mut str = String::from("elements[limits]: ");
@@ -40,6 +41,7 @@ impl<T> Display for SparseSetOfReference<T> {
         write!(f, "{}", str)
     }
 }
+
 impl<T> Index<usize> for SparseSetOfReference<T> {
     type Output = Rc<RefCell<T>>;
 
@@ -55,16 +57,16 @@ impl<T> IndexMut<usize> for SparseSetOfReference<T> {
         &mut self.elements[index]
     }
 }
+
 #[allow(dead_code)]
 impl<T> SparseSetOfReference<T> {
-    fn new(size: usize, fill: bool) -> Self {
+    fn new(size: usize, vec_t: &Vec<Rc<RefCell<T>>>, fill: bool) -> Self {
         let mut elements = vec![];
         let mut positions = vec![];
-        // elements.resize(size, 0usize);
 
         positions.resize(size, 0usize);
         for i in 0..size {
-            // elements[i] = i;
+            elements.push(Rc::clone(&vec_t[i]));
             positions[i] = i;
         }
         Self {
@@ -81,7 +83,12 @@ impl<T> SparseSetOfReference<T> {
 
 impl<T> Clone for SparseSetOfReference<T> {
     fn clone(&self) -> Self {
-        todo!()
+        Self {
+            positions: self.positions.clone(),
+            elements: self.elements.clone(),
+            limit: self.limit,
+            max_size: self.max_size,
+        }
     }
 }
 
@@ -90,27 +97,58 @@ impl<T> SetTrait<T> for SparseSetOfReference<T> {
         todo!()
     }
 
-    fn delete(&mut self, ele: T) {
+    fn fill(&mut self) {
         todo!()
+    }
+
+    fn delete(&mut self, ele: T) {
+        // debug_assert!(ele < self.max_size());
+        // if !self.contains(ele) {
+        //     return;
+        // }
+        // self.limit -= 1;
+        // let tmp = self.elements[self.limit];
+        // let pos = self.positions[ele];
+        // self.positions[tmp] = pos;
+        // self.elements[pos] = tmp;
+        //
+        // self.elements[self.limit] = ele;
+        // self.positions[ele] = self.limit;
     }
 
     fn contains(&self, ele: usize) -> bool {
-        todo!()
+        debug_assert!(ele <= self.max_size());
+        self.positions[ele] < self.limit
     }
 
     fn size(&self) -> usize {
-        todo!()
+        self.limit
     }
-
     fn clear(&mut self) {
-        todo!()
+        self.limit = 0
     }
-
     fn is_empty(&self) -> bool {
-        todo!()
+        self.limit == 0
     }
-
     fn max_size(&self) -> usize {
-        todo!()
+        self.max_size
+    }
+}
+
+pub struct SparseSetOfReferenceIter<'a, T> {
+    index: usize,
+    value: &'a SparseSetOfReference<T>,
+}
+
+impl<T> Iterator for SparseSetOfReferenceIter<'_, T> {
+    type Item = Rc<RefCell<T>>;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        return if self.index < self.value.limit {
+            self.index += 1;
+            Some(Rc::clone(&self.value[self.index - 1]))
+        } else {
+            None
+        };
     }
 }

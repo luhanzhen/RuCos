@@ -228,6 +228,23 @@ impl SetTrait<usize> for LinkedSet {
         self.last_removed = self.prev_removed[ele];
     }
 
+    fn fill(&mut self) {
+        self.first = 0;
+        self.last = self.max_size() - 1;
+        for i in 1..self.prev.len() {
+            self.prev[i] = i - 1;
+        }
+        for i in 0..self.next.len() {
+            self.next[i] = i + 1;
+        }
+        let n = self.next.len() - 1;
+        self.prev[0] = INVALID;
+        self.next[n] = INVALID;
+        self.last_removed = INVALID;
+        self.prev_removed.fill(INVALID);
+        self.removed_levels.fill(INVALID);
+    }
+
     fn delete(&mut self, ele: usize) {
         debug_assert!(ele < self.max_size());
         let prev = self.prev[ele];
@@ -245,12 +262,12 @@ impl SetTrait<usize> for LinkedSet {
         self.prev_removed[ele] = self.last_removed;
         self.last_removed = ele;
     }
-
+    #[inline]
     fn contains(&self, ele: usize) -> bool {
         debug_assert!(ele < self.max_size());
         self.removed_levels[ele] == INVALID
     }
-
+    #[inline]
     fn size(&self) -> usize {
         self.size
     }
@@ -258,11 +275,11 @@ impl SetTrait<usize> for LinkedSet {
     fn clear(&mut self) {
         //todo
     }
-
+    #[inline]
     fn is_empty(&self) -> bool {
         self.size == 0
     }
-
+    #[inline]
     fn max_size(&self) -> usize {
         self.next.len()
     }

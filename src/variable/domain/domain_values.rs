@@ -20,17 +20,17 @@ use std::fmt::{Display, Formatter};
 
 pub struct DomainValues {
     elements: LinkedSet,
-    n_assignment: Box<Vec<usize>>,
-    values: Box<Vec<usize>>,
+    n_assignment: Vec<usize>,
+    values: Vec<usize>,
     map: HashMap<i32, usize>,
 }
 
 impl DomainValues {
-    fn new(size: usize) -> Self {
+    pub fn new(size: usize) -> Self {
         Self {
             elements: LinkedSet::new_with_fill(size),
-            n_assignment: Box::new(vec![]),
-            values: Box::new(vec![]),
+            n_assignment: vec![],
+            values: vec![],
             map: Default::default(),
         }
     }
@@ -43,24 +43,25 @@ impl Display for DomainValues {
 }
 
 impl DomainTrait for DomainValues {
+    #[inline]
     fn value_to_idx(&self, value: i32) -> usize {
         todo!()
     }
-
+    #[inline]
     fn idx_to_value(&self, idx: usize) -> i32 {
         todo!()
     }
-
+    #[inline]
     fn is_idx_correspond_to_values(&self) -> bool {
         todo!()
     }
-
+    #[inline]
     fn hash(&self) -> usize {
         // let range:Range<usize> = 0..10;
         0
     }
-
-    fn get_elements(&self) -> &LinkedSet {
-        &self.elements
+    #[inline]
+    fn get_elements(&mut self) -> &mut LinkedSet {
+        &mut self.elements
     }
 }

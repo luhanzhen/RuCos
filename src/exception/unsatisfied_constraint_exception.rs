@@ -31,10 +31,11 @@ impl UnsatisfiedConstraintException {
 }
 
 impl ExceptionTrait for UnsatisfiedConstraintException {
+    #[inline]
     fn message(&self) -> &str {
         &self.message
     }
-
+    #[inline]
     fn exception_level(&self) -> &ExceptionLevel {
         &self.level
     }

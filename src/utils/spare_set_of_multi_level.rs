@@ -66,6 +66,10 @@ impl SetTrait<usize> for SpareSetMultiLevel {
         self.set.add(ele)
     }
 
+    fn fill(&mut self) {
+        self.set.fill()
+    }
+
     fn delete(&mut self, ele: usize) {
         self.set.delete(ele)
     }

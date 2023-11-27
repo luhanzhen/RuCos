@@ -1,6 +1,6 @@
 use crate::utils::linked_set::LinkedSet;
+use crate::utils::set_trait::SetTrait;
 use std::fmt::Display;
-use std::hash::Hash;
 
 /**
  * @project_name: constraint_solver
@@ -24,5 +24,23 @@ pub trait DomainTrait: Display {
 
     fn hash(&self) -> usize;
 
-    fn get_elements(&self) -> &LinkedSet;
+    fn get_elements(&mut self) -> &mut LinkedSet;
+    #[inline]
+    fn delete_idx(&mut self, idx: usize, level: usize) {
+        self.get_elements().delete_at_level(idx, level)
+    }
+    #[inline]
+    fn delete_value(&mut self, value: i32, level: usize) {
+        let idx = self.value_to_idx(value);
+        self.get_elements().delete_at_level(idx, level)
+    }
+    #[inline]
+    fn reduce_to(&mut self, ele: usize, level: usize) -> usize {
+        self.get_elements().reduce_to(ele, level)
+    }
+
+    #[inline]
+    fn re_init(&mut self) {
+        self.get_elements().fill()
+    }
 }

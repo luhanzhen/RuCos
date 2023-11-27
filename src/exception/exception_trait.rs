@@ -20,6 +20,7 @@ pub trait ExceptionTrait {
 
     fn exception_level(&self) -> &ExceptionLevel;
 
+    #[inline]
     fn is_fatal(&self) -> bool {
         match self.exception_level() {
             ExceptionLevel::Major => true,

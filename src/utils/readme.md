@@ -5,9 +5,9 @@
 classDiagram
 direction LR
 
-class Clone {
-<<Trait>>
-}
+    class Clone {
+    <<Trait>>
+    }
 
     class Display {
         <<Trait>>
@@ -15,7 +15,7 @@ class Clone {
     
 
     SetTrait --* Display
-SetTrait --* Clone
+    SetTrait --* Clone
 
     class SetTrait {
         <<Trait>>
@@ -39,64 +39,29 @@ SetTrait --* Clone
     <<Struct>>
     
     
-    + fn record_limit(&mut self, level: usize)
-    + fn reduce_to(&mut self, ele: usize, level: usize) -> usize
-    + fn next(&self, ele: usize) -> Option<usize>
-
+   
 
 }
     class LinkedSet {
         <<Struct>>
        
-        + fn record_limit(&mut self, level: usize)
-        + fn reduce_to(&mut self, ele: usize, level: usize) -> usize
-        + fn next(&self, ele: usize) -> Option<usize>
-        
+
     }
 
     class SpareSetMultiLevel {
         <<Struct>>
-    + fn record_limit(&mut self, level: usize) 
-    + fn is_limit_recorded_at_level(&self, level: usize) -> bool
-    
-    + fn restore_limit(&mut self, level: usize)
 
-        + fn new_without_fill(size: usize) -> Self
-
-        + fn new_with_fill(size: usize) -> Self
     }
 
 
     class SpareSet {
         <<Struct>>
-    - fn limit(&mut self) -> &mut usize 
-    
-    + fn iter(&self) -> SpareSetIter
-    
-    + fn new_without_fill(size: usize) -> Self 
-    
-    + fn new_with_fill(size: usize) -> Self 
-    
-    - fn new(size: usize, fill: bool) -> Self 
-    
-    + fn get_position(&self, ele: usize) -> usize 
-    
-    + fn fill(&mut self)
-    
-    + fn reduce_to(&mut self, ele: usize) 
+       
     }
     
     class SpareSetCounter {
         <<Struct>>
-+ fn new_without_fill(size: usize) -> Self 
-    
-+ fn new_with_fill(size: usize) -> Self 
 
-+ fn iter(&self) -> SpareSetIter 
-
-+ fn counter(&self, ele: usize) -> usize 
-
-+ fn reduce_to(&mut self, ele: usize) 
     }
 
 

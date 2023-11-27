@@ -2,9 +2,7 @@
 # the class diagram about the *ExceptionFactory*
 
 ```mermaid
-
 classDiagram
-    
 direction LR
 
     class ExceptionFactory {
@@ -24,8 +22,9 @@ direction LR
 
 # the class diagram about the *ExceptionTrait*
 
-```mermaid
 
+
+```mermaid
 classDiagram
 direction LR
 
@@ -53,23 +52,16 @@ direction LR
 
     class InvalidVariableException {
         <<Struct>>
-        message: String,
-        level: ExceptionLevel,
-        +  fn new(&str)->Self
     }
 
     class EmptyDomainException {
         <<Struct>>
-        message: String,
-        level: ExceptionLevel,
-        +  fn new(&str)->Self
+       
     }
 
-class UnsatisfiedConstraintException {
+    class UnsatisfiedConstraintException {
         <<Struct>>
-        message: String,
-        level: ExceptionLevel,
-        +  fn new(&str)->Self
+      
     }
     UnsatisfiedConstraintException  ..|>  ExceptionTrait
     EmptyDomainException  ..|>  ExceptionTrait

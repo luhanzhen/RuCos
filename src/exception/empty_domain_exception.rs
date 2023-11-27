@@ -30,10 +30,11 @@ impl EmptyDomainException {
 }
 
 impl ExceptionTrait for EmptyDomainException {
+    #[inline]
     fn message(&self) -> &str {
         &self.message
     }
-
+    #[inline]
     fn exception_level(&self) -> &ExceptionLevel {
         &self.level
     }

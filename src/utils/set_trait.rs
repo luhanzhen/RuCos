@@ -14,10 +14,11 @@
  */
 
 use std::fmt::Display;
-use std::ops::{Index, IndexMut};
 
 pub trait SetTrait<T>: Clone + Display {
     fn add(&mut self, ele: T);
+
+    fn fill(&mut self);
 
     fn delete(&mut self, ele: T);
 
@@ -28,5 +29,6 @@ pub trait SetTrait<T>: Clone + Display {
     fn clear(&mut self);
 
     fn is_empty(&self) -> bool;
+
     fn max_size(&self) -> usize;
 }

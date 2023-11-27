@@ -12,3 +12,12 @@
  * <p>@description:
  * </p>
  */
+use crate::utils::linked_set::LinkedSet;
+use std::collections::HashMap;
+
+pub struct DomainRange {
+    elements: LinkedSet,
+    n_assignment: Box<Vec<usize>>,
+    values: Box<Vec<usize>>,
+    map: HashMap<i32, usize>,
+}

@@ -152,6 +152,10 @@ impl SetTrait<usize> for SpareSet {
         self.limit += 1;
     }
 
+    fn fill(&mut self) {
+        self.limit = self.max_size;
+    }
+
     fn delete(&mut self, ele: usize) {
         debug_assert!(ele < self.max_size());
         if !self.contains(ele) {
