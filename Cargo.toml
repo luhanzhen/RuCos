@@ -1,5 +1,5 @@
 [package]
-name = "constraint_solver"
+name = "RuCos"
 version = "0.1.0"
 edition = "2021"
 
@@ -10,12 +10,12 @@ edition = "2021"
 
 
 [lib]
-name = "constraint_solver"
+name = "RuCos"
 path = "src/lib.rs"
 
 
 [[test]]
-name = "constraint_solver_test"
+name = "RuCos_test"
 path = "tests/lib.rs"
 
 #[[bench]]

@@ -43,4 +43,11 @@ pub trait DomainTrait: Display {
     fn re_init(&mut self) {
         self.get_elements().fill()
     }
+
+    fn values_at_position(&mut self, pos: usize) -> i32
+    {
+        let val = self.get_elements()[pos];
+        self.idx_to_value(val)
+    }
+
 }

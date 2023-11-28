@@ -3,5 +3,5 @@
 version = 3
 
 [[package]]
-name = "constraint_solver"
+name = "RuCos"
 version = "0.1.0"

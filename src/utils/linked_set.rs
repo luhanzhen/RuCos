@@ -15,6 +15,7 @@
 
 use crate::utils::set_trait::SetTrait;
 use std::fmt::{Display, Formatter};
+use std::ops::Index;
 
 pub struct LinkedSet {
     size: usize,
@@ -35,15 +36,16 @@ const INVALID: usize = usize::MAX;
 impl LinkedSet {
     pub fn reduce_to(&mut self, ele: usize, level: usize) -> usize {
         let last_size = self.size;
-        let mut e = self.first;
+        let mut e = &self.first;
         loop {
-            match self.next(e) {
+            match self.next(*e) {
                 None => break,
                 Some(ee) => {
-                    if e != ele {
-                        self.delete_at_level(e, level)
+                    if *e != ele {
+                        let t = *e;
+                        self.delete_at_level(t, level)
                     }
-                    if ee == INVALID {
+                    if ee == &INVALID {
                         break;
                     }
                     e = ee;
@@ -54,20 +56,20 @@ impl LinkedSet {
         last_size
     }
 
-    pub fn next(&self, ele: usize) -> Option<usize> {
+    pub fn next(&self, ele: usize) -> Option<&usize> {
         debug_assert!(ele < self.max_size());
         if self.removed_levels[ele] == INVALID {
-            return Some(self.next[ele]);
+            return Some(&self.next[ele]);
         }
         if ele < self.first {
-            return Some(self.first);
+            return Some(&self.first);
         }
-        let mut next = self.next[ele];
-        if next == INVALID || next > self.last {
-            return Some(INVALID);
+        let mut next = &self.next[ele];
+        if *next == INVALID || *next > self.last {
+            return Some(&INVALID);
         }
-        while self.removed_levels[next] != INVALID {
-            next = self.next[next];
+        while self.removed_levels[*next] != INVALID {
+            next = &self.next[*next];
         }
 
         Some(next)
@@ -285,25 +287,25 @@ impl SetTrait<usize> for LinkedSet {
     }
 }
 
-// impl Index<usize> for LinkedSet {
-//     type Output = usize;
-//
-//     fn index(&self, index: usize) -> Self::Output {
-//         debug_assert!(index < self.max_size());
-//         let mut e = &self.first;
-//         for _ in 0..index {
-//             match self.next(*e) {
-//                 None => {
-//                     panic!("wrong index for LinkedSet!!!")
-//                 }
-//                 Some(ee) => {
-//                     e = &ee;
-//                 }
-//             }
-//         }
-//         return e;
-//     }
-// }
+impl Index<usize> for LinkedSet {
+    type Output = usize;
+
+    fn index(&self, index: usize) -> &Self::Output {
+        debug_assert!(index < self.max_size());
+        let mut e = &self.first;
+        for _ in 0..index {
+            match self.next(*e) {
+                None => {
+                    panic!("wrong index for LinkedSet!!!")
+                }
+                Some(ee) => {
+                    e = ee;
+                }
+            }
+        }
+        return e;
+    }
+}
 
 pub struct LinkedSetIter<'a> {
     index: usize,
@@ -320,7 +322,7 @@ impl Iterator for LinkedSetIter<'_> {
         match self.value.next(self.index) {
             None => {}
             Some(n) => {
-                self.index = n;
+                self.index = *n;
             }
         }
         Some(ret)
