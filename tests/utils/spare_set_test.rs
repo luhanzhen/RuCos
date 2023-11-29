@@ -13,8 +13,8 @@
 * </p>
  */
 
-use constraint_solver::utils::set_trait::SetTrait;
-use constraint_solver::utils::spare_set::SpareSet;
+use RuCos::utils::set_trait::SetTrait;
+use RuCos::utils::spare_set::SpareSet;
 
 #[test]
 fn add() {

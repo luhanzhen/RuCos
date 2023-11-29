@@ -36,28 +36,35 @@ const INVALID: usize = usize::MAX;
 impl LinkedSet {
     pub fn reduce_to(&mut self, ele: usize, level: usize) -> usize {
         let last_size = self.size;
-        let mut e = &self.first;
-        loop {
-            match self.next(*e) {
-                None => break,
-                Some(ee) => {
-                    if *e != ele {
-                        let t = *e;
-                        self.delete_at_level(t, level)
-                    }
-                    if ee == &INVALID {
-                        break;
-                    }
-                    e = ee;
-                }
+        for i in 0..self.max_size() {
+            if i != ele {
+                self.delete_at_level(i, level)
             }
         }
+
+        // let mut e = &self.first;
+        // loop {
+        //     match self.next(*e) {
+        //         None => break,
+        //         Some(ee) => {
+        //             if *e != ele {
+        //                 let t = *e;
+        //                 self.delete_at_level(t, level)
+        //             }
+        //             if ee == &INVALID {
+        //                 break;
+        //             }
+        //             e = ee;
+        //         }
+        //     }
+        // }
 
         last_size
     }
 
     pub fn next(&self, ele: usize) -> Option<&usize> {
         debug_assert!(ele < self.max_size());
+
         if self.removed_levels[ele] == INVALID {
             return Some(&self.next[ele]);
         }
@@ -73,6 +80,14 @@ impl LinkedSet {
         }
 
         Some(next)
+    }
+
+    pub fn first(&self) -> usize {
+        self.first
+    }
+
+    pub fn last(&self) -> usize {
+        self.last
     }
 
     pub fn record_limit(&mut self, level: usize) {

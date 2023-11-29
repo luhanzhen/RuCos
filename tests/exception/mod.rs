@@ -13,9 +13,9 @@
  * </p>
  */
 
-use constraint_solver::exception::exception_factory::ExceptionFactory;
+use RuCos::exception::exception_factory::ExceptionFactory;
 
-use constraint_solver::exception::{ExceptionLevel, ExceptionType};
+use RuCos::exception::{ExceptionLevel, ExceptionType};
 
 #[test]
 pub fn test_factory() {

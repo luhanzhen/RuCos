@@ -13,7 +13,7 @@
  * </p>
  */
 
-use constraint_solver::problem::problem::Problem;
+use RuCos::problem::problem::Problem;
 
 #[test]
 fn add() {

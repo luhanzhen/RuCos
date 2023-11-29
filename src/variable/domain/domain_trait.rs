@@ -43,11 +43,58 @@ pub trait DomainTrait: Display {
     fn re_init(&mut self) {
         self.get_elements().fill()
     }
-
-    fn values_at_position(&mut self, pos: usize) -> i32
-    {
+    #[inline]
+    fn values_at_position(&mut self, pos: usize) -> i32 {
         let val = self.get_elements()[pos];
         self.idx_to_value(val)
     }
+    #[inline]
+    fn restore_limit(&mut self, level: usize) {
+        self.get_elements().record_limit(level);
+    }
+    #[inline]
+    fn last_removed_level(&mut self) -> usize {
+        self.get_elements().last_removed_level()
+    }
+    #[inline]
+    fn max_size(&mut self) -> usize {
+        self.get_elements().max_size()
+    }
+    #[inline]
+    fn size(&mut self) -> usize {
+        self.get_elements().size()
+    }
+    #[inline]
+    fn is_empty(&mut self) -> bool {
+        self.get_elements().is_empty()
+    }
+    #[inline]
+    fn next_idx(&mut self, current_idx: usize) -> Option<&usize> {
+        self.get_elements().next(current_idx)
+    }
+    #[inline]
+    fn first_idx(&mut self) -> usize {
+        self.get_elements().first()
+    }
+    #[inline]
+    fn last_idx(&mut self) -> usize {
+        self.get_elements().last()
+    }
+    #[inline]
+    fn minimum(&mut self) -> i32 {
+        debug_assert!(self.size() > 0);
+        let t = self.first_idx();
+        self.idx_to_value(t)
+    }
 
+    #[inline]
+    fn maximum(&mut self) -> i32 {
+        debug_assert!(self.size() > 0);
+        let t = self.last_idx();
+        self.idx_to_value(t)
+    }
+    #[inline]
+    fn is_boolean(&mut self) -> bool {
+        self.max_size() == 2 && self.maximum() == 1 && self.minimum() == 0
+    }
 }

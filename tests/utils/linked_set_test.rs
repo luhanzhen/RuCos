@@ -28,8 +28,8 @@
 * </p>
  */
 
-use constraint_solver::utils::linked_set::LinkedSet;
-use constraint_solver::utils::set_trait::SetTrait;
+use RuCos::utils::linked_set::LinkedSet;
+use RuCos::utils::set_trait::SetTrait;
 
 #[test]
 fn add() {
