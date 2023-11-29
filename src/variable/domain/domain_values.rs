@@ -61,7 +61,12 @@ impl DomainTrait for DomainValues {
         0
     }
     #[inline]
-    fn get_elements(&mut self) -> &mut LinkedSet {
+    fn get_elements(&self) -> &LinkedSet {
+        &self.elements
+    }
+
+    #[inline]
+    fn get_elements_mut(&mut self) -> &mut LinkedSet {
         &mut self.elements
     }
 }
