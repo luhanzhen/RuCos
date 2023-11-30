@@ -14,8 +14,9 @@ use std::fmt::Display;
  * @description:
  *
  */
-
-pub trait DomainTrait: Display {
+#[allow(dead_code)]
+pub trait DomainTrait: Display + PartialEq {
+    /// if the value is not in the domain, return usize::MAX_VALUE
     fn value_to_idx(&self, value: i32) -> usize;
 
     fn idx_to_value(&self, idx: usize) -> i32;
@@ -98,4 +99,19 @@ pub trait DomainTrait: Display {
     fn is_boolean(&self) -> bool {
         self.max_size() == 2 && self.maximum() == 1 && self.minimum() == 0
     }
+
+    #[inline]
+    fn is_single_value(&self, value: i32) -> bool {
+        self.size() == 1 && self.contain_value(value)
+    }
+    #[inline]
+    fn contain_value(&self, value: i32) -> bool {
+        let r = self.value_to_idx(value);
+        if r == usize::MAX {
+            return false;
+        }
+        return self.get_elements().contains(r);
+    }
+
+
 }

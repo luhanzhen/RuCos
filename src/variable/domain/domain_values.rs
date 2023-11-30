@@ -42,6 +42,20 @@ impl Display for DomainValues {
     }
 }
 
+impl PartialEq for DomainValues {
+    fn eq(&self, other: &Self) -> bool {
+        if self.max_size() != other.max_size() {
+            return false;
+        }
+        for i in 0..self.max_size() {
+            if other.contain_value(self.idx_to_value(self.get_elements()[i])) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
 impl DomainTrait for DomainValues {
     #[inline]
     fn value_to_idx(&self, value: i32) -> usize {

@@ -13,5 +13,12 @@
  * </p>
  */
 
+use RuCos::variable::domain::domain_trait::DomainTrait;
+use RuCos::variable::domain::domain_values::DomainValues;
+
 #[test]
-fn add() {}
+fn add() {
+    let domain = DomainValues::new(12);
+
+    assert_eq!(domain.size(), 12)
+}
