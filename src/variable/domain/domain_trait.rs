@@ -1,4 +1,4 @@
-use crate::utils::linked_set::LinkedSet;
+use crate::utils::linked_set::{LinkedSet, LinkedSetIter};
 use crate::utils::set_trait::SetTrait;
 use std::fmt::Display;
 
@@ -15,11 +15,12 @@ use std::fmt::Display;
  *
  */
 #[allow(dead_code)]
-pub trait DomainTrait: Display + PartialEq {
-    /// if the value is not in the domain, return usize::MAX_VALUE
-    fn value_to_idx(&self, value: i32) -> usize;
+pub trait DomainTrait: Display + PartialEq + Clone {
+    /// if the value is not in the domain, return None
+    fn value_to_idx(&self, value: i32) -> Option<usize>;
 
-    fn idx_to_value(&self, idx: usize) -> i32;
+    /// if the value is not in the domain, return None
+    fn idx_to_value(&self, idx: usize) -> Option<i32>;
 
     fn is_idx_correspond_to_values(&self) -> bool;
 
@@ -33,7 +34,7 @@ pub trait DomainTrait: Display + PartialEq {
     }
     #[inline]
     fn delete_value(&mut self, value: i32, level: usize) {
-        let idx = self.value_to_idx(value);
+        let idx = self.value_to_idx(value).unwrap();
         self.get_elements_mut().delete_at_level(idx, level)
     }
     #[inline]
@@ -46,7 +47,7 @@ pub trait DomainTrait: Display + PartialEq {
         self.get_elements_mut().fill()
     }
     #[inline]
-    fn values_at_position(&self, pos: usize) -> i32 {
+    fn values_at_position(&self, pos: usize) -> Option<i32> {
         let val = self.get_elements()[pos];
         self.idx_to_value(val)
     }
@@ -86,14 +87,20 @@ pub trait DomainTrait: Display + PartialEq {
     fn minimum(&self) -> i32 {
         debug_assert!(self.size() > 0);
         let t = self.first_idx();
-        self.idx_to_value(t)
+        match self.idx_to_value(t) {
+            None => i32::MAX,
+            Some(e) => e,
+        }
     }
 
     #[inline]
     fn maximum(&self) -> i32 {
         debug_assert!(self.size() > 0);
         let t = self.last_idx();
-        self.idx_to_value(t)
+        match self.idx_to_value(t) {
+            None => i32::MIN,
+            Some(e) => e,
+        }
     }
     #[inline]
     fn is_boolean(&self) -> bool {
@@ -106,12 +113,13 @@ pub trait DomainTrait: Display + PartialEq {
     }
     #[inline]
     fn contain_value(&self, value: i32) -> bool {
-        let r = self.value_to_idx(value);
-        if r == usize::MAX {
-            return false;
+        match self.value_to_idx(value) {
+            None => false,
+            Some(r) => self.get_elements().contains(r),
         }
-        return self.get_elements().contains(r);
     }
 
-
+    fn iter(&self) -> LinkedSetIter {
+        self.get_elements().iter()
+    }
 }

@@ -13,4 +13,15 @@
  * </p>
  */
 
+use crate::problem::problem::Problem;
+use crate::variable::domain::domain_trait::DomainTrait;
+use std::cell::RefCell;
+use std::rc::Rc;
+
 pub trait VariableTrait {}
+
+pub struct Variable {
+    id: i32,
+    problem: Rc<RefCell<Problem>>,
+    domain: Box<dyn DomainTrait>,
+}
