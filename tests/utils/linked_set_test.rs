@@ -1,5 +1,5 @@
 /*
- * <p>@project_name: constraint_solver
+ * <p>@project_name: RuCos
  * </p>
  * <p>@author: luhan zhen
  * </p>
@@ -14,7 +14,7 @@
  */
 
 /*
-* <p>@project_name: constraint_solver
+* <p>@project_name: RuCos
 * </p>
 * <p>@author: luhan zhen
 * </p>

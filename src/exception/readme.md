@@ -7,14 +7,13 @@ direction LR
 
     class ExceptionFactory {
         <<Service>>
-        
-        + fn new(exception_type: ExceptionType, msg: &str)  Box~dyn ExceptionTrait~
-    }
+        }
 
     class  ExceptionType {
         <<Enumeration>>
         + EmptyDomainExceptionType,
         + InvalidVariableExceptionType,
+        + UnsatisfiedConstraintException,
     }
 
     ExceptionFactory --* ExceptionType

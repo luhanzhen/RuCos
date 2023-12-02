@@ -3,7 +3,7 @@
  * </p>
  * <p>@author: luhan zhen
  * </p>
- * <p>@date:  2023/11/16 14:36
+ * <p>@date:  2023/12/2 20:08
  * </p>
  * <p>@email: zhenlh20@mails.jlu.edu.cn
  * </p>
@@ -13,4 +13,4 @@
  * </p>
  */
 
-pub mod heuristic_variable;
+pub struct Solver {}

@@ -3,7 +3,7 @@ use crate::utils::set_trait::SetTrait;
 use std::fmt::Display;
 
 /**
- * @project_name: constraint_solver
+ * @project_name: RuCos
  * @author: luhan zhen
  * @date:  2023/11/2 13:21
  *
