@@ -12,8 +12,8 @@
  * <p>@description:
  * </p>
  */
-use RuCos::utils::set_trait::SetTrait;
-use RuCos::utils::spare_set_with_counter::SpareSetCounter;
+use rucos::utils::set_trait::SetTrait;
+use rucos::utils::spare_set_with_counter::SpareSetCounter;
 
 #[test]
 pub fn add() {

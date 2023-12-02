@@ -13,8 +13,8 @@
 * </p>
  */
 
-use RuCos::utils::set_trait::SetTrait;
-use RuCos::utils::spare_set::SpareSet;
+use rucos::utils::set_trait::SetTrait;
+use rucos::utils::spare_set::SpareSet;
 
 #[test]
 fn add() {

@@ -13,9 +13,9 @@
  * </p>
  */
 
-use RuCos::exception::exception_factory::ExceptionFactory;
+use rucos::exception::exception_factory::ExceptionFactory;
 
-use RuCos::exception::{ExceptionLevel, ExceptionType};
+use rucos::exception::{ExceptionLevel, ExceptionType};
 
 #[test]
 pub fn test_factory() {

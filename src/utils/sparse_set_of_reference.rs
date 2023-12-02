@@ -93,7 +93,7 @@ impl<T> Clone for SparseSetOfReference<T> {
 }
 
 impl<T> SetTrait<T> for SparseSetOfReference<T> {
-    fn add(&mut self, ele: T) {
+    fn add(&mut self, _ele: T) {
         todo!()
     }
 
@@ -101,7 +101,7 @@ impl<T> SetTrait<T> for SparseSetOfReference<T> {
         todo!()
     }
 
-    fn delete(&mut self, ele: T) {
+    fn delete(&mut self, _ele: T) {
         // debug_assert!(ele < self.max_size());
         // if !self.contains(ele) {
         //     return;

@@ -17,7 +17,6 @@ use crate::utils::linked_set::LinkedSet;
 use crate::variable::domain::domain_trait::DomainTrait;
 use std::collections::HashMap;
 use std::fmt::{Display, Formatter};
-use std::hash::Hash;
 
 pub struct DomainValues {
     elements: LinkedSet,
@@ -27,7 +26,7 @@ pub struct DomainValues {
 }
 
 impl DomainValues {
-    pub fn new(vals: &Vec<i32>) -> Self {
+    pub fn new(vals: Vec<i32>) -> Self {
         let mut n_assignment = vec![];
         n_assignment.resize(vals.len(), 0);
         let mut values = vec![];
@@ -47,7 +46,7 @@ impl DomainValues {
 
 impl Display for DomainValues {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{:?}", self.elements.to_string())
+        write!(f, "{}", self.str())
     }
 }
 
@@ -107,7 +106,7 @@ impl DomainTrait for DomainValues {
 
         let mut ret = 0;
         for i in self.values.iter().enumerate() {
-            ret += i.1 * 31 ^ (self.values.len() - i.0);
+            ret += *i.1 as usize * 31usize + (self.values.len() - i.0);
         }
         ret
     }

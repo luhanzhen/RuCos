@@ -1,5 +1,5 @@
 [package]
-name = "RuCos"
+name = "rucos"
 version = "0.1.0"
 edition = "2021"
 
@@ -10,12 +10,12 @@ edition = "2021"
 
 
 [lib]
-name = "RuCos"
+name = "rucos"
 path = "src/lib.rs"
 
 
 [[test]]
-name = "RuCos_test"
+name = "rucos_test"
 path = "tests/lib.rs"
 
 #[[bench]]

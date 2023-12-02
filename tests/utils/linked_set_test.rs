@@ -28,8 +28,8 @@
 * </p>
  */
 
-use RuCos::utils::linked_set::LinkedSet;
-use RuCos::utils::set_trait::SetTrait;
+use rucos::utils::linked_set::LinkedSet;
+use rucos::utils::set_trait::SetTrait;
 
 #[test]
 fn add() {

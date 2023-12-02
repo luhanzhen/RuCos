@@ -14,8 +14,9 @@ use std::fmt::Display;
  * @description:
  *
  */
+
 #[allow(dead_code)]
-pub trait DomainTrait: Display + PartialEq + Clone {
+pub trait DomainTrait: Display + Clone + PartialEq {
     /// if the value is not in the domain, return None
     fn value_to_idx(&self, value: i32) -> Option<usize>;
 
@@ -35,11 +36,37 @@ pub trait DomainTrait: Display + PartialEq + Clone {
     #[inline]
     fn delete_value(&mut self, value: i32, level: usize) {
         let idx = self.value_to_idx(value).unwrap();
-        self.get_elements_mut().delete_at_level(idx, level)
+        self.get_elements_mut().delete_at_level(idx, level);
+    }
+
+    #[inline]
+    fn which_level_deleted_value(&self, value: i32) -> Option<usize> {
+        match self.value_to_idx(value) {
+            None => None,
+            Some(idx) => self.get_elements().which_level_deleted(idx),
+        }
+    }
+
+    #[inline]
+    fn which_level_deleted_idx(&self, idx: usize) -> Option<usize> {
+        self.get_elements().which_level_deleted(idx)
+    }
+
+    #[inline]
+    fn record_limit(&mut self, level: usize) {
+        self.get_elements_mut().record_limit(level)
     }
     #[inline]
-    fn reduce_to(&mut self, ele: usize, level: usize) -> usize {
+    fn reduce_to_idx(&mut self, ele: usize, level: usize) -> usize {
         self.get_elements_mut().reduce_to(ele, level)
+    }
+
+    #[inline]
+    fn reduce_to_value(&mut self, value: i32, level: usize) -> usize {
+        match self.value_to_idx(value) {
+            None => self.size(),
+            Some(v) => self.get_elements_mut().reduce_to(v, level),
+        }
     }
 
     #[inline]
@@ -53,7 +80,7 @@ pub trait DomainTrait: Display + PartialEq + Clone {
     }
     #[inline]
     fn restore_limit(&mut self, level: usize) {
-        self.get_elements_mut().record_limit(level);
+        self.get_elements_mut().restore_limit(level);
     }
     #[inline]
     fn last_removed_level(&self) -> usize {
@@ -121,5 +148,31 @@ pub trait DomainTrait: Display + PartialEq + Clone {
 
     fn iter(&self) -> LinkedSetIter {
         self.get_elements().iter()
+    }
+
+    fn str(&self) -> String {
+        let mut str = String::from("elements[ ");
+        for e in self.get_elements().iter() {
+            str.push_str(&self.idx_to_value(e).unwrap().to_string());
+            str.push_str(", ");
+        }
+        str.push_str("] deleted[");
+        for i in 0..self.max_size() {
+            if !self.get_elements().contains(i) {
+                str.push_str(&self.idx_to_value(i).unwrap().to_string());
+                str.push_str("(");
+                str.push_str(
+                    &self
+                        .get_elements()
+                        .which_level_deleted(i)
+                        .unwrap()
+                        .to_string(),
+                );
+                str.push_str("), ");
+            }
+        }
+        str.push_str("]");
+        str.push_str("\n");
+        str
     }
 }

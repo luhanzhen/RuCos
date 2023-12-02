@@ -92,7 +92,7 @@ impl LinkedSet {
 
     pub fn record_limit(&mut self, level: usize) {
         if level >= self.limits.len() {
-            self.limits.resize(self.limits.len() + 1, INVALID);
+            self.limits.resize(level + 1, INVALID);
         }
         debug_assert!(self.limits[level] == INVALID);
         self.limits[level] = self.size
@@ -103,6 +103,18 @@ impl LinkedSet {
         self.removed_levels[self.last_removed] = INVALID;
         self.size += 1;
         self.add(self.last_removed);
+    }
+
+    pub fn restore_limit(&mut self, level: usize) {
+        debug_assert!(
+            self.last_removed != INVALID && self.removed_levels[self.last_removed] <= level
+        );
+        let mut t = self.last_removed;
+        while t != INVALID && self.removed_levels[t] >= level {
+            self.restore_last_dropped();
+            t = self.last_removed;
+        }
+        self.limits[level] = INVALID;
     }
 
     pub fn is_limit_recorded_at_level(&self, level: usize) -> bool {
@@ -140,6 +152,15 @@ impl LinkedSet {
         self.removed_levels[ele] = level;
         self.size -= 1;
         self.delete(ele);
+    }
+
+    pub fn which_level_deleted(&self, ele: usize) -> Option<usize> {
+        debug_assert!(ele < self.removed_levels.len());
+        if self.removed_levels[ele] == INVALID {
+            None
+        } else {
+            Some(self.removed_levels[ele])
+        }
     }
 
     pub fn iter(&self) -> LinkedSetIter {

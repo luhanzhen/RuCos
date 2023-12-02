@@ -13,9 +13,9 @@
  * </p>
  */
 
-use RuCos::problem::problem::Problem;
+use rucos::problem::problem::Problem;
 
 #[test]
 fn add() {
-    let problem = Problem::new();
+    let _problem = Problem::new();
 }
