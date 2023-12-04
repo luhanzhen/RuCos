@@ -17,6 +17,7 @@ use crate::utils::linked_set::LinkedSet;
 use crate::variable::domain::domain_trait::DomainTrait;
 use std::collections::HashMap;
 use std::fmt::{Display, Formatter};
+use std::ops::Index;
 
 pub struct DomainValues {
     elements: LinkedSet,
@@ -57,7 +58,7 @@ impl PartialEq for DomainValues {
         }
         for i in 0..self.max_size() {
             let e = self.idx_to_value(self.get_elements()[i]).unwrap();
-            if other.contain_value(e) {
+            if other.contains_value(e) {
                 return false;
             }
         }
@@ -76,6 +77,13 @@ impl Clone for DomainValues {
     }
 }
 
+impl Index<usize> for DomainValues {
+    type Output = usize;
+
+    fn index(&self, index: usize) -> &Self::Output {
+        &self.get_elements()[index]
+    }
+}
 impl DomainTrait for DomainValues {
     /// if the value is not in the domain, return usize::None
     #[inline]
@@ -98,7 +106,7 @@ impl DomainTrait for DomainValues {
     }
     #[inline]
     fn is_idx_correspond_to_values(&self) -> bool {
-        self.minimum() == 0 && self.maximum() == self.max_size() as i32
+        self.minimum_value() == 0 && self.maximum_value() == self.max_size() as i32
     }
     #[inline]
     fn hash(&self) -> usize {

@@ -16,7 +16,7 @@ use crate::utils::linked_set::LinkedSet;
 use crate::utils::set_trait::SetTrait;
 use crate::variable::domain::domain_trait::DomainTrait;
 use std::fmt::{Display, Formatter};
-use std::ops::Range;
+use std::ops::{Index, Range};
 
 pub struct DomainRange {
     elements: LinkedSet,
@@ -49,7 +49,7 @@ impl PartialEq for DomainRange {
         }
         for i in 0..self.max_size() {
             let e = self.idx_to_value(self.get_elements()[i]).unwrap();
-            if other.contain_value(e) {
+            if other.contains_value(e) {
                 return false;
             }
         }
@@ -64,6 +64,14 @@ impl Clone for DomainRange {
             n_assignment: self.n_assignment.clone(),
             range: self.range.clone(),
         }
+    }
+}
+
+impl Index<usize> for DomainRange {
+    type Output = usize;
+
+    fn index(&self, index: usize) -> &Self::Output {
+        &self.get_elements()[index]
     }
 }
 

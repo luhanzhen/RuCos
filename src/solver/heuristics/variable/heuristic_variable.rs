@@ -13,4 +13,6 @@
  * </p>
  */
 
-pub trait HeuristicVariableTrait {}
+pub trait HeuristicVariableTrait {
+    fn select_variable(&mut self) -> i32;
+}

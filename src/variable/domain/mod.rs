@@ -18,7 +18,7 @@ use crate::variable::domain::domain_range::DomainRange;
 use crate::variable::domain::domain_trait::DomainTrait;
 use crate::variable::domain::domain_values::DomainValues;
 use std::fmt::{Display, Formatter};
-use std::ops::Range;
+use std::ops::{Index, Range};
 
 pub mod domain_range;
 pub mod domain_trait;
@@ -79,6 +79,29 @@ impl Domain {
     }
 }
 
+// #[macro_export]
+// macro_rules! repeat {
+//     ($name:ident, $output:ident) => {
+//         fn $name (&self) -> $output
+//         {
+//             match self {
+//                 Domain::DomRange(r) => Domain::DomRange(r.$name ()),
+//                 Domain::DomValues(v) => Domain::DomValues(v.$name ()),
+//              }
+//         }
+//     };
+//
+//     ($name:ident, $input:ident, $in_type:ty, $output:ident) => {
+//         fn $name (&self,$input: $in_type) -> $output
+//         {
+//             match self {
+//                 Domain::DomRange(r) => Domain::DomRange(r.$name ()),
+//                 Domain::DomValues(v) => Domain::DomValues(v.$name ()),
+//              }
+//         }
+//     };
+// }
+
 impl Display for Domain {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
@@ -112,6 +135,16 @@ impl PartialEq for Domain {
     }
 }
 
+impl Index<usize> for Domain {
+    type Output = usize;
+
+    fn index(&self, index: usize) -> &Self::Output {
+        match self {
+            Domain::DomRange(r) => &r.get_elements()[index],
+            Domain::DomValues(v) => &v.get_elements()[index],
+        }
+    }
+}
 impl DomainTrait for Domain {
     fn value_to_idx(&self, value: i32) -> Option<usize> {
         match self {
@@ -133,14 +166,13 @@ impl DomainTrait for Domain {
             Domain::DomValues(v) => v.is_idx_correspond_to_values(),
         }
     }
-
+    // repeat! {hash, usize}
     fn hash(&self) -> usize {
         match self {
             Domain::DomRange(r) => r.hash(),
             Domain::DomValues(v) => v.hash(),
         }
     }
-
     fn get_elements(&self) -> &LinkedSet {
         match self {
             Domain::DomRange(r) => r.get_elements(),
@@ -155,17 +187,24 @@ impl DomainTrait for Domain {
         }
     }
 
-    fn delete_idx(&mut self, idx: usize, level: usize) {
+    fn is_limit_recorded_at_level(&self, level: usize) -> bool {
         match self {
-            Domain::DomRange(r) => r.delete_idx(idx, level),
-            Domain::DomValues(v) => v.delete_idx(idx, level),
+            Domain::DomRange(r) => r.is_limit_recorded_at_level(level),
+            Domain::DomValues(v) => v.is_limit_recorded_at_level(level),
         }
     }
 
-    fn delete_value(&mut self, value: i32, level: usize) {
+    fn delete_idx_at_level(&mut self, idx: usize, level: usize) {
         match self {
-            Domain::DomRange(r) => r.delete_value(value, level),
-            Domain::DomValues(v) => v.delete_value(value, level),
+            Domain::DomRange(r) => r.delete_idx_at_level(idx, level),
+            Domain::DomValues(v) => v.delete_idx_at_level(idx, level),
+        }
+    }
+
+    fn delete_value_at_level(&mut self, value: i32, level: usize) {
+        match self {
+            Domain::DomRange(r) => r.delete_value_at_level(value, level),
+            Domain::DomValues(v) => v.delete_value_at_level(value, level),
         }
     }
 
@@ -271,17 +310,30 @@ impl DomainTrait for Domain {
         }
     }
 
-    fn minimum(&self) -> i32 {
+    fn minimum_value(&self) -> i32 {
         match self {
-            Domain::DomRange(r) => r.minimum(),
-            Domain::DomValues(v) => v.minimum(),
+            Domain::DomRange(r) => r.minimum_value(),
+            Domain::DomValues(v) => v.minimum_value(),
         }
     }
 
-    fn maximum(&self) -> i32 {
+    fn minimum_idx(&self) -> usize {
         match self {
-            Domain::DomRange(r) => r.maximum(),
-            Domain::DomValues(v) => v.maximum(),
+            Domain::DomRange(r) => r.minimum_idx(),
+            Domain::DomValues(v) => v.minimum_idx(),
+        }
+    }
+
+    fn maximum_idx(&self) -> usize {
+        match self {
+            Domain::DomRange(r) => r.maximum_idx(),
+            Domain::DomValues(v) => v.maximum_idx(),
+        }
+    }
+    fn maximum_value(&self) -> i32 {
+        match self {
+            Domain::DomRange(r) => r.maximum_value(),
+            Domain::DomValues(v) => v.maximum_value(),
         }
     }
 
@@ -299,10 +351,17 @@ impl DomainTrait for Domain {
         }
     }
 
-    fn contain_value(&self, value: i32) -> bool {
+    fn contains_value(&self, value: i32) -> bool {
         match self {
-            Domain::DomRange(r) => r.contain_value(value),
-            Domain::DomValues(v) => v.contain_value(value),
+            Domain::DomRange(r) => r.contains_value(value),
+            Domain::DomValues(v) => v.contains_value(value),
+        }
+    }
+
+    fn contains_idx(&self, idx: usize) -> bool {
+        match self {
+            Domain::DomRange(r) => r.contains_idx(idx),
+            Domain::DomValues(v) => v.contains_idx(idx),
         }
     }
 

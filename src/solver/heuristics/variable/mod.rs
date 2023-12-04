@@ -13,4 +13,4 @@
  * </p>
  */
 
-pub mod heuristic_value;
+pub mod heuristic_variable;

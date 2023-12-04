@@ -41,24 +41,6 @@ impl LinkedSet {
                 self.delete_at_level(i, level)
             }
         }
-
-        // let mut e = &self.first;
-        // loop {
-        //     match self.next(*e) {
-        //         None => break,
-        //         Some(ee) => {
-        //             if *e != ele {
-        //                 let t = *e;
-        //                 self.delete_at_level(t, level)
-        //             }
-        //             if ee == &INVALID {
-        //                 break;
-        //             }
-        //             e = ee;
-        //         }
-        //     }
-        // }
-
         last_size
     }
 
@@ -106,9 +88,8 @@ impl LinkedSet {
     }
 
     pub fn restore_limit(&mut self, level: usize) {
-        debug_assert!(
-            self.last_removed != INVALID && self.removed_levels[self.last_removed] <= level
-        );
+        debug_assert!(self.last_removed != INVALID);
+        debug_assert!(self.removed_levels[self.last_removed] <= level);
         let mut t = self.last_removed;
         while t != INVALID && self.removed_levels[t] >= level {
             self.restore_last_dropped();

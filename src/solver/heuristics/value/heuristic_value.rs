@@ -13,4 +13,6 @@
  * </p>
  */
 
-pub trait HeuristicValueTrait {}
+pub trait HeuristicValueTrait {
+    fn select_value(&mut self) -> i32;
+}
