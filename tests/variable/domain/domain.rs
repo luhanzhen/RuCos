@@ -53,14 +53,14 @@ fn restore() {
     dom.record_limit(10);
     assert_eq!(dom.contains_value(33), false);
     assert_eq!(dom.contains_value(2), false);
-    dom.restore_limit(10);
+    dom.restore_to_limit(10);
     assert_eq!(dom.contains_value(33), true);
     assert_eq!(dom.contains_value(2), true);
-    dom.restore_limit(5);
+    dom.restore_to_limit(5);
     assert_eq!(dom.contains_value(21), true);
-    dom.restore_limit(4);
+    dom.restore_to_limit(4);
     assert_eq!(dom.contains_value(43), true);
-    dom.restore_limit(3);
+    dom.restore_to_limit(3);
     assert_eq!(dom.contains_value(23), true);
 
     let mut dom1 = domain![1=>100];
@@ -78,14 +78,14 @@ fn restore() {
     dom1.record_limit(10);
     assert_eq!(dom1.contains_value(33), false);
     assert_eq!(dom1.contains_value(2), false);
-    dom1.restore_limit(10);
+    dom1.restore_to_limit(10);
     assert_eq!(dom1.contains_value(33), true);
     assert_eq!(dom1.contains_value(2), true);
-    dom1.restore_limit(5);
+    dom1.restore_to_limit(5);
     assert_eq!(dom1.contains_value(21), true);
-    dom1.restore_limit(4);
+    dom1.restore_to_limit(4);
     assert_eq!(dom.contains_value(43), true);
-    dom1.restore_limit(3);
+    dom1.restore_to_limit(3);
     assert_eq!(dom1.contains_value(23), true);
 }
 #[test]
@@ -105,7 +105,7 @@ fn reduce() {
             assert_eq!(dom.contains_value(e), false);
         }
     }
-    dom.restore_limit(1);
+    dom.restore_to_limit(1);
     for e in 10..100 {
         assert_eq!(dom.contains_value(e), true);
     }
@@ -118,6 +118,42 @@ fn is_boolean() {
     assert_eq!(domain!(0, 1, 2).is_boolean(), false);
     assert_eq!(domain!(0, -1).is_boolean(), false);
 }
+
+#[test]
+fn update_bound() {
+    let mut dom = domain![100=>1000];
+    for i in 0..900 {
+        assert_eq!(dom.contains_idx(i), true);
+    }
+    println!("{}", dom);
+    dom.update_idx_lower_bound_at_level(150, 1);
+    dom.record_limit(1);
+    println!("{}", dom);
+    for i in 0..150 {
+        assert_eq!(dom.contains_idx(i), false);
+    }
+    for i in 150..900 {
+        assert_eq!(dom.contains_idx(i), true);
+    }
+    dom.update_idx_upper_bound_at_level(876, 2);
+    dom.record_limit(2);
+    println!("{}", dom);
+    for i in 0..150 {
+        assert_eq!(dom.contains_idx(i), false);
+    }
+    for i in 150..876 {
+        assert_eq!(dom.contains_idx(i), true);
+    }
+    for i in 876..900 {
+        assert_eq!(dom.contains_idx(i), false);
+    }
+    dom.restore_to_limit(2);
+    dom.restore_to_limit(1);
+    for i in 0..900 {
+        assert_eq!(dom.contains_idx(i), true);
+    }
+}
+
 #[test]
 fn max_min() {
     let mut dom = domain![10=>100];
@@ -142,7 +178,7 @@ fn max_min() {
     assert_eq!(dom.which_level_deleted_value(44).unwrap(), 2);
     assert_eq!(dom.which_level_deleted_value(10).unwrap(), 1);
     assert_eq!(dom.which_level_deleted_value(99).unwrap(), 0);
-    dom.restore_limit(2);
+    dom.restore_to_limit(2);
     assert_eq!(dom.minimum_value(), 11);
     assert_eq!(dom.minimum_idx(), 1);
     assert_eq!(dom.maximum_value(), 98);
@@ -162,8 +198,8 @@ fn max_min() {
     dom.record_limit(1);
     assert_eq!(dom.maximum_value(), 76);
     assert_eq!(dom.minimum_idx(), 1);
-    dom.restore_limit(1);
-    dom.restore_limit(0);
+    dom.restore_to_limit(1);
+    dom.restore_to_limit(0);
     assert_eq!(dom.maximum_value(), 87);
     assert_eq!(dom.minimum_value(), -111);
     assert_eq!(dom.minimum_idx(), 0);

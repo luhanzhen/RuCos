@@ -18,6 +18,7 @@ use crate::exception::ExceptionType;
 use crate::exception::exception_trait::ExceptionTrait;
 use crate::exception::invalid_variable_exception::InvalidVariableException;
 use crate::exception::unsatisfied_constraint_exception::UnsatisfiedConstraintException;
+use crate::exception::value_not_found_exception::ValueNotFoundException;
 
 pub struct ExceptionFactory();
 
@@ -31,6 +32,7 @@ impl ExceptionFactory {
             ExceptionType::InvalidVariableExceptionType => {
                 Box::new(InvalidVariableException::new(msg))
             }
+            ExceptionType::ValueNotFoundExceptionType => Box::new(ValueNotFoundException::new(msg)),
         }
     }
 }

@@ -18,9 +18,11 @@ pub mod exception_factory;
 pub mod exception_trait;
 pub mod invalid_variable_exception;
 pub mod unsatisfied_constraint_exception;
+pub mod value_not_found_exception;
 
 pub enum ExceptionType {
     EmptyDomainExceptionType,
+    ValueNotFoundExceptionType,
     InvalidVariableExceptionType,
     UnsatisfiedConstraintException,
 }

@@ -36,16 +36,72 @@ const INVALID: usize = usize::MAX;
 impl LinkedSet {
     pub fn reduce_to(&mut self, ele: usize, level: usize) -> usize {
         let last_size = self.size;
-        for i in 0..self.max_size() {
-            if i != ele {
-                self.delete_at_level(i, level)
+        // for i in 0..self.max_size() {
+        //     if i != ele {
+        //         self.delete_at_level(i, level)
+        //     }
+        // }
+        let mut begin = self.first();
+        loop {
+            match self.next(begin) {
+                None => break,
+                Some(&next) => {
+                    if begin != ele {
+                        self.delete_at_level(begin, level);
+                    }
+                    begin = next;
+                }
+            }
+        }
+        last_size
+    }
+
+    pub fn update_idx_upper_bound_at_level(&mut self, update_idx: usize, level: usize) -> usize {
+        let last_size = self.size;
+        if update_idx <= self.first() {
+            return last_size;
+        }
+        let mut begin = update_idx;
+        loop {
+            match self.next(begin) {
+                None => break,
+                Some(&next) => {
+                    self.delete_at_level(begin, level);
+                    if next < update_idx {
+                        break;
+                    }
+                    begin = next;
+                }
+            }
+        }
+        last_size
+    }
+
+    pub fn update_idx_lower_bound_at_level(&mut self, update_idx: usize, level: usize) -> usize {
+        let last_size = self.size;
+        if update_idx >= self.last() {
+            return last_size;
+        }
+        let mut begin = self.first();
+        loop {
+            match self.next(begin) {
+                None => break,
+                Some(&next) => {
+                    self.delete_at_level(begin, level);
+                    if update_idx <= next {
+                        break;
+                    }
+                    begin = next;
+                }
             }
         }
         last_size
     }
 
     pub fn next(&self, ele: usize) -> Option<&usize> {
-        debug_assert!(ele < self.max_size());
+        if ele >= self.max_size() {
+            return None;
+        }
 
         if self.removed_levels[ele] == INVALID {
             return Some(&self.next[ele]);
@@ -292,7 +348,16 @@ impl SetTrait<usize> for LinkedSet {
     }
 
     fn clear(&mut self) {
-        //todo
+        let mut begin = self.first();
+        loop {
+            match self.next(begin) {
+                None => break,
+                Some(&next) => {
+                    self.delete(begin);
+                    begin = next;
+                }
+            }
+        }
     }
     #[inline]
     fn is_empty(&self) -> bool {

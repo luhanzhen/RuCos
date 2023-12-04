@@ -34,6 +34,16 @@ pub trait DomainTrait: Display + Clone + PartialEq + Index<usize> {
     fn is_limit_recorded_at_level(&self, level: usize) -> bool {
         self.get_elements().is_limit_recorded_at_level(level)
     }
+
+    fn update_idx_upper_bound_at_level(&mut self, update_idx: usize, level: usize) -> usize {
+        self.get_elements_mut()
+            .update_idx_upper_bound_at_level(update_idx, level)
+    }
+
+    fn update_idx_lower_bound_at_level(&mut self, update_idx: usize, level: usize) -> usize {
+        self.get_elements_mut()
+            .update_idx_lower_bound_at_level(update_idx, level)
+    }
     #[inline]
     fn delete_idx_at_level(&mut self, idx: usize, level: usize) {
         self.get_elements_mut().delete_at_level(idx, level)
@@ -84,7 +94,7 @@ pub trait DomainTrait: Display + Clone + PartialEq + Index<usize> {
         self.idx_to_value(val)
     }
     #[inline]
-    fn restore_limit(&mut self, level: usize) {
+    fn restore_to_limit(&mut self, level: usize) {
         self.get_elements_mut().restore_limit(level);
     }
     #[inline]
