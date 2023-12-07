@@ -1,7 +1,7 @@
-use std::cell::RefCell;
-use std::rc::Rc;
 use crate::solve::restart::restart_trait::RestartTrait;
 use crate::solve::solver::solver::Solver;
+use std::cell::RefCell;
+use std::rc::Rc;
 
 /**
  * @project_name: RuCos
@@ -17,26 +17,33 @@ use crate::solve::solver::solver::Solver;
  * @description:
  *
  */
-#[allow(dead_code)]
-pub struct GeometricRestart {}
-
 
 #[allow(dead_code)]
-impl GeometricRestart{
+pub struct GeometricRestart {
+    solver: Rc<RefCell<Solver>>,
+    factor: u64,
+    limit: u64,
+    restart_counter: u64,
+}
 
+#[allow(dead_code)]
+impl GeometricRestart {
+    pub fn new(solver: &Rc<RefCell<Solver>>, factor: u64) -> Self {
+        Self {
+            solver: Rc::clone(solver),
+            factor,
+            limit: 0,
+            restart_counter: 0,
+        }
+    }
 }
 #[allow(dead_code)]
-impl RestartTrait for GeometricRestart
-{
+impl RestartTrait for GeometricRestart {
     fn should_restart(&mut self) -> bool {
         todo!()
     }
 
     fn initialize(&mut self) {
-        todo!()
-    }
-
-    fn get_solver(&mut self) -> &mut Rc<RefCell<Solver>> {
         todo!()
     }
 }

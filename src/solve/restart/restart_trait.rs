@@ -12,14 +12,11 @@
  * @description:
  *
  */
-use crate::solve::solver::solver::Solver;
-use std::cell::RefCell;
-use std::rc::Rc;
 
 pub trait RestartTrait {
     fn should_restart(&mut self) -> bool;
 
     fn initialize(&mut self);
 
-    fn get_solver(&mut self) -> &mut Rc<RefCell<Solver>>;
+    // fn get_solver(&mut self) -> &mut Rc<RefCell<Solver>>;
 }
