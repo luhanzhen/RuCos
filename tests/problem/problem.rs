@@ -17,5 +17,6 @@ use rucos::problem::problem::Problem;
 
 #[test]
 fn add() {
-    let _problem = Problem::new();
+    let problem = Problem::new();
+    let _solver = problem.borrow().solver();
 }

@@ -13,4 +13,25 @@
  * </p>
  */
 
-pub struct Solver {}
+use crate::problem::problem::Problem;
+use crate::solver::solver::status::*;
+use std::cell::RefCell;
+use std::rc::Rc;
+
+#[allow(dead_code)]
+pub struct Solver {
+    problem: Rc<RefCell<Problem>>,
+    status: SearchStates,
+    result: SearchResult,
+}
+
+#[allow(dead_code)]
+impl Solver {
+    pub fn new(problem: &Problem) -> Self {
+        Self {
+            problem: Rc::new(RefCell::new(problem.clone())),
+            status: SearchStates::Init,
+            result: SearchResult::Init,
+        }
+    }
+}

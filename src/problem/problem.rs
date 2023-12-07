@@ -26,12 +26,31 @@ pub struct Problem {
     variables: Vec<Rc<RefCell<Variable>>>,
     constraints: Vec<Rc<RefCell<dyn ConstraintTrait>>>,
     static_variables_id: i32,
-    solver: Solver,
+    // solver: Solver,
 }
 
 impl Display for Problem {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.name)
+    }
+}
+
+impl Clone for Problem {
+    fn clone(&self) -> Self {
+        let mut v: Vec<Rc<RefCell<Variable>>> = vec![];
+        for e in self.variables.iter() {
+            v.push(e.clone())
+        }
+        let mut c: Vec<Rc<RefCell<dyn ConstraintTrait>>> = vec![];
+        for e in self.constraints.iter() {
+            c.push(e.clone())
+        }
+        Self {
+            name: self.name.clone(),
+            variables: v,
+            constraints: c,
+            static_variables_id: self.static_variables_id,
+        }
     }
 }
 
@@ -44,7 +63,7 @@ impl Problem {
             variables: vec![],
             constraints: vec![],
             static_variables_id: 0,
-            solver: Solver {},
+            // solver: Solver::new(),
         }))
     }
 
@@ -98,7 +117,7 @@ impl Problem {
         self.variables.len()
     }
 
-    pub fn solver(&mut self) -> &mut Solver {
-        &mut self.solver
+    pub fn solver(&self) -> Solver {
+        Solver::new(&self)
     }
 }

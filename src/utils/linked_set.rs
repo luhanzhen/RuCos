@@ -214,7 +214,8 @@ impl LinkedSet {
     // }
 
     pub fn new_with_fill(size: usize) -> Self {
-        let limit = vec![];
+        let mut limit = vec![];
+        limit.reserve(size);
         let mut prev = Vec::with_capacity(size);
         let mut removed_levels = Vec::with_capacity(size);
         let mut prev_removed = Vec::with_capacity(size);

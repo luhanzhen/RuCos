@@ -13,3 +13,4 @@
  * </p>
  */
 pub mod solver;
+mod status;

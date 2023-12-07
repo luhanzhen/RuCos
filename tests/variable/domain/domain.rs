@@ -122,6 +122,7 @@ fn is_boolean() {
 #[test]
 fn update_bound() {
     let mut dom = domain![100=>1000];
+
     for i in 0..900 {
         assert_eq!(dom.contains_idx(i), true);
     }

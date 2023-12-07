@@ -91,7 +91,7 @@ impl DomainTrait for DomainValues {
         return if self.map.contains_key(&value) {
             match self.map.get(&value) {
                 None => None,
-                Some(e) => Some(*e),
+                Some(&e) => Some(e),
             }
         } else {
             None
