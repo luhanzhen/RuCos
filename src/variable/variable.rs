@@ -38,6 +38,11 @@ impl Display for Variable {
         write!(f, "{}[{}]:{}", self.name, self.id, self.domain.to_string())
     }
 }
+impl PartialEq for Variable {
+    fn eq(&self, other: &Self) -> bool {
+        self.id == other.id
+    }
+}
 
 #[allow(dead_code)]
 impl Variable {

@@ -67,6 +67,10 @@ impl Problem {
         }))
     }
 
+    pub fn get_constraints(&mut self) -> &mut Vec<Rc<RefCell<dyn ConstraintTrait>>> {
+        &mut self.constraints
+    }
+
     pub fn add_variable(&mut self, var: Rc<RefCell<Variable>>) {
         self.variables.push(var)
     }

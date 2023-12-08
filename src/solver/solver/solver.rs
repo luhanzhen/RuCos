@@ -21,6 +21,7 @@ use std::rc::Rc;
 #[allow(dead_code)]
 pub struct Solver {
     problem: Rc<RefCell<Problem>>,
+    solver: Option<Rc<RefCell<Solver>>>,
     status: SearchStates,
     result: SearchResult,
 }
@@ -30,8 +31,22 @@ impl Solver {
     pub fn new(problem: &Problem) -> Self {
         Self {
             problem: Rc::new(RefCell::new(problem.clone())),
+            solver: None,
             status: SearchStates::Init,
             result: SearchResult::Init,
         }
+    }
+    fn delay_construct(&mut self) {
+        // if let None =  self.solver {
+        //   self.solver = Some(
+        //       Rc::new(RefCell::new(self))
+        //   )
+        // }
+        //
+        // for &e in self.problem.borrow_mut().get_constraints().iter()
+        // {
+        //     let so = Rc::new(RefCell::new(self));
+        //     e.borrow_mut().delay_construct(so);
+        // }
     }
 }
