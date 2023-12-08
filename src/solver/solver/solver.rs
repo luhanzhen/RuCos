@@ -16,25 +16,41 @@
 use crate::problem::problem::Problem;
 use crate::solver::solver::status::*;
 use std::cell::RefCell;
+use std::ptr::NonNull;
 use std::rc::Rc;
+use std::marker::PhantomPinned;
+use std::pin::Pin;
+
 
 #[allow(dead_code)]
 pub struct Solver {
     problem: Rc<RefCell<Problem>>,
-    solver: Option<Rc<RefCell<Solver>>>,
+    solver: Rc<RefCell<NonNull<Solver>>>,
+    _pin: PhantomPinned,
     status: SearchStates,
     result: SearchResult,
 }
 
 #[allow(dead_code)]
 impl Solver {
-    pub fn new(problem: &Problem) -> Self {
-        Self {
+    pub fn new(problem: &Problem) -> Pin<Box<Solver>> {
+
+        let tmp  = Self {
             problem: Rc::new(RefCell::new(problem.clone())),
-            solver: None,
+            solver: Rc::new(RefCell::new(NonNull::dangling())),
+            _pin: PhantomPinned,
             status: SearchStates::Init,
             result: SearchResult::Init,
+        };
+        let slice=  NonNull::from(&tmp);
+        let mut boxed = Box::pin(tmp);
+
+        unsafe {
+            let mut_ref = Pin::as_mut(&mut boxed);
+
+            Pin::get_unchecked_mut(mut_ref).solver.borrow_mut() = slice ;
         }
+        boxed
     }
     fn delay_construct(&mut self) {
         // if let None =  self.solver {

@@ -18,6 +18,7 @@ use crate::solver::solver::solver::Solver;
 use crate::variable::variable::Variable;
 use std::cell::RefCell;
 use std::fmt::{Display, Formatter};
+use std::pin::Pin;
 use std::rc::Rc;
 
 // pub struct Problem<X, C> where X: VariableTrait, C: ConstraintTrait {
@@ -121,7 +122,7 @@ impl Problem {
         self.variables.len()
     }
 
-    pub fn solver(&self) -> Solver {
+    pub fn solver(&self) -> Pin<Box<Solver>> {
         Solver::new(&self)
     }
 }
