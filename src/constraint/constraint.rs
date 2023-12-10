@@ -13,8 +13,10 @@
  * </p>
  */
 
+use crate::constraint::constraint_factory::XConstraintType;
 use crate::constraint::propagator::PropagatorTrait;
 use crate::solver::solver::solver::Solver;
+use crate::variable::variable::Variable;
 use std::cell::RefCell;
 use std::fmt::Display;
 use std::rc::Rc;
@@ -31,4 +33,8 @@ pub trait ConstraintTrait: Display {
     fn arity(&self) -> usize;
 
     fn delay_construct(&mut self, solver: Rc<RefCell<Solver>>);
+
+    fn get_type(&self) -> &XConstraintType;
+
+    fn get_scope(&self) -> &Vec<Rc<RefCell<Variable>>>;
 }

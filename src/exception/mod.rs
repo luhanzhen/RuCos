@@ -20,12 +20,15 @@ pub mod invalid_variable_exception;
 pub mod unsatisfied_constraint_exception;
 pub mod value_not_found_exception;
 
+#[derive(Debug)]
 pub enum ExceptionType {
     EmptyDomainExceptionType,
     ValueNotFoundExceptionType,
     InvalidVariableExceptionType,
     UnsatisfiedConstraintException,
 }
+
+#[derive(Debug)]
 pub enum ExceptionLevel {
     Ignorable,
     Minor,

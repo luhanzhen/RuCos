@@ -21,16 +21,15 @@ use std::rc::Rc;
 pub struct LubyRestart {
     solver: Rc<RefCell<Solver>>,
 }
-
+#[allow(dead_code)]
 impl LubyRestart {
     pub fn new(solver: &Rc<RefCell<Solver>>) -> Self {
-        // let t = RefCell::clone(solver);
-        // let tt = Rc::clone(t);
         Self {
             solver: solver.clone(),
         }
     }
 }
+#[allow(dead_code)]
 impl RestartTrait for LubyRestart {
     fn should_restart(&self) -> bool {
         todo!()

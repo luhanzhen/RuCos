@@ -19,3 +19,4 @@ pub mod spare_set;
 pub mod spare_set_of_multi_level;
 pub mod spare_set_with_counter;
 pub mod sparse_set_of_reference;
+pub mod time_interval;

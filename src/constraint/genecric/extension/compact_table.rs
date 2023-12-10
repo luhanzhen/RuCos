@@ -14,22 +14,77 @@
  */
 
 use crate::constraint::propagator::PropagatorTrait;
+use crate::exception::exception_factory::ExceptionFactory;
+use crate::exception::exception_trait::ExceptionTrait;
+use crate::exception::ExceptionType;
 use crate::variable::variable::Variable;
 use std::cell::RefCell;
 use std::rc::Rc;
+
 #[allow(dead_code)]
-pub struct CompactTable {}
+pub struct CompactTable {
+    scope: Vec<Rc<RefCell<Variable>>>,
+    empty_domain_exception: Box<dyn ExceptionTrait>,
+}
+
+impl CompactTable {
+    pub fn new(scope: &Vec<Rc<RefCell<Variable>>>) -> Self {
+        let mut scope_copy: Vec<Rc<RefCell<Variable>>> = Vec::new();
+        scope.iter().for_each(|e| {
+            scope_copy.push(e.clone());
+        });
+        Self {
+            scope: scope_copy,
+            empty_domain_exception: ExceptionFactory::new(
+                ExceptionType::EmptyDomainExceptionType,
+                "",
+            ),
+        }
+    }
+}
 #[allow(dead_code)]
 impl PropagatorTrait for CompactTable {
     fn initialise(&mut self) {
         todo!()
     }
 
-    fn filter_by_variable(&mut self, _dummy: &Rc<RefCell<Variable>>) {
-        todo!()
+    fn filter_by_variable(
+        &mut self,
+        _dummy: &Rc<RefCell<Variable>>,
+    ) -> Result<usize, &Box<dyn ExceptionTrait>> {
+        if *_dummy == self.scope[0] {
+            println!("before {}", self.scope[0].borrow().to_string());
+            // match
+            self.scope[0].borrow_mut().delete_idx_at_level(0, 0);
+            if self.scope[0].borrow().is_empty() {
+                return Err(&self.empty_domain_exception);
+            }
+            self.scope[0].borrow_mut().record_limit(0);
+            println!("after {}", self.scope[0].borrow().to_string());
+        } else {
+            println!("before {}", self.scope[1].borrow().to_string());
+
+            if self.scope[1].borrow().contains_idx(1) {
+                self.scope[1].borrow_mut().delete_idx_at_level(1, 1);
+            } else if self.scope[1].borrow().contains_idx(2) {
+                self.scope[1].borrow_mut().delete_idx_at_level(2, 1);
+            } else if self.scope[1].borrow().contains_idx(3) {
+                self.scope[1].borrow_mut().delete_idx_at_level(3, 1);
+            }
+            if self.scope[1].borrow().is_empty() {
+                return Err(&self.empty_domain_exception);
+            }
+            self.scope[1].borrow_mut().record_limit(1);
+            println!("after {}", self.scope[1].borrow().to_string());
+        }
+        Ok(0)
     }
 
-    fn filter_by_arc(&mut self, _dummy: &Rc<RefCell<Variable>>, _value: usize) {
+    fn filter_by_arc(
+        &mut self,
+        _dummy: &Rc<RefCell<Variable>>,
+        _value: usize,
+    ) -> Result<usize, &Box<dyn ExceptionTrait>> {
         todo!()
     }
 

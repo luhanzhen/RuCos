@@ -15,6 +15,7 @@
 
 use crate::exception::exception_trait::ExceptionTrait;
 use crate::exception::ExceptionLevel;
+use std::fmt::{Display, Formatter};
 
 pub struct EmptyDomainException {
     message: String,
@@ -26,6 +27,16 @@ impl EmptyDomainException {
             message: String::from(msg),
             level: ExceptionLevel::Fatal,
         }
+    }
+}
+
+impl Display for EmptyDomainException {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "EmptyDomainException: {}, level:{:?}.",
+            self.message, self.level
+        )
     }
 }
 

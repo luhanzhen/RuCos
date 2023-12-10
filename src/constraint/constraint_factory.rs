@@ -13,10 +13,6 @@
  * </p>
  */
 
-
-
-
-
 #[allow(dead_code)]
 pub struct ConstraintFactory();
 

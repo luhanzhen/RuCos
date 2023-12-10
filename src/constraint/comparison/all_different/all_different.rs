@@ -3,7 +3,7 @@
  * </p>
  * <p>@author: luhan zhen
  * </p>
- * <p>@date:  2023/12/8 12:15
+ * <p>@date:  2023/12/10 16:07
  * </p>
  * <p>@email: zhenlh20@mails.jlu.edu.cn
  * </p>
@@ -24,7 +24,7 @@ use std::fmt::{Display, Formatter};
 use std::rc::Rc;
 
 #[allow(dead_code)]
-pub struct Extension {
+pub struct AllDifferent {
     scope: Vec<Rc<RefCell<Variable>>>,
     solver: Option<Rc<RefCell<Solver>>>,
     propagators: Vec<Box<dyn PropagatorTrait>>,
@@ -32,26 +32,26 @@ pub struct Extension {
 }
 
 #[allow(dead_code)]
-impl Display for Extension {
+impl Display for AllDifferent {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "")
     }
 }
-
-impl Extension {
+#[allow(dead_code)]
+impl AllDifferent {
     pub fn new(scope: Vec<Rc<RefCell<Variable>>>) -> Self {
         let propagators: Vec<Box<dyn PropagatorTrait>> = vec![Box::new(CompactTable::new(&scope))];
         Self {
             scope,
             solver: None,
             propagators,
-            r#type: XConstraintType::XExtension,
+            r#type: XConstraintType::XAllDifferent,
         }
     }
 }
 
 #[allow(dead_code)]
-impl ConstraintTrait for Extension {
+impl ConstraintTrait for AllDifferent {
     fn get_propagators(&mut self) -> &mut Vec<Box<dyn PropagatorTrait>> {
         &mut self.propagators
     }

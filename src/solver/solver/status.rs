@@ -13,6 +13,7 @@
  * </p>
  */
 #[allow(dead_code)]
+#[derive(Clone)]
 pub enum SearchResult {
     Init,
     Unknown,
@@ -20,6 +21,7 @@ pub enum SearchResult {
     UnSat,
 }
 #[allow(dead_code)]
+#[derive(Clone)]
 pub enum SearchStates {
     Init,
     Running,

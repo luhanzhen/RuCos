@@ -3,7 +3,7 @@
  * </p>
  * <p>@author: luhan zhen
  * </p>
- * <p>@date:  2023/11/3 15:52
+ * <p>@date:  2023/12/10 16:04
  * </p>
  * <p>@email: zhenlh20@mails.jlu.edu.cn
  * </p>
@@ -12,5 +12,8 @@
  * <p>@description:
  * </p>
  */
-
 pub mod all_different;
+pub mod bound_consistency;
+pub mod gent;
+pub mod regin;
+pub mod zhen;

@@ -15,6 +15,7 @@
 
 use crate::exception::exception_trait::ExceptionTrait;
 use crate::exception::ExceptionLevel;
+use std::fmt::{Display, Formatter};
 
 pub struct UnsatisfiedConstraintException {
     message: String,
@@ -30,6 +31,15 @@ impl UnsatisfiedConstraintException {
     }
 }
 
+impl Display for UnsatisfiedConstraintException {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "UnsatisfiedConstraintException: {}, level:{:?}.",
+            self.message, self.level
+        )
+    }
+}
 impl ExceptionTrait for UnsatisfiedConstraintException {
     #[inline]
     fn message(&self) -> &str {

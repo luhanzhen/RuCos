@@ -15,6 +15,7 @@
 
 use crate::exception::exception_trait::ExceptionTrait;
 use crate::exception::ExceptionLevel;
+use std::fmt::{Display, Formatter};
 
 pub struct ValueNotFoundException {
     message: String,
@@ -30,6 +31,15 @@ impl ValueNotFoundException {
     }
 }
 
+impl Display for ValueNotFoundException {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "ValueNotFoundException: {}, level:{:?}.",
+            self.message, self.level
+        )
+    }
+}
 impl ExceptionTrait for ValueNotFoundException {
     #[inline]
     fn message(&self) -> &str {

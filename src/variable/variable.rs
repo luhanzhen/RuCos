@@ -27,7 +27,7 @@ use std::rc::Rc;
 pub struct Variable {
     id: i32,
     name: String,
-    problem: Rc<RefCell<Problem>>,
+    problem: Option<Rc<RefCell<Problem>>>,
     domain: Domain,
     empty_domain_exception: Box<dyn ExceptionTrait>,
     vale_not_found_exception: Box<dyn ExceptionTrait>,
@@ -46,12 +46,12 @@ impl PartialEq for Variable {
 
 #[allow(dead_code)]
 impl Variable {
-    pub fn new(problem: &Rc<RefCell<Problem>>, name: &str, dom: &Domain) -> Rc<RefCell<Variable>> {
+    pub fn new(problem: &mut Problem, name: &str, dom: Domain) -> Rc<RefCell<Self>> {
         let var = Rc::new(RefCell::new(Self {
-            id: problem.borrow_mut().get_new_variable_id(),
+            id: problem.get_new_variable_id(),
             name: String::from(name),
-            problem: problem.clone(),
-            domain: dom.clone(),
+            problem: Some(Rc::new(RefCell::new(problem.clone()))),
+            domain: dom,
             empty_domain_exception: ExceptionFactory::new(
                 ExceptionType::EmptyDomainExceptionType,
                 format!("{}'s domain is empty.", name).as_str(),
@@ -62,11 +62,40 @@ impl Variable {
                 format!("{}'s value is not found.", name).as_str(),
             ),
         }));
-        problem.borrow_mut().add_variable(var.clone());
+        problem.add_variable(var.clone());
         var
     }
 
-    pub fn delete_value_at_level(
+    pub fn get_id(&self) -> i32 {
+        self.id
+    }
+
+    pub fn is_empty(&self) -> bool {
+        self.domain.is_empty()
+    }
+    pub fn new_without_problem(name: &str, dom: Domain) -> Rc<RefCell<Self>> {
+        Rc::new(RefCell::new(Self {
+            id: i32::MAX,
+            name: String::from(name),
+            problem: None,
+            domain: dom,
+            empty_domain_exception: ExceptionFactory::new(
+                ExceptionType::EmptyDomainExceptionType,
+                format!("{}'s domain is empty.", name).as_str(),
+            ),
+
+            vale_not_found_exception: ExceptionFactory::new(
+                ExceptionType::ValueNotFoundExceptionType,
+                format!("{}'s value is not found.", name).as_str(),
+            ),
+        }))
+    }
+
+    pub(crate) fn set_id(&mut self, id: i32) {
+        self.id = id;
+    }
+
+    pub(crate) fn delete_value_at_level(
         &mut self,
         value: i32,
         level: usize,
@@ -82,7 +111,7 @@ impl Variable {
         }
     }
 
-    pub fn value(&self) -> Option<i32> {
+    pub(crate) fn value(&self) -> Option<i32> {
         if self.domain.size() != 1 {
             None
         } else {
@@ -90,7 +119,10 @@ impl Variable {
         }
     }
 
-    pub fn value_idx(&self) -> Option<usize> {
+    pub fn record_limit(&mut self, level: usize) {
+        self.domain.record_limit(level)
+    }
+    pub(crate) fn value_idx(&self) -> Option<usize> {
         if self.domain.size() != 1 {
             None
         } else {
@@ -98,7 +130,7 @@ impl Variable {
         }
     }
 
-    pub fn assign_value(
+    pub(crate) fn assign_value(
         &mut self,
         value: i32,
         level: usize,
@@ -112,7 +144,7 @@ impl Variable {
         };
     }
 
-    pub fn assign_idx(
+    pub(crate) fn assign_idx(
         &mut self,
         idx: usize,
         level: usize,
@@ -126,23 +158,19 @@ impl Variable {
         };
     }
 
-    pub fn delete_idx_at_level(
-        &mut self,
-        idx: usize,
-        level: usize,
-    ) -> Result<usize, &Box<dyn ExceptionTrait>> {
+    pub(crate) fn delete_idx_at_level(&mut self, idx: usize, level: usize) {
         if self.domain.is_limit_recorded_at_level(level) {
             self.domain.record_limit(level)
         }
         self.domain.delete_idx_at_level(idx, level);
-        if self.domain.is_empty() {
-            Err(&self.empty_domain_exception)
-        } else {
-            Ok(self.domain.size())
-        }
+        // if self.domain.is_empty() {
+        //     Err(&self.empty_domain_exception)
+        // } else {
+        //     Ok(self.domain.size())
+        // }
     }
 
-    pub fn update_idx_upper_bound_at_level(
+    pub(crate) fn update_idx_upper_bound_at_level(
         &mut self,
         update_idx: usize,
         level: usize,
@@ -157,7 +185,7 @@ impl Variable {
         }
     }
 
-    pub fn update_idx_lower_bound_at_level(
+    pub(crate) fn update_idx_lower_bound_at_level(
         &mut self,
         update_idx: usize,
         level: usize,
@@ -177,21 +205,21 @@ impl Variable {
     }
 
     #[inline]
-    pub fn domain_size(&self) -> usize {
+    pub(crate) fn domain_size(&self) -> usize {
         self.domain.size()
     }
 
     #[inline]
-    pub fn domain_max_size(&self) -> usize {
+    pub(crate) fn domain_max_size(&self) -> usize {
         self.domain.max_size()
     }
     #[inline]
-    pub fn contains_value(&self, value: i32) -> bool {
+    pub(crate) fn contains_value(&self, value: i32) -> bool {
         self.domain.contains_value(value)
     }
 
     #[inline]
-    pub fn contains_idx(&self, idx: usize) -> bool {
+    pub(crate) fn contains_idx(&self, idx: usize) -> bool {
         self.domain.contains_idx(idx)
     }
     #[inline]
@@ -212,4 +240,9 @@ impl Variable {
     pub fn minimum_value(&self) -> i32 {
         self.domain.minimum_value()
     }
+
+    // pub fn get_empty_domain_exception(&self)-> &Box<dyn ExceptionTrait>
+    // {
+    //     &self.empty_domain_exception
+    // }
 }

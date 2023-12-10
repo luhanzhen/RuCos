@@ -13,6 +13,7 @@
  * </p>
  */
 
-pub mod heuristics;
-pub mod restart;
+mod heuristics;
+mod restart;
+mod solution;
 pub mod solver;

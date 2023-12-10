@@ -132,8 +132,9 @@ impl LinkedSet {
         if level >= self.limits.len() {
             self.limits.resize(level + 1, INVALID);
         }
-        debug_assert!(self.limits[level] == INVALID);
-        self.limits[level] = self.size
+        if self.limits[level] == INVALID {
+            self.limits[level] = self.size
+        }
     }
 
     pub fn restore_last_dropped(&mut self) {

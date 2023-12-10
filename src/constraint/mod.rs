@@ -24,8 +24,6 @@ pub mod misceleanous;
 pub mod packing_and_scheduling;
 pub mod propagator;
 
-
-
 #[macro_export]
 macro_rules! constraint {
       (table $( $x:expr ),* ) => {
