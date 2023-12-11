@@ -15,7 +15,7 @@
 
 use crate::exception::exception_trait::ExceptionTrait;
 use crate::exception::ExceptionLevel;
-use std::fmt::{Display, Formatter};
+use std::fmt::{Debug, Display, Formatter};
 
 pub struct InvalidVariableException {
     message: String,
@@ -38,6 +38,11 @@ impl Display for InvalidVariableException {
             "InvalidVariableException: {}, level:{:?}.",
             self.message, self.level
         )
+    }
+}
+impl Debug for InvalidVariableException {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        Display::fmt(self, f)
     }
 }
 

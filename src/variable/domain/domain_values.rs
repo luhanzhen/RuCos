@@ -18,7 +18,7 @@ use crate::variable::domain::domain_trait::DomainTrait;
 use std::collections::HashMap;
 use std::fmt::{Display, Formatter};
 use std::ops::Index;
-
+#[derive(Debug)]
 pub struct DomainValues {
     elements: LinkedSet,
     n_assignment: Vec<usize>,

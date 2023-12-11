@@ -3,7 +3,7 @@
 ```mermaid
 
 classDiagram
-direction LR
+    
 
     class Clone {
     <<Trait>>

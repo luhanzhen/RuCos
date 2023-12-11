@@ -14,9 +14,9 @@
  */
 
 use crate::exception::ExceptionLevel;
-use std::fmt::Display;
+use std::fmt::{Debug, Display};
 
-pub trait ExceptionTrait: Display {
+pub trait ExceptionTrait: Display + Debug {
     fn message(&self) -> &str;
 
     fn exception_level(&self) -> &ExceptionLevel;

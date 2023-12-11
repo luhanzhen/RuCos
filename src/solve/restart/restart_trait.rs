@@ -13,7 +13,7 @@
  * </p>
  */
 
-use crate::solver::solver::solver::Solver;
+use crate::solve::solver::solver::Solver;
 use std::cell::RefCell;
 use std::rc::Rc;
 

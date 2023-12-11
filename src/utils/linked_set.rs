@@ -16,7 +16,7 @@
 use crate::utils::set_trait::SetTrait;
 use std::fmt::{Display, Formatter};
 use std::ops::Index;
-
+#[derive(Debug)]
 pub struct LinkedSet {
     size: usize,
     first: usize,

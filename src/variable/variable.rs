@@ -20,14 +20,15 @@ use crate::problem::problem::Problem;
 use crate::variable::domain::domain_trait::DomainTrait;
 use crate::variable::domain::Domain;
 use std::cell::RefCell;
-use std::fmt::{Display, Formatter};
+use std::fmt::{Debug, Display, Formatter};
 use std::rc::Rc;
 
 #[allow(dead_code)]
+#[derive(Debug)]
 pub struct Variable {
     id: i32,
     name: String,
-    problem: Option<Rc<RefCell<Problem>>>,
+    // problem: Option<Rc<RefCell<Problem>>>,
     domain: Domain,
     empty_domain_exception: Box<dyn ExceptionTrait>,
     vale_not_found_exception: Box<dyn ExceptionTrait>,
@@ -38,6 +39,7 @@ impl Display for Variable {
         write!(f, "{}[{}]:{}", self.name, self.id, self.domain.to_string())
     }
 }
+
 impl PartialEq for Variable {
     fn eq(&self, other: &Self) -> bool {
         self.id == other.id
@@ -50,7 +52,7 @@ impl Variable {
         let var = Rc::new(RefCell::new(Self {
             id: problem.get_new_variable_id(),
             name: String::from(name),
-            problem: Some(Rc::new(RefCell::new(problem.clone()))),
+            // problem: Some(Rc::new(RefCell::new(problem.clone()))),
             domain: dom,
             empty_domain_exception: ExceptionFactory::new(
                 ExceptionType::EmptyDomainExceptionType,
@@ -77,7 +79,7 @@ impl Variable {
         Rc::new(RefCell::new(Self {
             id: i32::MAX,
             name: String::from(name),
-            problem: None,
+            // problem: None,
             domain: dom,
             empty_domain_exception: ExceptionFactory::new(
                 ExceptionType::EmptyDomainExceptionType,

@@ -17,12 +17,14 @@ use crate::constraint::constraint::ConstraintTrait;
 use crate::exception::exception_factory::ExceptionFactory;
 use crate::exception::exception_trait::ExceptionTrait;
 use crate::exception::ExceptionType;
-use crate::solver::solver::solver::Solver;
+use crate::solve::solver::solver::Solver;
+use crate::utils::time_interval::TimeInterval;
 use crate::variable::variable::Variable;
 use std::cell::RefCell;
 use std::collections::HashMap;
 use std::fmt::{Display, Formatter};
 use std::rc::Rc;
+use std::time::Duration;
 
 // pub struct Problem<X, C> where X: VariableTrait, C: ConstraintTrait {
 pub struct Problem {
@@ -31,6 +33,7 @@ pub struct Problem {
     map_variables: HashMap<i32, Rc<RefCell<Variable>>>,
     constraints: Vec<Rc<RefCell<dyn ConstraintTrait>>>,
     static_variables_id: i32,
+    timer: TimeInterval,
 }
 
 impl Display for Problem {
@@ -51,10 +54,11 @@ impl Clone for Problem {
         // }
         Self {
             name: self.name.clone(),
-            variables: self.variables.clone(),
-            map_variables: self.map_variables.clone(),
-            constraints: self.constraints.clone(),
+            variables: vec![],
+            map_variables: Default::default(),
+            constraints: vec![],
             static_variables_id: self.static_variables_id,
+            timer: Default::default(),
         }
     }
 }
@@ -93,6 +97,7 @@ impl Problem {
             map_variables: Default::default(),
             constraints: vec![],
             static_variables_id: 0,
+            timer: Default::default(),
         }
     }
     pub fn new_with_name(name: &str) -> Problem {
@@ -102,11 +107,12 @@ impl Problem {
             map_variables: Default::default(),
             constraints: vec![],
             static_variables_id: 0,
+            timer: Default::default(),
         }
     }
 
-    pub fn get_constraints(&mut self) -> &mut Vec<Rc<RefCell<dyn ConstraintTrait>>> {
-        &mut self.constraints
+    pub fn get_constraints(&self) -> &Vec<Rc<RefCell<dyn ConstraintTrait>>> {
+        &self.constraints
     }
 
     pub(crate) fn add_variable(&mut self, var: Rc<RefCell<Variable>>) {
@@ -174,5 +180,9 @@ impl Problem {
 
     pub(crate) fn get_all_variables(&self) -> &Vec<Rc<RefCell<Variable>>> {
         &self.variables
+    }
+
+    pub fn time(&self) -> Duration {
+        self.timer.get()
     }
 }

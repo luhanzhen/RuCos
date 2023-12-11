@@ -63,7 +63,7 @@ macro_rules! domain {
 //         $( println!("pat_param: {}", stringify!($pat)); )+
 //     };
 // }
-
+#[derive(Debug)]
 pub enum Domain {
     DomRange(DomainRange),
     DomValues(DomainValues),

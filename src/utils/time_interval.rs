@@ -12,7 +12,6 @@
  * <p>@description:
  * </p>
  */
-
 use std::time::{Duration, Instant};
 
 pub struct TimeInterval {

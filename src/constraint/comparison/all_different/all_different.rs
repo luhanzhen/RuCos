@@ -17,7 +17,7 @@ use crate::constraint::constraint::ConstraintTrait;
 use crate::constraint::constraint_factory::XConstraintType;
 use crate::constraint::genecric::extension::compact_table::CompactTable;
 use crate::constraint::propagator::PropagatorTrait;
-use crate::solver::solver::solver::Solver;
+use crate::solve::solver::solver::Solver;
 use crate::variable::variable::Variable;
 use std::cell::RefCell;
 use std::fmt::{Display, Formatter};
@@ -74,7 +74,11 @@ impl ConstraintTrait for AllDifferent {
 
     fn delay_construct(&mut self, solver: Rc<RefCell<Solver>>) {
         self.solver = Some(solver);
-        // println!("extension:")
+        // for e in self.solver.as_ref().unwrap().borrow().get_all_variables().iter()
+        // {
+        //     print!("{} ",e.borrow().get_id());
+        // }
+        // println!();
     }
 
     fn get_type(&self) -> &XConstraintType {

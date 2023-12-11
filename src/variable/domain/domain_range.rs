@@ -17,7 +17,7 @@ use crate::utils::set_trait::SetTrait;
 use crate::variable::domain::domain_trait::DomainTrait;
 use std::fmt::{Display, Formatter};
 use std::ops::{Index, Range};
-
+#[derive(Debug)]
 pub struct DomainRange {
     elements: LinkedSet,
     n_assignment: Vec<usize>,

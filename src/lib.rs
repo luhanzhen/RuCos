@@ -21,4 +21,4 @@ pub mod problem;
 pub mod variable;
 
 pub mod constraint;
-pub mod solver;
+pub mod solve;

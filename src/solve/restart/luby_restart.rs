@@ -13,8 +13,8 @@
  * </p>
  */
 
-use crate::solver::restart::restart_trait::RestartTrait;
-use crate::solver::solver::solver::Solver;
+use crate::solve::restart::restart_trait::RestartTrait;
+use crate::solve::solver::solver::Solver;
 use std::cell::RefCell;
 use std::rc::Rc;
 
