@@ -22,6 +22,7 @@ use crate::variable::variable::Variable;
 use rand::prelude::*;
 use std::cell::RefCell;
 use std::rc::Rc;
+use std::time::Duration;
 
 #[allow(dead_code)]
 pub struct Solver {
@@ -33,6 +34,7 @@ pub struct Solver {
     result: SearchResult,
     solutions: Solution,
     option_self: Option<Rc<RefCell<Solver>>>,
+    init_time: Option<Duration>,
     core: Core,
 }
 
@@ -59,6 +61,7 @@ impl Solver {
             constraints: tmp_cons,
             status: SearchStates::Init,
             result: SearchResult::Init,
+            init_time:None,
             core: Core::new(),
         }
     }
@@ -77,13 +80,17 @@ impl Solver {
         &self.variables
     }
     pub fn solve(&mut self) {
+        self.init_time = Some(self.problem.borrow_mut().time());
+        self.timer.reset();
         self.shuffle_variables();
+
         self.delay_construct();
 
         for var in self.variables.iter() {
             let n = random::<usize>() % var.borrow().domain_size();
             let _ = var.borrow_mut().assign_idx(n, self.core.level);
         }
+        self.solutions.record_solution(&self.variables, &self.timer);
         self.solutions.record_solution(&self.variables, &self.timer);
     }
 
@@ -94,8 +101,10 @@ impl Solver {
     fn first_propagate(&mut self) {}
 
     pub fn print_statistics(&self) {
+        println!("init time: {:?}",  self.init_time.unwrap());
         println!("{}", self.solutions.to_string());
-        println!("{:?}", self.timer.get())
+        println!("solving time: {:?}", self.timer.get());
+
     }
 
     fn shuffle_variables(&mut self) {
@@ -116,6 +125,7 @@ impl Clone for Solver {
             result: self.result.clone(),
             solutions: Solution::new(&self.variables),
             option_self: None,
+            init_time:None,
             core: Core::new(),
         }
     }

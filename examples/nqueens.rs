@@ -42,7 +42,7 @@ fn n_queens(n: usize) -> Problem {
 }
 
 fn main() {
-    let problem = n_queens(10);
+    let problem = n_queens(100);
     let mut solver = problem.solver();
     solver.solve();
     solver.print_statistics();

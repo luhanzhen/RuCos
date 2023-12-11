@@ -72,6 +72,10 @@ impl Variable {
         self.id
     }
 
+    pub fn get_name(&self) -> &str {
+        &self.name
+    }
+
     pub fn is_empty(&self) -> bool {
         self.domain.is_empty()
     }
