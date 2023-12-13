@@ -7,15 +7,19 @@ rust-version = "1.74"
 
 [dependencies]
 rand = "*"
+cpu-time = "*"
 
-
+[[bench]]
+name = "rucos_benches"
+path = "benches/lib.rs"
+test = true
 
 [lib]
 name = "rucos"
 path = "src/lib.rs"
 
 [[example]]
-name = "rucos"
+name = "rucos_examples"
 path = "examples/lib.rs"
 
 

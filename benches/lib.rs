@@ -3,15 +3,26 @@
  * </p>
  * <p>@author: luhan zhen
  * </p>
- * <p>@date:  2023/12/11 13:09
+ * <p>@date:  2023/12/12 18:45
  * </p>
- * <p>@email: zhenlh20@mails.jlu.edu.cn
+ * <p>@email: zhenlh20@mails.jlu.edu.cn 
  * </p>
  * <p>@version: 1.0
  * </p>
- * <p>@description:
+  * <p>@description: 
  * </p>
  */
+
+#![cfg_attr(feature = "unstable", feature(test))]
+#[deny(soft_unstable)]
+extern crate test;
+
+use test::{black_box, Bencher};
+
+
+
+
+
 
 use rucos::constraint::comparison::all_different::all_different::AllDifferent;
 use rucos::domain;
@@ -47,3 +58,5 @@ fn main() {
     solver.solve();
     solver.print_statistics();
 }
+
+ 
