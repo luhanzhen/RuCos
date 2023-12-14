@@ -35,12 +35,16 @@ impl Display for Solution {
     fn fmt(&self, f: &mut Formatter) -> std::fmt::Result {
         let mut str = String::new();
 
-        for (ith,solution) in self.solution.iter().enumerate() {
+        for (ith, solution) in self.solution.iter().enumerate() {
             str.push_str("\t");
             for (i, s) in solution.iter().enumerate() {
-                str.push_str(&format!("{}={}, ",self.variables[i].borrow().get_name(), *s))
+                str.push_str(&format!(
+                    "{}={}, ",
+                    self.variables[i].borrow().get_name(),
+                    *s
+                ))
             }
-            str.push_str(&format!("  cost:{:?}\n",&self.solution_time[ith]));
+            str.push_str(&format!("  cost:{:?}\n", &self.solution_time[ith]));
         }
         write!(f, "Solution:\n{}", str)
     }

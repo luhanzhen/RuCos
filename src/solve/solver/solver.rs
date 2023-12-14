@@ -15,6 +15,9 @@
 
 use crate::constraint::constraint::ConstraintTrait;
 use crate::problem::problem::Problem;
+use crate::solve::heuristics::value::heuristic_value::HeuristicValueTrait;
+use crate::solve::heuristics::variable::heuristic_variable::HeuristicVariableTrait;
+use crate::solve::restart::restart_trait::RestartTrait;
 use crate::solve::solution::Solution;
 use crate::solve::solver::status::*;
 use crate::utils::time_interval::TimeInterval;
@@ -36,14 +39,29 @@ pub struct Solver {
     option_self: Option<Rc<RefCell<Solver>>>,
     init_time: Option<Duration>,
     core: Core,
+    restart: Option<Box<dyn RestartTrait>>,
+    value_heuristic: Option<Box<dyn HeuristicValueTrait>>,
+    variable_heuristic: Option<Box<dyn HeuristicVariableTrait>>,
 }
-
+#[allow(dead_code)]
 struct Core {
     level: usize,
+    decides: usize,
+    conflicts: usize,
+    propagations: usize,
+    filter: usize,
 }
+
+#[allow(dead_code)]
 impl Core {
     pub fn new() -> Self {
-        Self { level: 0usize }
+        Self {
+            level: 0usize,
+            decides: 0,
+            conflicts: 0,
+            propagations: 0,
+            filter: 0,
+        }
     }
 }
 
@@ -61,8 +79,11 @@ impl Solver {
             constraints: tmp_cons,
             status: SearchStates::Init,
             result: SearchResult::Init,
-            init_time:None,
+            init_time: None,
             core: Core::new(),
+            restart: None,
+            value_heuristic: None,
+            variable_heuristic: None,
         }
     }
     pub fn delay_construct(&mut self) {
@@ -94,17 +115,24 @@ impl Solver {
         self.solutions.record_solution(&self.variables, &self.timer);
     }
 
-    fn decide(&mut self) {}
+    fn decide_the_variable_with_idx(&mut self, _var: &Rc<RefCell<Variable>>, _idx: usize) {
+        let _= _var.borrow_mut().assign_idx(_idx,self.core.level);
+
+    }
 
     fn propagate(&mut self) {}
 
     fn first_propagate(&mut self) {}
 
+    fn backtrack_to_level(&mut self, _level: usize) {
+
+    }
+    fn backtrack(&mut self) {}
+
     pub fn print_statistics(&self) {
-        println!("init time: {:?}",  self.init_time.unwrap());
+        println!("init time: {:?}", self.init_time.unwrap());
         println!("{}", self.solutions.to_string());
         println!("solving time: {:?}", self.timer.get());
-
     }
 
     fn shuffle_variables(&mut self) {
@@ -125,8 +153,11 @@ impl Clone for Solver {
             result: self.result.clone(),
             solutions: Solution::new(&self.variables),
             option_self: None,
-            init_time:None,
+            init_time: None,
             core: Core::new(),
+            restart: None,
+            value_heuristic: None,
+            variable_heuristic: None,
         }
     }
 }
