@@ -3,12 +3,12 @@ use crate::utils::set_trait::SetTrait;
 use std::fmt::Display;
 use std::ops::Index;
 
-/**
+/***
  * @project_name: RuCos
  * @author: luhan zhen
  * @date:  2023/11/2 13:21
  *
- * @email: zhenlh20@mails.jlu.edu.cn
+ * @email: zhenluhan@qq.com
  *
  * @version: 1.0
  *

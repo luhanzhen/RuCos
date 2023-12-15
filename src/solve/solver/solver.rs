@@ -1,18 +1,17 @@
-/*
- * <p>@project_name: RuCos
- * </p>
- * <p>@author: luhan zhen
- * </p>
- * <p>@date:  2023/12/2 20:08
- * </p>
- * <p>@email: zhenlh20@mails.jlu.edu.cn
- * </p>
- * <p>@version: 1.0
- * </p>
- * <p>@description:
- * </p>
+/**
+ * @project_name: RuCos
+ *
+ * @author: luhan zhen
+ *
+ * @date:  2023/12/2 20:08
+ *
+ * @email: zhenluhan@qq.com
+ *
+ * @version: 1.0
+ *
+ * @description:
+ *
  */
-
 use crate::constraint::constraint::ConstraintTrait;
 use crate::problem::problem::Problem;
 use crate::solve::heuristics::value::heuristic_value::HeuristicValueTrait;
@@ -112,21 +111,18 @@ impl Solver {
             let _ = var.borrow_mut().assign_idx(n, self.core.level);
         }
         self.solutions.record_solution(&self.variables, &self.timer);
-        self.solutions.record_solution(&self.variables, &self.timer);
+        // self.solutions.record_solution(&self.variables, &self.timer);
     }
 
     fn decide_the_variable_with_idx(&mut self, _var: &Rc<RefCell<Variable>>, _idx: usize) {
-        let _= _var.borrow_mut().assign_idx(_idx,self.core.level);
-
+        let _ = _var.borrow_mut().assign_idx(_idx, self.core.level);
     }
 
     fn propagate(&mut self) {}
 
     fn first_propagate(&mut self) {}
 
-    fn backtrack_to_level(&mut self, _level: usize) {
-
-    }
+    fn backtrack_to_level(&mut self, _level: usize) {}
     fn backtrack(&mut self) {}
 
     pub fn print_statistics(&self) {

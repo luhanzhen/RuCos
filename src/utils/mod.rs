@@ -1,18 +1,17 @@
-/*
-* <p>@project_name: RuCos
-* </p>
-* <p>@author: luhan zhen
-* </p>
-* <p>@date:  2023/11/1 22:00
-* </p>
-* <p>@email: 940864649@qq.com
-* </p>
-* <p>@version: 1.0
-* </p>
- * <p>@description: 1.0
-* </p>
+/**
+* @project_name: RuCos
+*
+* @author: luhan zhen
+*
+* @date:  2023/11/1 22:00
+*
+* @email: 940864649@qq.com
+*
+* @version: 1.0
+*
+ * @description: 1.0
+*
  */
-
 pub mod linked_set;
 pub mod set_trait;
 pub mod spare_set;

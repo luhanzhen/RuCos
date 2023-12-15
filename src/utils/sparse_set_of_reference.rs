@@ -1,18 +1,17 @@
-/*
- * <p>@project_name: RuCos
- * </p>
- * <p>@author: luhan zhen
- * </p>
- * <p>@date:  2023/11/16 12:59
- * </p>
- * <p>@email: zhenlh20@mails.jlu.edu.cn
- * </p>
- * <p>@version: 1.0
- * </p>
- * <p>@description:
- * </p>
+/**
+ * @project_name: RuCos
+ *
+ * @author: luhan zhen
+ *
+ * @date:  2023/11/16 12:59
+ *
+ * @email: zhenluhan@qq.com
+ *
+ * @version: 1.0
+ *
+ * @description:
+ *
  */
-
 use crate::utils::set_trait::SetTrait;
 use std::cell::RefCell;
 use std::fmt::{Display, Formatter};

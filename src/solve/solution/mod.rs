@@ -1,18 +1,17 @@
-/*
- * <p>@project_name: RuCos
- * </p>
- * <p>@author: luhan zhen
- * </p>
- * <p>@date:  2023/12/10 18:13
- * </p>
- * <p>@email: zhenlh20@mails.jlu.edu.cn
- * </p>
- * <p>@version: 1.0
- * </p>
- * <p>@description:
- * </p>
+/**
+ * @project_name: RuCos
+ *
+ * @author: luhan zhen
+ *
+ * @date:  2023/12/10 18:13
+ *
+ * @email: zhenluhan@qq.com
+ *
+ * @version: 1.0
+ *
+ * @description:
+ *
  */
-
 use crate::utils::time_interval::TimeInterval;
 use crate::variable::variable::Variable;
 use std::cell::RefCell;

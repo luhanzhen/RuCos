@@ -1,18 +1,17 @@
-/*
- * <p>@project_name: RuCos
- * </p>
- * <p>@author: luhan zhen
- * </p>
- * <p>@date:  2023/11/17 12:29
- * </p>
- * <p>@email: zhenlh20@mails.jlu.edu.cn
- * </p>
- * <p>@version: 1.0
- * </p>
- * <p>@description:
- * </p>
+/**
+ * @project_name: RuCos
+ *
+ * @author: luhan zhen
+ *
+ * @date:  2023/11/17 12:29
+ *
+ * @email: zhenluhan@qq.com
+ *
+ * @version: 1.0
+ *
+ * @description:
+ *
  */
-
 use rucos::constraint::comparison::all_different::all_different::AllDifferent;
 use rucos::constraint::genecric::extension::extension::Extension;
 use rucos::domain;

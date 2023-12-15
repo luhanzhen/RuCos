@@ -1,33 +1,32 @@
-/*
- * <p>@project_name: RuCos
- * </p>
- * <p>@author: luhan zhen
- * </p>
- * <p>@date:  2023/11/2 13:58
- * </p>
- * <p>@email: zhenlh20@mails.jlu.edu.cn
- * </p>
- * <p>@version: 1.0
- * </p>
- * <p>@description:
- * </p>
+/**
+ * @project_name: RuCos
+ *
+ * @author: luhan zhen
+ *
+ * @date:  2023/11/2 13:58
+ *
+ * @email: zhenluhan@qq.com
+ *
+ * @version: 1.0
+ *
+ * @description:
+ *
  */
 
-/*
-* <p>@project_name: RuCos
-* </p>
-* <p>@author: luhan zhen
-* </p>
-* <p>@date:  2023/11/1 22:00
-* </p>
-* <p>@email: 940864649@qq.com
-* </p>
-* <p>@version: 1.0
-* </p>
- * <p>@description: test for the LinkedSet
-* </p>
+/**
+* @project_name: RuCos
+*
+* @author: luhan zhen
+*
+* @date:  2023/11/1 22:00
+*
+* @email: 940864649@qq.com
+*
+* @version: 1.0
+*
+ * @description: test for the LinkedSet
+*
  */
-
 use rucos::utils::linked_set::LinkedSet;
 use rucos::utils::set_trait::SetTrait;
 
