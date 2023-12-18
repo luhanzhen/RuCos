@@ -85,6 +85,10 @@ impl Solver {
             variable_heuristic: None,
         }
     }
+
+    pub fn get_conflicts(&self) -> usize {
+        self.core.conflicts
+    }
     pub fn delay_construct(&mut self) {
         match self.option_self {
             None => self.option_self = Some(Rc::new(RefCell::new(self.clone()))),

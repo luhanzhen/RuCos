@@ -1,3 +1,4 @@
+pub mod geometric_restart;
 /**
  * @project_name: RuCos
  *
