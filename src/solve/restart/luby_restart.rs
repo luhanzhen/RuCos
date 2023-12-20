@@ -44,8 +44,6 @@ fn luby(mut x: u64, y: u64) -> u64 {
     y.pow(seq)
 }
 
-
-
 #[allow(dead_code)]
 impl LubyRestart {
     pub fn new_with_solver_and_factor(solver: &Rc<RefCell<Solver>>, factor: u64) -> Self {
@@ -67,9 +65,10 @@ impl RestartTrait for LubyRestart {
         if conflicts >= self.limit {
             self.restart_counter += 1;
             self.limit = conflicts + (luby(2, self.restart_counter) * self.factor);
-            return true;
+            true
+        } else {
+            false
         }
-        false
     }
 
     fn initialize(&mut self) {

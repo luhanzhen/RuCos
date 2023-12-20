@@ -63,6 +63,12 @@ impl Core {
         }
     }
 }
+#[allow(dead_code)]
+impl From<&Problem> for Solver {
+    fn from(value: &Problem) -> Self {
+        value.solver()
+    }
+}
 
 #[allow(dead_code)]
 impl Solver {

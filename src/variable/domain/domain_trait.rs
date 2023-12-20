@@ -1,5 +1,6 @@
 use crate::utils::linked_set::{LinkedSet, LinkedSetIter};
 use crate::utils::set_trait::SetTrait;
+use rand::random;
 use std::fmt::Display;
 use std::ops::Index;
 
@@ -139,6 +140,11 @@ pub trait DomainTrait: Display + Clone + PartialEq + Index<usize> {
             }
         }
         min
+    }
+    #[inline]
+    fn random_idx(&self) -> usize {
+        let n = random::<usize>() & self.max_size();
+        self.get_elements()[n]
     }
 
     #[inline]

@@ -78,6 +78,7 @@ impl Variable {
     pub fn is_empty(&self) -> bool {
         self.domain.is_empty()
     }
+
     pub fn new_without_problem(name: &str, dom: Domain) -> Rc<RefCell<Self>> {
         Rc::new(RefCell::new(Self {
             id: i32::MAX,
@@ -215,6 +216,20 @@ impl Variable {
     }
 
     #[inline]
+    pub(crate) fn random_idx(&self) -> usize {
+        self.domain.random_idx()
+    }
+    #[inline]
+    pub(crate) fn random_value(&self) -> i32 {
+        let n = self.domain.random_idx();
+        if let Some(e) = self.domain.idx_to_value(n) {
+            return e;
+        } else {
+            self.minimum_value()
+        }
+    }
+
+    #[inline]
     pub(crate) fn domain_max_size(&self) -> usize {
         self.domain.max_size()
     }
@@ -228,21 +243,21 @@ impl Variable {
         self.domain.contains_idx(idx)
     }
     #[inline]
-    pub fn maximum_value(&self) -> i32 {
+    pub(crate) fn maximum_value(&self) -> i32 {
         self.domain.maximum_value()
     }
 
     #[inline]
-    fn minimum_idx(&self) -> usize {
+    pub(crate) fn minimum_idx(&self) -> usize {
         self.domain.minimum_idx()
     }
 
     #[inline]
-    fn maximum_idx(&self) -> usize {
+    pub(crate) fn maximum_idx(&self) -> usize {
         self.domain.maximum_idx()
     }
     #[inline]
-    pub fn minimum_value(&self) -> i32 {
+    pub(crate) fn minimum_value(&self) -> i32 {
         self.domain.minimum_value()
     }
 

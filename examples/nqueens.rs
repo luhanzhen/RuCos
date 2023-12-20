@@ -15,6 +15,7 @@
 use rucos::constraint::comparison::all_different::all_different::AllDifferent;
 use rucos::domain;
 use rucos::problem::problem::Problem;
+use rucos::solve::solver::solver::Solver;
 use rucos::variable::domain::Domain;
 use rucos::variable::variable::Variable;
 use std::cell::RefCell;
@@ -42,7 +43,9 @@ fn n_queens(n: usize) -> Problem {
 
 fn main() {
     let problem = n_queens(200);
-    let mut solver = problem.solver();
+    // let mut solver = problem.solver();
+    let mut solver = Solver::from(&problem);
+
     solver.solve();
     solver.print_statistics();
 }

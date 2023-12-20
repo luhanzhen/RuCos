@@ -13,3 +13,6 @@
  *
  */
 pub mod heuristic_value;
+pub mod value_first;
+pub mod value_last;
+pub mod value_random;

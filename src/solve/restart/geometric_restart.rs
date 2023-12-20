@@ -1,5 +1,6 @@
 use crate::solve::restart::restart_trait::RestartTrait;
 use crate::solve::solver::solver::Solver;
+use rand::random;
 use std::cell::RefCell;
 use std::rc::Rc;
 
@@ -28,22 +29,34 @@ pub struct GeometricRestart {
 
 #[allow(dead_code)]
 impl GeometricRestart {
-    pub fn new(solver: &Rc<RefCell<Solver>>, factor: u64) -> Self {
+    pub fn new_with_solver_and_factor(solver: &Rc<RefCell<Solver>>, factor: u64) -> Self {
         Self {
             solver: Rc::clone(solver),
             factor,
-            limit: 0,
-            restart_counter: 0,
+            limit: solver.borrow().get_conflicts() as u64,
+            restart_counter: 100,
         }
+    }
+
+    pub fn new_with_solver_and_random_factor(solver: &Rc<RefCell<Solver>>) -> Self {
+        GeometricRestart::new_with_solver_and_factor(solver, random::<u64>() % 100 + 1)
     }
 }
 #[allow(dead_code)]
 impl RestartTrait for GeometricRestart {
     fn should_restart(&mut self) -> bool {
-        todo!()
+        let conflicts = self.solver.borrow().get_conflicts() as u64;
+        if conflicts >= self.limit {
+            self.restart_counter *= self.factor;
+            self.limit += conflicts;
+            true
+        } else {
+            false
+        }
     }
 
     fn initialize(&mut self) {
-        todo!()
+        self.restart_counter = 100;
+        self.limit = self.solver.borrow().get_conflicts() as u64
     }
 }

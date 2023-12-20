@@ -1,3 +1,7 @@
+use crate::variable::variable::Variable;
+use std::cell::RefCell;
+use std::rc::Rc;
+
 /**
  * @project_name: RuCos
  *
@@ -14,5 +18,6 @@
  */
 
 pub trait HeuristicValueTrait {
-    fn select_value(&mut self) -> i32;
+    fn select_value(&mut self, var: &Rc<RefCell<Variable>>) -> i32;
+    fn select_idx(&mut self, var: &Rc<RefCell<Variable>>) -> usize;
 }
