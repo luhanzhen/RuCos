@@ -8,7 +8,7 @@ use std::rc::Rc;
  *
  * @author: luhan zhen
  *
- * @date:   2023/12/20 15:19
+ * @date:   2023/12/21 14:51
  *
  * @email: zhenluhan@qq.com
  *
@@ -17,29 +17,24 @@ use std::rc::Rc;
  * @description:
  *
  */
-#[allow(dead_code)]
-pub struct ValueRandom {}
 
-#[allow(dead_code)]
-impl ValueRandom {
+pub struct ValueSticking {
+    last_value: Vec<usize>,
+}
+
+impl ValueSticking {
     pub fn new() -> Self {
-        Self {}
-    }
-}
-#[allow(dead_code)]
-impl Default for ValueRandom {
-    fn default() -> Self {
-        ValueRandom::new()
+        Self { last_value: vec![] }
     }
 }
 
 #[allow(dead_code)]
-impl HeuristicValueTrait for ValueRandom {
+impl HeuristicValueTrait for ValueSticking {
     fn select_value(&mut self, var: &Rc<RefCell<Variable>>) -> i32 {
-        var.borrow().random_value()
+        todo!()
     }
 
     fn select_idx(&mut self, var: &Rc<RefCell<Variable>>) -> usize {
-        var.borrow().random_idx()
+        todo!()
     }
 }

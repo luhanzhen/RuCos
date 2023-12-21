@@ -1,5 +1,5 @@
 use crate::solve::heuristics::value::heuristic_value::HeuristicValueTrait;
-use crate::solve::solver::solver::Solver;
+
 use crate::variable::variable::Variable;
 use std::cell::RefCell;
 use std::rc::Rc;
@@ -19,19 +19,20 @@ use std::rc::Rc;
  *
  */
 #[allow(dead_code)]
-pub struct ValueLast {
-    solver: Rc<RefCell<Solver>>,
-}
+pub struct ValueLast {}
 
 #[allow(dead_code)]
 impl ValueLast {
-    pub fn new(solver: &Rc<RefCell<Solver>>) -> Self {
-        Self {
-            solver: Rc::clone(solver),
-        }
+    pub fn new() -> Self {
+        Self {}
     }
 }
-
+#[allow(dead_code)]
+impl Default for ValueLast {
+    fn default() -> Self {
+        ValueLast::new()
+    }
+}
 #[allow(dead_code)]
 impl HeuristicValueTrait for ValueLast {
     fn select_value(&mut self, var: &Rc<RefCell<Variable>>) -> i32 {
