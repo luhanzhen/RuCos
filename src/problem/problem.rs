@@ -26,10 +26,15 @@ use std::rc::Rc;
 use std::time::Duration;
 
 // pub struct Problem<X, C> where X: VariableTrait, C: ConstraintTrait {
+
+pub type Var = Rc<RefCell<Variable>>;
+
+pub type Con = Rc<RefCell<dyn ConstraintTrait>>;
+
 pub struct Problem {
     name: String,
-    variables: Vec<Rc<RefCell<Variable>>>,
-    map_variables: HashMap<i32, Rc<RefCell<Variable>>>,
+    variables: Vec<Var>,
+    map_variables: HashMap<i32, Var>,
     constraints: Vec<Rc<RefCell<dyn ConstraintTrait>>>,
     static_variables_id: i32,
     timer: TimeInterval,
@@ -71,10 +76,7 @@ impl Default for Problem {
 // impl<X, C> Problem<X, C> where X: VariableTrait, C: ConstraintTrait
 #[allow(dead_code)]
 impl Problem {
-    pub fn get_variable_by_id(
-        &mut self,
-        key: i32,
-    ) -> Result<&Rc<RefCell<Variable>>, Box<dyn ExceptionTrait>> {
+    pub fn get_variable_by_id(&mut self, key: i32) -> Result<&Var, Box<dyn ExceptionTrait>> {
         match self.map_variables.get(&key) {
             None => Err(ExceptionFactory::new(
                 ExceptionType::InvalidVariableExceptionType,
@@ -114,7 +116,7 @@ impl Problem {
         &self.constraints
     }
 
-    pub(crate) fn add_variable(&mut self, var: Rc<RefCell<Variable>>) {
+    pub(crate) fn add_variable(&mut self, var: Var) {
         self.map_variables
             .insert(var.borrow().get_id(), var.clone());
         self.variables.push(var);
@@ -124,7 +126,7 @@ impl Problem {
         self.constraints.push(cons)
     }
 
-    pub fn new_variable(&mut self, var: Rc<RefCell<Variable>>) {
+    pub fn new_variable(&mut self, var: Var) {
         var.borrow_mut().set_id(self.get_new_variable_id());
         self.map_variables
             .insert(var.borrow().get_id(), var.clone());
@@ -177,7 +179,7 @@ impl Problem {
         Solver::new(&self)
     }
 
-    pub(crate) fn get_all_variables(&self) -> &Vec<Rc<RefCell<Variable>>> {
+    pub(crate) fn get_all_variables(&self) -> &Vec<Var> {
         &self.variables
     }
 

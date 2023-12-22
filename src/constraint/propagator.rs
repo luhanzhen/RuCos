@@ -13,19 +13,14 @@
  *
  */
 use crate::exception::exception_trait::ExceptionTrait;
-use crate::variable::variable::Variable;
-use std::cell::RefCell;
-use std::rc::Rc;
+use crate::problem::problem::Var;
 
 pub trait PropagatorTrait {
     fn initialise(&mut self);
-    fn filter_by_variable(
-        &mut self,
-        dummy: &Rc<RefCell<Variable>>,
-    ) -> Result<usize, &Box<dyn ExceptionTrait>>;
+    fn filter_by_variable(&mut self, dummy: &Var) -> Result<usize, &Box<dyn ExceptionTrait>>;
     fn filter_by_arc(
         &mut self,
-        dummy: &Rc<RefCell<Variable>>,
+        dummy: &Var,
         value: usize,
     ) -> Result<usize, &Box<dyn ExceptionTrait>>;
     fn is_coarse_grained(&self) -> bool;

@@ -14,8 +14,8 @@
  */
 use crate::constraint::constraint_factory::XConstraintType;
 use crate::constraint::propagator::PropagatorTrait;
+use crate::problem::problem::Var;
 use crate::solve::solver::solver::Solver;
-use crate::variable::variable::Variable;
 use std::cell::RefCell;
 use std::fmt::Display;
 use std::rc::Rc;
@@ -35,5 +35,5 @@ pub trait ConstraintTrait: Display {
 
     fn get_type(&self) -> &XConstraintType;
 
-    fn get_scope(&self) -> &Vec<Rc<RefCell<Variable>>>;
+    fn get_scope(&self) -> &Vec<Var>;
 }

@@ -16,15 +16,15 @@ use crate::constraint::constraint::ConstraintTrait;
 use crate::constraint::constraint_factory::XConstraintType;
 use crate::constraint::genecric::extension::compact_table::CompactTable;
 use crate::constraint::propagator::PropagatorTrait;
+use crate::problem::problem::Var;
 use crate::solve::solver::solver::Solver;
-use crate::variable::variable::Variable;
 use std::cell::RefCell;
 use std::fmt::{Display, Formatter};
 use std::rc::Rc;
 
 #[allow(dead_code)]
 pub struct AllDifferent {
-    scope: Vec<Rc<RefCell<Variable>>>,
+    scope: Vec<Var>,
     solver: Option<Rc<RefCell<Solver>>>,
     propagators: Vec<Box<dyn PropagatorTrait>>,
     r#type: XConstraintType,
@@ -38,7 +38,7 @@ impl Display for AllDifferent {
 }
 #[allow(dead_code)]
 impl AllDifferent {
-    pub fn new(scope: Vec<Rc<RefCell<Variable>>>) -> Self {
+    pub fn new(scope: Vec<Var>) -> Self {
         let propagators: Vec<Box<dyn PropagatorTrait>> = vec![Box::new(CompactTable::new(&scope))];
         Self {
             scope,
@@ -84,7 +84,7 @@ impl ConstraintTrait for AllDifferent {
         &self.r#type
     }
 
-    fn get_scope(&self) -> &Vec<Rc<RefCell<Variable>>> {
+    fn get_scope(&self) -> &Vec<Var> {
         &self.scope
     }
 }
