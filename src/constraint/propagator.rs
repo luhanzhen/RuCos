@@ -25,5 +25,5 @@ pub trait PropagatorTrait {
     ) -> Result<usize, &Box<dyn ExceptionTrait>>;
     fn is_coarse_grained(&self) -> bool;
     fn is_fine_grained(&self) -> bool;
-    fn restore_to_level(&mut self,level:usize);
+    fn restore_to_level(&mut self, level: usize);
 }

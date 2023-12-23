@@ -13,7 +13,6 @@
  *
  */
 
-
 #[allow(dead_code)]
 #[derive(Clone)]
 pub enum SearchResult {
@@ -21,7 +20,6 @@ pub enum SearchResult {
     Sat,
     UnSat,
 }
-
 
 #[allow(dead_code)]
 #[derive(Clone)]

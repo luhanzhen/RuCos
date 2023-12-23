@@ -20,12 +20,12 @@ use crate::solve::heuristics::variable::heuristic_variable::HeuristicVariableTra
 use crate::solve::restart::luby_restart::LubyRestart;
 use crate::solve::restart::restart_trait::RestartTrait;
 use crate::solve::solution::Solution;
+use crate::solve::solver::core::Core;
 use crate::solve::solver::status::*;
 use crate::utils::time_interval::TimeInterval;
 use crate::variable::variable::{Var, Variable};
 use rand::prelude::*;
 use std::cell::RefCell;
-use std::collections::HashSet;
 use std::rc::Rc;
 use std::time::Duration;
 
@@ -45,36 +45,7 @@ pub struct Solver {
     value_heuristic: Option<Box<dyn HeuristicValueTrait>>,
     variable_heuristic: Option<Box<dyn HeuristicVariableTrait>>,
 }
-#[allow(dead_code)]
-struct Core {
-    level: usize,
-    decides: usize,
-    conflicts: usize,
-    propagations: usize,
-    filter: usize,
-    future_vars: HashSet<Var>,
-    past_vars: HashSet<Var>,
-}
 
-#[allow(dead_code)]
-impl Core {
-    pub fn new(vars: &Vec<Var>) -> Self {
-        let mut future = HashSet::with_capacity(vars.len());
-        let past = HashSet::with_capacity(vars.len());
-        for e in vars.iter() {
-            future.insert(e.clone());
-        }
-        Self {
-            level: 0usize,
-            decides: 0,
-            conflicts: 0,
-            propagations: 0,
-            filter: 0,
-            future_vars: future,
-            past_vars: past,
-        }
-    }
-}
 #[allow(dead_code)]
 impl From<&Problem> for Solver {
     fn from(value: &Problem) -> Self {

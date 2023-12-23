@@ -3,7 +3,7 @@
  *
  * @author: luhan zhen
  *
- * @date:  2023/11/2 13:21
+ * @date:  2023/12/23 23:54
  *
  * @email: zhenluhan@qq.com
  *
@@ -12,10 +12,8 @@
  * @description:
  *
  */
-mod heuristics;
-mod restart;
-mod solution;
-pub mod solver;
+pub mod new_decision;
 
-mod callbacks;
-mod nogood;
+pub mod delete_decision;
+pub mod domain_reduction;
+pub mod non_consistency;
