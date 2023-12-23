@@ -53,7 +53,7 @@ impl PartialEq for DomainRange {
                 return false;
             }
         }
-        return true;
+        true
     }
 }
 
@@ -98,8 +98,8 @@ impl DomainTrait for DomainRange {
 
     fn hash(&self) -> usize {
         let mut ret = 0;
-        ret += self.range.start * 31 ^ 1;
-        ret += self.range.end * 31 ^ 2;
+        ret += (self.range.start * 31) ^ 1;
+        ret += (self.range.end * 31) ^ 2;
         ret as usize
     }
 

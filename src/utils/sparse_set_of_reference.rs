@@ -36,7 +36,7 @@ impl<T> Display for SparseSetOfReference<T> {
         //     // str.push_str(&*self.limits(i).to_string());
         //     str.push_str(", ");
         // }
-        str.push_str("\n");
+        str.push('\n');
         write!(f, "{}", str)
     }
 }
@@ -143,11 +143,11 @@ impl<T> Iterator for SparseSetOfReferenceIter<'_, T> {
     type Item = Rc<RefCell<T>>;
 
     fn next(&mut self) -> Option<Self::Item> {
-        return if self.index < self.value.limit {
+        if self.index < self.value.limit {
             self.index += 1;
             Some(Rc::clone(&self.value[self.index - 1]))
         } else {
             None
-        };
+        }
     }
 }

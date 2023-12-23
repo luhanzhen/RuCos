@@ -30,11 +30,11 @@ impl ValueSticking {
 
 #[allow(dead_code)]
 impl HeuristicValueTrait for ValueSticking {
-    fn select_value(&mut self, var: &Rc<RefCell<Variable>>) -> i32 {
+    fn select_value(&mut self, _var: &Rc<RefCell<Variable>>) -> i32 {
         todo!()
     }
 
-    fn select_idx(&mut self, var: &Rc<RefCell<Variable>>) -> usize {
+    fn select_idx(&mut self, _var: &Rc<RefCell<Variable>>) -> usize {
         todo!()
     }
 }

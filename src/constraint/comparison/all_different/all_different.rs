@@ -16,8 +16,9 @@ use crate::constraint::constraint::ConstraintTrait;
 use crate::constraint::constraint_factory::XConstraintType;
 use crate::constraint::genecric::extension::compact_table::CompactTable;
 use crate::constraint::propagator::PropagatorTrait;
-use crate::problem::problem::Var;
+
 use crate::solve::solver::solver::Solver;
+use crate::variable::variable::Var;
 use std::cell::RefCell;
 use std::fmt::{Display, Formatter};
 use std::rc::Rc;

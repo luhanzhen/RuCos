@@ -20,16 +20,17 @@ use crate::solve::restart::restart_trait::RestartTrait;
 use crate::solve::solution::Solution;
 use crate::solve::solver::status::*;
 use crate::utils::time_interval::TimeInterval;
-use crate::variable::variable::Variable;
+use crate::variable::variable::{Var, Variable};
 use rand::prelude::*;
 use std::cell::RefCell;
+use std::collections::HashSet;
 use std::rc::Rc;
 use std::time::Duration;
 
 #[allow(dead_code)]
 pub struct Solver {
     problem: Rc<RefCell<Problem>>,
-    variables: Vec<Rc<RefCell<Variable>>>,
+    variables: Vec<Var>,
     constraints: Vec<Rc<RefCell<dyn ConstraintTrait>>>,
     timer: TimeInterval,
     status: SearchStates,
@@ -49,17 +50,26 @@ struct Core {
     conflicts: usize,
     propagations: usize,
     filter: usize,
+    future_vars: HashSet<Var>,
+    past_vars: HashSet<Var>,
 }
 
 #[allow(dead_code)]
 impl Core {
-    pub fn new() -> Self {
+    pub fn new(vars: &Vec<Var>) -> Self {
+        let mut future = HashSet::with_capacity(vars.len());
+        let past = HashSet::with_capacity(vars.len());
+        for e in vars.iter() {
+            future.insert(e.clone());
+        }
         Self {
             level: 0usize,
             decides: 0,
             conflicts: 0,
             propagations: 0,
             filter: 0,
+            future_vars: future,
+            past_vars: past,
         }
     }
 }
@@ -75,6 +85,7 @@ impl Solver {
     pub fn new(problem: &Problem) -> Solver {
         let tmp_cons = problem.get_constraints().clone();
         let tmp_var = problem.get_all_variables().clone();
+        let core = Core::new(&tmp_var);
         Self {
             problem: Rc::new(RefCell::new(problem.clone())),
             timer: Default::default(),
@@ -85,7 +96,7 @@ impl Solver {
             status: SearchStates::Init,
             result: SearchResult::Init,
             init_time: None,
-            core: Core::new(),
+            core,
             restart: None,
             value_heuristic: None,
             variable_heuristic: None,
@@ -106,7 +117,7 @@ impl Solver {
             }
         }
     }
-    pub(crate) fn get_all_variables(&self) -> &Vec<Rc<RefCell<Variable>>> {
+    pub(crate) fn get_all_variables(&self) -> &Vec<Var> {
         &self.variables
     }
     pub fn solve(&mut self) {
@@ -137,7 +148,7 @@ impl Solver {
 
     pub fn print_statistics(&self) {
         println!("init time: {:?}", self.init_time.unwrap());
-        println!("{}", self.solutions.to_string());
+        println!("{}", self.solutions);
         println!("solving time: {:?}", self.timer.get());
     }
 
@@ -160,7 +171,7 @@ impl Clone for Solver {
             solutions: Solution::new(&self.variables),
             option_self: None,
             init_time: None,
-            core: Core::new(),
+            core: Core::new(&self.variables),
             restart: None,
             value_heuristic: None,
             variable_heuristic: None,

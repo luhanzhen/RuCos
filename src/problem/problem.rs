@@ -18,18 +18,17 @@ use crate::exception::exception_trait::ExceptionTrait;
 use crate::exception::ExceptionType;
 use crate::solve::solver::solver::Solver;
 use crate::utils::time_interval::TimeInterval;
-use crate::variable::variable::Variable;
+use crate::variable::variable::Var;
 use std::cell::RefCell;
 use std::collections::HashMap;
 use std::fmt::{Display, Formatter};
+
 use std::rc::Rc;
 use std::time::Duration;
 
 // pub struct Problem<X, C> where X: VariableTrait, C: ConstraintTrait {
 
-pub type Var = Rc<RefCell<Variable>>;
 
-pub type Con = Rc<RefCell<dyn ConstraintTrait>>;
 
 pub struct Problem {
     name: String,
@@ -176,7 +175,7 @@ impl Problem {
     }
 
     pub fn solver(&self) -> Solver {
-        Solver::new(&self)
+        Solver::new(self)
     }
 
     pub(crate) fn get_all_variables(&self) -> &Vec<Var> {

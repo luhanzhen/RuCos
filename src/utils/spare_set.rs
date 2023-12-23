@@ -27,10 +27,10 @@ impl Display for SpareSet {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         let mut str = String::from("elements: ");
         for i in self.iter() {
-            str.push_str(&*i.to_string());
+            str.push_str(&i.to_string());
             str.push_str(", ")
         }
-        str.push_str("\n");
+        str.push('\n');
         write!(f, "{}", str)
     }
 }
@@ -55,12 +55,12 @@ impl Iterator for SpareSetIter<'_> {
     type Item = usize;
 
     fn next(&mut self) -> Option<Self::Item> {
-        return if self.index < self.value.limit {
+        if self.index < self.value.limit {
             self.index += 1;
             Some(self.value[self.index - 1])
         } else {
             None
-        };
+        }
     }
 }
 
@@ -88,7 +88,7 @@ impl SpareSet {
     pub fn iter(&self) -> SpareSetIter {
         SpareSetIter {
             index: 0,
-            value: &self,
+            value: self,
         }
     }
     pub fn new_without_fill(size: usize) -> Self {

@@ -14,11 +14,13 @@
  */
 use crate::constraint::constraint_factory::XConstraintType;
 use crate::constraint::propagator::PropagatorTrait;
-use crate::problem::problem::Var;
 use crate::solve::solver::solver::Solver;
+use crate::variable::variable::Var;
 use std::cell::RefCell;
 use std::fmt::Display;
 use std::rc::Rc;
+
+pub type Con = Rc<RefCell<dyn ConstraintTrait>>;
 
 pub trait ConstraintTrait: Display {
     fn get_propagators(&mut self) -> &mut Vec<Box<dyn PropagatorTrait>>;

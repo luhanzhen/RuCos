@@ -16,19 +16,17 @@ use crate::constraint::propagator::PropagatorTrait;
 use crate::exception::exception_factory::ExceptionFactory;
 use crate::exception::exception_trait::ExceptionTrait;
 use crate::exception::ExceptionType;
-use crate::variable::variable::Variable;
-use std::cell::RefCell;
-use std::rc::Rc;
+use crate::variable::variable::Var;
 
 #[allow(dead_code)]
 pub struct CompactTable {
-    scope: Vec<Rc<RefCell<Variable>>>,
+    scope: Vec<Var>,
     empty_domain_exception: Box<dyn ExceptionTrait>,
 }
 
 impl CompactTable {
-    pub fn new(scope: &Vec<Rc<RefCell<Variable>>>) -> Self {
-        let mut scope_copy: Vec<Rc<RefCell<Variable>>> = Vec::new();
+    pub fn new(scope: &Vec<Var>) -> Self {
+        let mut scope_copy: Vec<Var> = Vec::new();
         scope.iter().for_each(|e| {
             scope_copy.push(e.clone());
         });
@@ -47,21 +45,18 @@ impl PropagatorTrait for CompactTable {
         todo!()
     }
 
-    fn filter_by_variable(
-        &mut self,
-        _dummy: &Rc<RefCell<Variable>>,
-    ) -> Result<usize, &Box<dyn ExceptionTrait>> {
+    fn filter_by_variable(&mut self, _dummy: &Var) -> Result<usize, &Box<dyn ExceptionTrait>> {
         if *_dummy == self.scope[0] {
-            println!("before {}", self.scope[0].borrow().to_string());
+            println!("before {}", self.scope[0].borrow());
             // match
             self.scope[0].borrow_mut().delete_idx_at_level(0, 0);
             if self.scope[0].borrow().is_empty() {
                 return Err(&self.empty_domain_exception);
             }
             self.scope[0].borrow_mut().record_limit(0);
-            println!("after {}", self.scope[0].borrow().to_string());
+            println!("after {}", self.scope[0].borrow());
         } else {
-            println!("before {}", self.scope[1].borrow().to_string());
+            println!("before {}", self.scope[1].borrow());
 
             if self.scope[1].borrow().contains_idx(1) {
                 self.scope[1].borrow_mut().delete_idx_at_level(1, 1);
@@ -74,14 +69,14 @@ impl PropagatorTrait for CompactTable {
                 return Err(&self.empty_domain_exception);
             }
             self.scope[1].borrow_mut().record_limit(1);
-            println!("after {}", self.scope[1].borrow().to_string());
+            println!("after {}", self.scope[1].borrow());
         }
         Ok(0)
     }
 
     fn filter_by_arc(
         &mut self,
-        _dummy: &Rc<RefCell<Variable>>,
+        _dummy: &Var,
         _value: usize,
     ) -> Result<usize, &Box<dyn ExceptionTrait>> {
         todo!()

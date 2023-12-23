@@ -13,7 +13,7 @@
  *
  */
 use crate::exception::exception_trait::ExceptionTrait;
-use crate::problem::problem::Var;
+use crate::variable::variable::Var;
 
 pub trait PropagatorTrait {
     fn initialise(&mut self);

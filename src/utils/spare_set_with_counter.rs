@@ -26,12 +26,12 @@ impl Display for SpareSetCounter {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         let mut str = String::from("elements[counter]: ");
         for i in self.iter() {
-            str.push_str(&*i.to_string());
-            str.push_str("[");
-            str.push_str(&*self.counter(i).to_string());
+            str.push_str(&i.to_string());
+            str.push('[');
+            str.push_str(&self.counter(i).to_string());
             str.push_str("], ");
         }
-        str.push_str("\n");
+        str.push('\n');
         write!(f, "{}", str)
     }
 }
@@ -86,7 +86,7 @@ impl SpareSetCounter {
 
     pub fn counter(&self, ele: usize) -> usize {
         debug_assert!(ele < self.max_size());
-        return self._counter[ele];
+        self._counter[ele]
     }
 
     pub fn reduce_to(&mut self, ele: usize) {

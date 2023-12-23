@@ -61,7 +61,7 @@ impl PartialEq for DomainValues {
                 return false;
             }
         }
-        return true;
+        true
     }
 }
 
@@ -88,10 +88,7 @@ impl DomainTrait for DomainValues {
     #[inline]
     fn value_to_idx(&self, value: i32) -> Option<usize> {
         return if self.map.contains_key(&value) {
-            match self.map.get(&value) {
-                None => None,
-                Some(&e) => Some(e),
-            }
+            self.map.get(&value).copied()
         } else {
             None
         };

@@ -209,7 +209,7 @@ pub trait DomainTrait: Display + Clone + PartialEq + Index<usize> {
         for i in 0..self.max_size() {
             if !self.get_elements().contains(i) {
                 str.push_str(&self.idx_to_value(i).unwrap().to_string());
-                str.push_str("(");
+                str.push('(');
                 str.push_str(
                     &self
                         .get_elements()
@@ -220,8 +220,8 @@ pub trait DomainTrait: Display + Clone + PartialEq + Index<usize> {
                 str.push_str("), ");
             }
         }
-        str.push_str("]");
-        str.push_str("\n");
+        str.push(']');
+        str.push('\n');
         str
     }
 }

@@ -18,9 +18,78 @@ use crate::exception::ExceptionType;
 use crate::problem::problem::Problem;
 use crate::variable::domain::domain_trait::DomainTrait;
 use crate::variable::domain::Domain;
-use std::cell::RefCell;
+use std::cell::{Ref, RefCell, RefMut};
 use std::fmt::{Debug, Display, Formatter};
+use std::hash::{Hash, Hasher};
 use std::rc::Rc;
+
+#[macro_export]
+macro_rules! var
+{
+     ( $problem:expr, $name:expr, $dom:expr  ) => {
+         Var::new($problem, $name, $dom)
+     };
+
+    ( $name:expr, $dom:expr  ) => {
+         Var::new_without_problem($name, $dom)
+     };
+}
+
+#[derive(Debug)]
+pub struct Var {
+    cell: Rc<RefCell<Variable>>,
+}
+
+impl Eq for Var {}
+
+impl Var {
+    pub fn new(problem: &mut Problem, name: &str, dom: Domain) -> Self {
+        Self {
+            cell: Variable::new(problem, name, dom),
+        }
+    }
+
+    pub fn new_without_problem(name: &str, dom: Domain) -> Self {
+        Self {
+            cell: Variable::new_without_problem(name, dom),
+        }
+    }
+
+    fn new_with_rc_cell(cell: Rc<RefCell<Variable>>) -> Self {
+        Self { cell }
+    }
+    pub fn borrow(&self) -> Ref<'_, Variable> {
+        self.cell.borrow()
+    }
+
+    pub fn borrow_mut(&self) -> RefMut<'_, Variable> {
+        self.cell.borrow_mut()
+    }
+}
+impl Clone for Var {
+    fn clone(&self) -> Self {
+        Self {
+            cell: Rc::clone(&self.cell),
+        }
+    }
+}
+impl Display for Var {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.cell.borrow())
+    }
+}
+
+impl PartialEq for Var {
+    fn eq(&self, other: &Self) -> bool {
+        self.cell == other.cell
+    }
+}
+
+impl Hash for Var {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        self.cell.borrow().hash(state)
+    }
+}
 
 #[allow(dead_code)]
 #[derive(Debug)]
@@ -32,10 +101,14 @@ pub struct Variable {
     empty_domain_exception: Box<dyn ExceptionTrait>,
     vale_not_found_exception: Box<dyn ExceptionTrait>,
 }
-
+impl Hash for Variable {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        self.name.hash(state)
+    }
+}
 impl Display for Variable {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}[{}]:{}", self.name, self.id, self.domain.to_string())
+        write!(f, "{}[{}]:{}", self.name, self.id, self.domain)
     }
 }
 
@@ -63,7 +136,7 @@ impl Variable {
                 format!("{}'s value is not found.", name).as_str(),
             ),
         }));
-        problem.add_variable(var.clone());
+        problem.add_variable(Var::new_with_rc_cell(var.clone()));
         var
     }
 
@@ -141,13 +214,13 @@ impl Variable {
         value: i32,
         level: usize,
     ) -> Result<usize, &Box<dyn ExceptionTrait>> {
-        return if !self.domain.contains_value(value) {
+        if !self.domain.contains_value(value) {
             Err(&self.vale_not_found_exception)
         } else {
             let idx = self.domain.value_to_idx(value).unwrap();
             self.domain.reduce_to_idx(idx, level);
             Ok(idx)
-        };
+        }
     }
 
     pub(crate) fn assign_idx(
@@ -155,13 +228,13 @@ impl Variable {
         idx: usize,
         level: usize,
     ) -> Result<i32, &Box<dyn ExceptionTrait>> {
-        return if !self.domain.contains_idx(idx) {
+        if !self.domain.contains_idx(idx) {
             Err(&self.vale_not_found_exception)
         } else {
             let value = self.domain.idx_to_value(idx).unwrap();
             self.domain.reduce_to_idx(idx, level);
             Ok(value)
-        };
+        }
     }
 
     pub(crate) fn delete_idx_at_level(&mut self, idx: usize, level: usize) {
@@ -223,7 +296,7 @@ impl Variable {
     pub(crate) fn random_value(&self) -> i32 {
         let n = self.domain.random_idx();
         if let Some(e) = self.domain.idx_to_value(n) {
-            return e;
+            e
         } else {
             self.minimum_value()
         }
@@ -243,7 +316,7 @@ impl Variable {
         self.domain.contains_idx(idx)
     }
     #[inline]
-    pub(crate) fn maximum_value(&self) -> i32 {
+    pub fn maximum_value(&self) -> i32 {
         self.domain.maximum_value()
     }
 
@@ -253,11 +326,11 @@ impl Variable {
     }
 
     #[inline]
-    pub(crate) fn maximum_idx(&self) -> usize {
+    pub fn maximum_idx(&self) -> usize {
         self.domain.maximum_idx()
     }
     #[inline]
-    pub(crate) fn minimum_value(&self) -> i32 {
+    pub fn minimum_value(&self) -> i32 {
         self.domain.minimum_value()
     }
 

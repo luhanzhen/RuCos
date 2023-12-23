@@ -203,7 +203,7 @@ impl LinkedSet {
     pub fn iter(&self) -> LinkedSetIter {
         LinkedSetIter {
             index: self.first,
-            value: &self,
+            value: self,
         }
     } // pub fn new(size: usize) -> Self {
       //     LinkedSet::get(size, )
@@ -263,8 +263,8 @@ impl Display for LinkedSet {
                 str.push_str(", ");
             }
         }
-        str.push_str("]");
-        str.push_str("\n");
+        str.push(']');
+        str.push('\n');
         write!(f, "{}", str)
     }
 }
@@ -386,7 +386,7 @@ impl Index<usize> for LinkedSet {
                 }
             }
         }
-        return e;
+        e
     }
 }
 

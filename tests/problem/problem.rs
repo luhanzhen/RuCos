@@ -16,7 +16,7 @@ use rucos::constraint::comparison::all_different::all_different::AllDifferent;
 use rucos::constraint::genecric::extension::extension::Extension;
 use rucos::domain;
 use rucos::variable::domain::Domain;
-use rucos::variable::variable::Variable;
+use rucos::variable::variable::Var;
 use std::cell::RefCell;
 use std::rc::Rc;
 
@@ -24,11 +24,11 @@ use std::rc::Rc;
 fn add() {
     let mut problem = Default::default();
 
-    let var1 = Variable::new(&mut problem, "var1", domain![1=>10]);
-    let v1 = Variable::new(&mut problem, "v1", domain![7, 43, 22, 33, 2234]);
-    let v2 = Variable::new(&mut problem, "v2", domain![7, 43, 22, 33, 2234, 43]);
+    let var1 = Var::new(&mut problem, "var1", domain![1=>10]);
+    let v1 = Var::new(&mut problem, "v1", domain![7, 43, 22, 33, 2234]);
+    let v2 = Var::new(&mut problem, "v2", domain![7, 43, 22, 33, 2234, 43]);
 
-    problem.new_variable(Variable::new_without_problem("tt", domain![1=>100]));
+    problem.new_variable(Var::new_without_problem("tt", domain![1=>100]));
 
     problem.new_constraint(Rc::new(RefCell::new(Extension::new(vec![
         v1.clone(),

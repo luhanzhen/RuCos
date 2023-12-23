@@ -1,5 +1,6 @@
 use crate::variable::variable::Variable;
 use std::cell::RefCell;
+use std::collections::HashSet;
 use std::rc::Rc;
 
 /**
@@ -18,5 +19,5 @@ use std::rc::Rc;
  */
 
 pub trait HeuristicVariableTrait {
-    fn select_variable(&mut self, future_vars: Vec<Rc<RefCell<Variable>>>) -> i32;
+    fn select_variable(&mut self, future_vars: &HashSet<Rc<RefCell<Variable>>>) -> i32;
 }

@@ -98,12 +98,12 @@ impl Display for SpareSetMultiLevel {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         let mut str = String::from("elements[limits]: ");
         for i in self.iter() {
-            str.push_str(&*i.to_string());
+            str.push_str(&i.to_string());
             // str.push_str("[");
             // str.push_str(&*self.limits(i).to_string());
             str.push_str(", ");
         }
-        str.push_str("\n");
+        str.push('\n');
         write!(f, "{}", str)
     }
 }

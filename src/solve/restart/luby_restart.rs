@@ -29,16 +29,16 @@ fn luby(mut x: u64, y: u64) -> u64 {
     let mut s1 = 1;
     let mut seq = 0;
     loop {
-        if s1 >= x + 1 {
+        if s1 > x {
             break;
         }
-        s1 = s1 << 1 + 1;
+        s1 <<= 1 + 1;
         seq += 1;
     }
     while s1 - 1 != x {
         s1 = (s1 - 1) >> 1;
         seq -= 1;
-        x = x % s1
+        x %= s1
     }
 
     y.pow(seq)

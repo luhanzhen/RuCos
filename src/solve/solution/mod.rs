@@ -13,15 +13,13 @@
  *
  */
 use crate::utils::time_interval::TimeInterval;
-use crate::variable::variable::Variable;
-use std::cell::RefCell;
+use crate::variable::variable::Var;
 use std::collections::HashMap;
 use std::fmt::{Display, Formatter};
-use std::rc::Rc;
 use std::time::Duration;
 
 pub struct Solution {
-    variables: Vec<Rc<RefCell<Variable>>>,
+    variables: Vec<Var>,
     variable_index: HashMap<i32, usize>,
     solution: Vec<Vec<usize>>,
     solution_time: Vec<Duration>,
@@ -35,7 +33,7 @@ impl Display for Solution {
         let mut str = String::new();
 
         for (ith, solution) in self.solution.iter().enumerate() {
-            str.push_str("\t");
+            str.push('\t');
             for (i, s) in solution.iter().enumerate() {
                 str.push_str(&format!(
                     "{}={}, ",
@@ -51,13 +49,13 @@ impl Display for Solution {
 
 #[allow(dead_code)]
 impl Solution {
-    pub fn new(variables_in: &Vec<Rc<RefCell<Variable>>>) -> Self {
+    pub fn new(variables_in: &Vec<Var>) -> Self {
         let mut variable_index = HashMap::new();
         let mut variables = vec![];
         for (i, var) in variables_in.iter().enumerate() {
             // variable_index.push(var.borrow().get_id());
             variable_index.insert(var.borrow().get_id(), i);
-            variables.push(Rc::clone(var));
+            variables.push(var.clone());
         }
         Self {
             variables,
@@ -68,11 +66,7 @@ impl Solution {
         }
     }
 
-    pub fn record_solution(
-        &mut self,
-        variables_in: &Vec<Rc<RefCell<Variable>>>,
-        timer: &TimeInterval,
-    ) {
+    pub fn record_solution(&mut self, variables_in: &Vec<Var>, timer: &TimeInterval) {
         let time = timer.get();
         let mut solution = vec![];
         solution.resize(self.variable_index.len(), 0);

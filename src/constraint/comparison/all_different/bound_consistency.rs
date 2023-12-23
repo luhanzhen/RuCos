@@ -1,6 +1,6 @@
 use crate::constraint::propagator::PropagatorTrait;
 use crate::exception::exception_trait::ExceptionTrait;
-use crate::problem::problem::Var;
+use crate::variable::variable::Var;
 
 /**
  * @project_name: RuCos
@@ -17,23 +17,21 @@ use crate::problem::problem::Var;
  *
  */
 
-pub struct BoundConsistency {
-
-}
+pub struct BoundConsistency {}
 
 impl PropagatorTrait for BoundConsistency {
     fn initialise(&mut self) {
         todo!()
     }
 
-    fn filter_by_variable(&mut self, dummy: &Var) -> Result<usize, &Box<dyn ExceptionTrait>> {
+    fn filter_by_variable(&mut self, _dummy: &Var) -> Result<usize, &Box<dyn ExceptionTrait>> {
         todo!()
     }
 
     fn filter_by_arc(
         &mut self,
-        dummy: &Var,
-        value: usize,
+        _dummy: &Var,
+        _value: usize,
     ) -> Result<usize, &Box<dyn ExceptionTrait>> {
         todo!()
     }
