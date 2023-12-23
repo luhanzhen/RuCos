@@ -1,7 +1,12 @@
+use crate::constraint::constraint::ConstraintTrait;
+use crate::solve::callbacks::delete_decision::DeleteDecision;
+use crate::solve::callbacks::domain_reduction::DomainReduction;
 use crate::solve::callbacks::new_decision::NewDecision;
 use crate::solve::callbacks::non_consistency::NonConsistency;
 use crate::solve::solver::solver::Solver;
 use crate::variable::variable::Var;
+use std::cell::RefCell;
+use std::rc::Rc;
 
 /**
  * @project_name: RuCos
@@ -18,28 +23,16 @@ use crate::variable::variable::Var;
  *
  */
 #[allow(dead_code)]
-pub struct CallbackSet<'a, ND, DD, DR, NC>
-where
-    ND: NewDecision,
-    DD: NewDecision,
-    DR: NewDecision,
-    NC: NonConsistency,
-{
-    new_decision: Vec<&'a mut ND>,
-    delete_decision: Vec<&'a mut DD>,
-    domain_reduction: Vec<&'a mut DR>,
-    non_consistency: Vec<&'a mut NC>,
+pub struct CallbackSet {
+    new_decision: Vec<Rc<RefCell<dyn NewDecision>>>,
+    delete_decision: Vec<Rc<RefCell<dyn DeleteDecision>>>,
+    domain_reduction: Vec<Rc<RefCell<dyn DomainReduction>>>,
+    non_consistency: Vec<Rc<RefCell<dyn NonConsistency>>>,
 }
 
 #[allow(dead_code)]
-impl<'a, ND, DD, DR, NC> CallbackSet<'a, ND, DD, DR, NC>
-where
-    ND: NewDecision,
-    DD: NewDecision,
-    DR: NewDecision,
-    NC: NonConsistency,
-{
-    pub fn new() -> CallbackSet<'a, ND, DD, DR, NC> {
+impl CallbackSet {
+    pub fn new() -> CallbackSet {
         Self {
             new_decision: vec![],
             delete_decision: vec![],
@@ -48,21 +41,50 @@ where
         }
     }
 
-    pub fn notify_new_decision(&mut self, var: &Var, solver: &Solver) {
-        for e in self.new_decision.iter_mut() {
-            e.new_decision_callback(var, solver)
+    pub fn notify_new_decision(&self, var: &Var, solver: &Solver) {
+        for e in self.new_decision.iter() {
+            e.borrow_mut().new_decision_callback(var, solver)
         }
     }
-    pub fn new_decision(&mut self, callback: &'a mut ND) {
+    pub fn notify_delete_decision(&self, var: &Var, value_idx: usize, solver: &Solver) {
+        for e in self.delete_decision.iter() {
+            e.borrow_mut()
+                .delete_decision_callback(var, value_idx, solver)
+        }
+    }
+    pub fn notify_domain_reduction(&self, var: &Var, value_idx: usize, solver: &Solver) {
+        for e in self.domain_reduction.iter() {
+            e.borrow_mut()
+                .domain_reduction_callback(var, value_idx, solver)
+        }
+    }
+    pub fn notify_domain_assignment(&self, var: &Var, value_idx: usize, solver: &Solver) {
+        for e in self.domain_reduction.iter() {
+            e.borrow_mut()
+                .domain_assignment_callback(var, value_idx, solver)
+        }
+    }
+    pub fn notify_non_consistency(
+        &self,
+        cons: &Rc<RefCell<dyn ConstraintTrait>>,
+        level: usize,
+        solver: &Solver,
+    ) {
+        for e in self.non_consistency.iter() {
+            e.borrow_mut().non_consistency_callback(cons, level, solver)
+        }
+    }
+
+    pub fn new_decision(&mut self, callback: Rc<RefCell<dyn NewDecision>>) {
         self.new_decision.push(callback);
     }
-    pub fn delete_decision(&mut self, callback: &'a mut DD) {
+    pub fn delete_decision(&mut self, callback: Rc<RefCell<dyn DeleteDecision>>) {
         self.delete_decision.push(callback);
     }
-    pub fn domain_reduction(&mut self, callback: &'a mut DR) {
+    pub fn domain_reduction(&mut self, callback: Rc<RefCell<dyn DomainReduction>>) {
         self.domain_reduction.push(callback);
     }
-    pub fn non_consistency(&mut self, callback: &'a mut NC) {
+    pub fn non_consistency(&mut self, callback: Rc<RefCell<dyn NonConsistency>>) {
         self.non_consistency.push(callback);
     }
 }

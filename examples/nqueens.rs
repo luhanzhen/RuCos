@@ -24,9 +24,10 @@ use std::rc::Rc;
 fn n_queens(n: usize) -> Problem {
     let mut problem = Default::default();
     let mut vars = vec![];
+
     for i in 0..n {
         // let var = Var::new(&mut problem, &format!("row_{}", &i), domain![0=>(n as i32)]);
-        let var = var!(&mut problem, &format!("row_{}", &i), domain![0=>(n as i32)]);
+        let var = var!(&mut problem, &format!("row_{}", &i), 0=>(n as i32));
         vars.push(var);
     }
 

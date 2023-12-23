@@ -20,6 +20,7 @@ use crate::solve::heuristics::variable::heuristic_variable::HeuristicVariableTra
 use crate::solve::restart::luby_restart::LubyRestart;
 use crate::solve::restart::restart_trait::RestartTrait;
 use crate::solve::solution::Solution;
+use crate::solve::solver::callback_set::CallbackSet;
 use crate::solve::solver::core::Core;
 use crate::solve::solver::status::*;
 use crate::utils::time_interval::TimeInterval;
@@ -44,6 +45,7 @@ pub struct Solver {
     restart: Option<Box<dyn RestartTrait>>,
     value_heuristic: Option<Box<dyn HeuristicValueTrait>>,
     variable_heuristic: Option<Box<dyn HeuristicVariableTrait>>,
+    callback_set: CallbackSet,
 }
 
 #[allow(dead_code)]
@@ -73,6 +75,7 @@ impl Solver {
             restart: None,
             value_heuristic: None,
             variable_heuristic: None,
+            callback_set: CallbackSet::new(),
         };
         match ret.option_self {
             None => ret.option_self = Some(Rc::new(RefCell::new(ret.clone()))),
@@ -159,6 +162,7 @@ impl Clone for Solver {
             restart: None,
             value_heuristic: None,
             variable_heuristic: None,
+            callback_set: CallbackSet::new(),
         }
     }
 }
