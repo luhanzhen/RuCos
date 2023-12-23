@@ -14,6 +14,7 @@
  */
 use crate::utils::set_trait::SetTrait;
 use std::fmt::{Display, Formatter};
+use std::hash::{Hash, Hasher};
 use std::ops::Index;
 #[derive(Debug)]
 pub struct LinkedSet {
@@ -409,5 +410,12 @@ impl Iterator for LinkedSetIter<'_> {
             }
         }
         Some(ret)
+    }
+}
+
+impl Hash for LinkedSet {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        self.next.hash(state);
+        self.prev.hash(state);
     }
 }

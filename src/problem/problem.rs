@@ -28,8 +28,6 @@ use std::time::Duration;
 
 // pub struct Problem<X, C> where X: VariableTrait, C: ConstraintTrait {
 
-
-
 pub struct Problem {
     name: String,
     variables: Vec<Var>,

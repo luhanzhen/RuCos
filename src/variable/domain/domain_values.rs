@@ -16,6 +16,7 @@ use crate::utils::linked_set::LinkedSet;
 use crate::variable::domain::domain_trait::DomainTrait;
 use std::collections::HashMap;
 use std::fmt::{Display, Formatter};
+use std::hash::{Hash, Hasher};
 use std::ops::Index;
 #[derive(Debug)]
 pub struct DomainValues {
@@ -83,6 +84,13 @@ impl Index<usize> for DomainValues {
         &self.get_elements()[index]
     }
 }
+
+impl Hash for DomainValues {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        self.elements.hash(state)
+    }
+}
+
 impl DomainTrait for DomainValues {
     /// if the value is not in the domain, return usize::None
     #[inline]
@@ -104,16 +112,7 @@ impl DomainTrait for DomainValues {
     fn is_idx_correspond_to_values(&self) -> bool {
         self.minimum_value() == 0 && self.maximum_value() == self.max_size() as i32
     }
-    #[inline]
-    fn hash(&self) -> usize {
-        // let range:Range<usize> = 0..10;
 
-        let mut ret = 0;
-        for i in self.values.iter().enumerate() {
-            ret += *i.1 as usize * 31usize + (self.values.len() - i.0);
-        }
-        ret
-    }
     #[inline]
     fn get_elements(&self) -> &LinkedSet {
         &self.elements

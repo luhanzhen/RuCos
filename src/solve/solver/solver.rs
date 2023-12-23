@@ -15,7 +15,9 @@
 use crate::constraint::constraint::ConstraintTrait;
 use crate::problem::problem::Problem;
 use crate::solve::heuristics::value::heuristic_value::HeuristicValueTrait;
+use crate::solve::heuristics::value::value_first::ValueFirst;
 use crate::solve::heuristics::variable::heuristic_variable::HeuristicVariableTrait;
+use crate::solve::restart::luby_restart::LubyRestart;
 use crate::solve::restart::restart_trait::RestartTrait;
 use crate::solve::solution::Solution;
 use crate::solve::solver::status::*;
@@ -86,7 +88,7 @@ impl Solver {
         let tmp_cons = problem.get_constraints().clone();
         let tmp_var = problem.get_all_variables().clone();
         let core = Core::new(&tmp_var);
-        Self {
+        let mut ret = Self {
             problem: Rc::new(RefCell::new(problem.clone())),
             timer: Default::default(),
             solutions: Solution::new(&tmp_var),
@@ -94,23 +96,24 @@ impl Solver {
             variables: tmp_var,
             constraints: tmp_cons,
             status: SearchStates::Init,
-            result: SearchResult::Init,
+            result: SearchResult::Unknown,
             init_time: None,
             core,
             restart: None,
             value_heuristic: None,
             variable_heuristic: None,
+        };
+        match ret.option_self {
+            None => ret.option_self = Some(Rc::new(RefCell::new(ret.clone()))),
+            Some(_) => {}
         }
+        ret
     }
 
     pub fn get_conflicts(&self) -> usize {
         self.core.conflicts
     }
     pub fn delay_construct(&mut self) {
-        match self.option_self {
-            None => self.option_self = Some(Rc::new(RefCell::new(self.clone()))),
-            Some(_) => {}
-        }
         for e in self.constraints.iter_mut() {
             if let Some(op) = &self.option_self {
                 e.borrow_mut().delay_construct(op.clone());
@@ -120,9 +123,19 @@ impl Solver {
     pub(crate) fn get_all_variables(&self) -> &Vec<Var> {
         &self.variables
     }
+
+    fn choose_strategy(&mut self) {
+        self.value_heuristic = Some(Box::new(ValueFirst::new()));
+        if let Some(value) = &self.option_self {
+            self.restart = Some(Box::new(LubyRestart::new_with_solver_and_random_factor(
+                value,
+            )))
+        }
+    }
     pub fn solve(&mut self) {
         self.init_time = Some(self.problem.borrow_mut().time());
         self.timer.reset();
+        self.choose_strategy();
         self.shuffle_variables();
 
         self.delay_construct();

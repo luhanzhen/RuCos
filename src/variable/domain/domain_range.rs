@@ -16,6 +16,7 @@ use crate::utils::linked_set::LinkedSet;
 use crate::utils::set_trait::SetTrait;
 use crate::variable::domain::domain_trait::DomainTrait;
 use std::fmt::{Display, Formatter};
+use std::hash::{Hash, Hasher};
 use std::ops::{Index, Range};
 #[derive(Debug)]
 pub struct DomainRange {
@@ -75,6 +76,12 @@ impl Index<usize> for DomainRange {
     }
 }
 
+impl Hash for DomainRange {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        self.elements.hash(state)
+    }
+}
+
 impl DomainTrait for DomainRange {
     fn value_to_idx(&self, value: i32) -> Option<usize> {
         if value < self.range.start || value > self.range.end {
@@ -94,13 +101,6 @@ impl DomainTrait for DomainRange {
 
     fn is_idx_correspond_to_values(&self) -> bool {
         false
-    }
-
-    fn hash(&self) -> usize {
-        let mut ret = 0;
-        ret += (self.range.start * 31) ^ 1;
-        ret += (self.range.end * 31) ^ 2;
-        ret as usize
     }
 
     #[inline]

@@ -17,6 +17,7 @@ use crate::variable::domain::domain_range::DomainRange;
 use crate::variable::domain::domain_trait::DomainTrait;
 use crate::variable::domain::domain_values::DomainValues;
 use std::fmt::{Display, Formatter};
+use std::hash::{Hash, Hasher};
 use std::ops::{Index, Range};
 
 pub mod domain_range;
@@ -144,6 +145,14 @@ impl Index<usize> for Domain {
         }
     }
 }
+impl Hash for Domain {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        match self {
+            Domain::DomRange(r) => r.hash(state),
+            Domain::DomValues(v) => v.hash(state),
+        }
+    }
+}
 impl DomainTrait for Domain {
     fn value_to_idx(&self, value: i32) -> Option<usize> {
         match self {
@@ -166,12 +175,7 @@ impl DomainTrait for Domain {
         }
     }
     // repeat! {hash, usize}
-    fn hash(&self) -> usize {
-        match self {
-            Domain::DomRange(r) => r.hash(),
-            Domain::DomValues(v) => v.hash(),
-        }
-    }
+
     fn get_elements(&self) -> &LinkedSet {
         match self {
             Domain::DomRange(r) => r.get_elements(),

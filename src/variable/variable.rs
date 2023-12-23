@@ -24,15 +24,14 @@ use std::hash::{Hash, Hasher};
 use std::rc::Rc;
 
 #[macro_export]
-macro_rules! var
-{
-     ( $problem:expr, $name:expr, $dom:expr  ) => {
-         Var::new($problem, $name, $dom)
-     };
+macro_rules! var {
+    ( $problem:expr, $name:expr, $dom:expr  ) => {
+        Var::new($problem, $name, $dom)
+    };
 
     ( $name:expr, $dom:expr  ) => {
-         Var::new_without_problem($name, $dom)
-     };
+        Var::new_without_problem($name, $dom)
+    };
 }
 
 #[derive(Debug)]
@@ -58,15 +57,18 @@ impl Var {
     fn new_with_rc_cell(cell: Rc<RefCell<Variable>>) -> Self {
         Self { cell }
     }
+
+    #[inline]
     pub fn borrow(&self) -> Ref<'_, Variable> {
         self.cell.borrow()
     }
-
+    #[inline]
     pub fn borrow_mut(&self) -> RefMut<'_, Variable> {
         self.cell.borrow_mut()
     }
 }
 impl Clone for Var {
+    #[inline]
     fn clone(&self) -> Self {
         Self {
             cell: Rc::clone(&self.cell),

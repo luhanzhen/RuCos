@@ -12,4 +12,4 @@
  * @description:
  *
  */
-mod regular;
+pub mod regular;

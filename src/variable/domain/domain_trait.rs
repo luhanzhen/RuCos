@@ -2,6 +2,7 @@ use crate::utils::linked_set::{LinkedSet, LinkedSetIter};
 use crate::utils::set_trait::SetTrait;
 use rand::random;
 use std::fmt::Display;
+use std::hash::Hash;
 use std::ops::Index;
 
 /***
@@ -17,7 +18,7 @@ use std::ops::Index;
  *
  */
 #[allow(dead_code)]
-pub trait DomainTrait: Display + Clone + PartialEq + Index<usize> {
+pub trait DomainTrait: Display + Clone + PartialEq + Index<usize> + Hash {
     /// if the value is not in the domain, return None
     fn value_to_idx(&self, value: i32) -> Option<usize>;
 
@@ -25,8 +26,6 @@ pub trait DomainTrait: Display + Clone + PartialEq + Index<usize> {
     fn idx_to_value(&self, idx: usize) -> Option<i32>;
 
     fn is_idx_correspond_to_values(&self) -> bool;
-
-    fn hash(&self) -> usize;
 
     fn get_elements(&self) -> &LinkedSet;
     fn get_elements_mut(&mut self) -> &mut LinkedSet;

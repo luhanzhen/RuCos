@@ -1,3 +1,4 @@
+use crate::constraint::comparison::all_different::bound_consistency::BoundConsistency;
 /**
  * @project_name: RuCos
  *
@@ -14,9 +15,7 @@
  */
 use crate::constraint::constraint::ConstraintTrait;
 use crate::constraint::constraint_factory::XConstraintType;
-use crate::constraint::genecric::extension::compact_table::CompactTable;
 use crate::constraint::propagator::PropagatorTrait;
-
 use crate::solve::solver::solver::Solver;
 use crate::variable::variable::Var;
 use std::cell::RefCell;
@@ -40,7 +39,8 @@ impl Display for AllDifferent {
 #[allow(dead_code)]
 impl AllDifferent {
     pub fn new(scope: Vec<Var>) -> Self {
-        let propagators: Vec<Box<dyn PropagatorTrait>> = vec![Box::new(CompactTable::new(&scope))];
+        let propagators: Vec<Box<dyn PropagatorTrait>> =
+            vec![Box::new(BoundConsistency::new(&scope))];
         Self {
             scope,
             solver: None,

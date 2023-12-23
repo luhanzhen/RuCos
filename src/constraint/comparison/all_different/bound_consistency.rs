@@ -1,5 +1,7 @@
 use crate::constraint::propagator::PropagatorTrait;
+use crate::exception::exception_factory::ExceptionFactory;
 use crate::exception::exception_trait::ExceptionTrait;
+use crate::exception::ExceptionType;
 use crate::variable::variable::Var;
 
 /**
@@ -17,8 +19,30 @@ use crate::variable::variable::Var;
  *
  */
 
-pub struct BoundConsistency {}
+#[allow(dead_code)]
+pub struct BoundConsistency {
+    scope: Vec<Var>,
+    empty_domain_exception: Box<dyn ExceptionTrait>,
+}
 
+#[allow(dead_code)]
+impl BoundConsistency {
+    pub fn new(scope: &Vec<Var>) -> Self {
+        let mut scope_copy: Vec<Var> = Vec::new();
+        scope.iter().for_each(|e| {
+            scope_copy.push(e.clone());
+        });
+        Self {
+            scope: scope_copy,
+            empty_domain_exception: ExceptionFactory::new(
+                ExceptionType::EmptyDomainExceptionType,
+                "",
+            ),
+        }
+    }
+}
+
+#[allow(dead_code)]
 impl PropagatorTrait for BoundConsistency {
     fn initialise(&mut self) {
         todo!()
@@ -44,7 +68,7 @@ impl PropagatorTrait for BoundConsistency {
         todo!()
     }
 
-    fn restore_to_level(&mut self) {
+    fn restore_to_level(&mut self,level:usize) {
         todo!()
     }
 }

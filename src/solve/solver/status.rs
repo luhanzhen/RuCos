@@ -12,14 +12,17 @@
  * @description:
  *
  */
+
+
 #[allow(dead_code)]
 #[derive(Clone)]
 pub enum SearchResult {
-    Init,
     Unknown,
     Sat,
     UnSat,
 }
+
+
 #[allow(dead_code)]
 #[derive(Clone)]
 pub enum SearchStates {
