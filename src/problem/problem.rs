@@ -22,12 +22,13 @@ use crate::variable::variable::Var;
 use std::cell::RefCell;
 use std::collections::HashMap;
 use std::fmt::{Display, Formatter};
+use std::hash::{Hash, Hasher};
 
 use std::rc::Rc;
 use std::time::Duration;
 
 // pub struct Problem<X, C> where X: VariableTrait, C: ConstraintTrait {
-
+// #[derive(Debug)]
 pub struct Problem {
     name: String,
     variables: Vec<Var>,
@@ -36,7 +37,11 @@ pub struct Problem {
     static_variables_id: i32,
     timer: TimeInterval,
 }
-
+impl Hash for Problem {
+    fn hash<H: Hasher>(&self, _state: &mut H) {
+        todo!()
+    }
+}
 impl Display for Problem {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.name)

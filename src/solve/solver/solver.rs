@@ -19,6 +19,7 @@ use crate::solve::heuristics::value::value_first::ValueFirst;
 use crate::solve::heuristics::variable::heuristic_variable::HeuristicVariableTrait;
 use crate::solve::restart::luby_restart::LubyRestart;
 use crate::solve::restart::restart_trait::RestartTrait;
+use crate::solve::seal::Seal;
 use crate::solve::solution::Solution;
 use crate::solve::solver::callback_set::CallbackSet;
 use crate::solve::solver::core::Core;
@@ -27,19 +28,22 @@ use crate::utils::time_interval::TimeInterval;
 use crate::variable::variable::{Var, Variable};
 use rand::prelude::*;
 use std::cell::RefCell;
+use std::fmt::{Display, Formatter};
+use std::hash::{Hash, Hasher};
 use std::rc::Rc;
 use std::time::Duration;
 
 #[allow(dead_code)]
+// #[derive(Debug)]
 pub struct Solver {
-    problem: Rc<RefCell<Problem>>,
+    problem: Seal<Problem>,
     variables: Vec<Var>,
     constraints: Vec<Rc<RefCell<dyn ConstraintTrait>>>,
     timer: TimeInterval,
     status: SearchStates,
     result: SearchResult,
     solutions: Solution,
-    option_self: Option<Rc<RefCell<Solver>>>,
+    option_self: Option<Seal<Solver>>,
     init_time: Option<Duration>,
     core: Core,
     restart: Option<Box<dyn RestartTrait>>,
@@ -48,6 +52,16 @@ pub struct Solver {
     callback_set: CallbackSet,
 }
 
+impl Display for Solver {
+    fn fmt(&self, _f: &mut Formatter<'_>) -> std::fmt::Result {
+        todo!()
+    }
+}
+impl Hash for Solver {
+    fn hash<H: Hasher>(&self, _state: &mut H) {
+        todo!()
+    }
+}
 #[allow(dead_code)]
 impl From<&Problem> for Solver {
     fn from(value: &Problem) -> Self {
@@ -62,7 +76,7 @@ impl Solver {
         let tmp_var = problem.get_all_variables().clone();
         let core = Core::new(&tmp_var);
         let mut ret = Self {
-            problem: Rc::new(RefCell::new(problem.clone())),
+            problem: Seal::new(problem.clone()),
             timer: Default::default(),
             solutions: Solution::new(&tmp_var),
             option_self: None,
@@ -78,7 +92,7 @@ impl Solver {
             callback_set: CallbackSet::new(),
         };
         match ret.option_self {
-            None => ret.option_self = Some(Rc::new(RefCell::new(ret.clone()))),
+            None => ret.option_self = Some(Seal::new(ret.clone())),
             Some(_) => {}
         }
         ret
@@ -149,7 +163,7 @@ impl Solver {
 impl Clone for Solver {
     fn clone(&self) -> Self {
         Self {
-            problem: Rc::clone(&self.problem),
+            problem: self.problem.clone(),
             variables: self.variables.clone(),
             constraints: self.constraints.clone(),
             timer: Default::default(),

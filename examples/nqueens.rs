@@ -15,9 +15,9 @@
 use rucos::constraint::comparison::all_different::all_different::AllDifferent;
 use rucos::problem::problem::Problem;
 use rucos::solve::solver::solver::Solver;
+use rucos::var;
 use rucos::variable::domain::Domain;
 use rucos::variable::variable::Var;
-use rucos::{domain, var};
 use std::cell::RefCell;
 use std::rc::Rc;
 

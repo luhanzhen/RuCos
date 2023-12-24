@@ -19,12 +19,12 @@ use rucos::variable::domain::Domain;
 #[test]
 fn new() {
     let dom = domain![1, 2, 3, 4, 76, 43, 23, 43, 21, 34, 55, 33];
-    for i in vec![1, 2, 3, 4, 76, 43, 23, 43, 21, 34, 55, 33].iter() {
-        assert_eq!(dom.contains_value(*i), true);
+    for i in [1, 2, 3, 4, 76, 43, 23, 43, 21, 34, 55, 33].iter() {
+        assert!(dom.contains_value(*i));
     }
     let dom1 = domain![1=>32];
     for i in 1..32 {
-        assert_eq!(dom1.contains_value(i), true);
+        assert!(dom1.contains_value(i));
     }
 }
 
@@ -32,7 +32,7 @@ fn new() {
 fn delete() {
     let mut dom = domain![1, 2, 3, 4, 76, 43, 23, 43, 21, 34, 55, 33];
     dom.delete_value_at_level(23, 3);
-    assert_eq!(dom.contains_value(23), false);
+    assert!(!dom.contains_value(23));
 }
 
 #[test]
@@ -40,52 +40,52 @@ fn restore() {
     let mut dom = domain![1, 2, 3, 4, 76, 43, 23, 43, 21, 34, 55, 33];
     dom.delete_value_at_level(23, 3);
     dom.record_limit(3);
-    assert_eq!(dom.contains_value(23), false);
+    assert!(!dom.contains_value(23));
     dom.delete_value_at_level(43, 4);
     dom.record_limit(4);
-    assert_eq!(dom.contains_value(43), false);
+    assert!(!dom.contains_value(43));
     dom.delete_value_at_level(21, 5);
     dom.record_limit(5);
-    assert_eq!(dom.contains_value(21), false);
+    assert!(!dom.contains_value(21));
     dom.delete_value_at_level(33, 10);
     dom.delete_value_at_level(2, 10);
     dom.record_limit(10);
-    assert_eq!(dom.contains_value(33), false);
-    assert_eq!(dom.contains_value(2), false);
+    assert!(!dom.contains_value(33));
+    assert!(!dom.contains_value(2));
     dom.restore_to_limit(10);
-    assert_eq!(dom.contains_value(33), true);
-    assert_eq!(dom.contains_value(2), true);
+    assert!(dom.contains_value(33));
+    assert!(dom.contains_value(2));
     dom.restore_to_limit(5);
-    assert_eq!(dom.contains_value(21), true);
+    assert!(dom.contains_value(21));
     dom.restore_to_limit(4);
-    assert_eq!(dom.contains_value(43), true);
+    assert!(dom.contains_value(43));
     dom.restore_to_limit(3);
-    assert_eq!(dom.contains_value(23), true);
+    assert!(dom.contains_value(23));
 
     let mut dom1 = domain![1=>100];
     dom1.delete_value_at_level(23, 3);
     dom1.record_limit(3);
-    assert_eq!(dom1.contains_value(23), false);
+    assert!(!dom1.contains_value(23));
     dom1.delete_value_at_level(43, 4);
     dom1.record_limit(4);
-    assert_eq!(dom1.contains_value(43), false);
+    assert!(!dom1.contains_value(43));
     dom1.delete_value_at_level(21, 5);
     dom1.record_limit(5);
-    assert_eq!(dom1.contains_value(21), false);
+    assert!(!dom1.contains_value(21));
     dom1.delete_value_at_level(33, 10);
     dom1.delete_value_at_level(2, 10);
     dom1.record_limit(10);
-    assert_eq!(dom1.contains_value(33), false);
-    assert_eq!(dom1.contains_value(2), false);
+    assert!(!dom1.contains_value(33));
+    assert!(!dom1.contains_value(2));
     dom1.restore_to_limit(10);
-    assert_eq!(dom1.contains_value(33), true);
-    assert_eq!(dom1.contains_value(2), true);
+    assert!(dom1.contains_value(33));
+    assert!(dom1.contains_value(2));
     dom1.restore_to_limit(5);
-    assert_eq!(dom1.contains_value(21), true);
+    assert!(dom1.contains_value(21));
     dom1.restore_to_limit(4);
-    assert_eq!(dom.contains_value(43), true);
+    assert!(dom.contains_value(43));
     dom1.restore_to_limit(3);
-    assert_eq!(dom1.contains_value(23), true);
+    assert!(dom1.contains_value(23));
 }
 #[test]
 fn reduce() {
@@ -97,25 +97,25 @@ fn reduce() {
     dom.reduce_to_value(19, 1);
     dom.record_limit(1);
 
-    assert_eq!(dom.contains_value(19), true);
-    assert_eq!(dom.is_single_value(19), true);
+    assert!(dom.contains_value(19));
+    assert!(dom.is_single_value(19));
     for e in 10..100 {
         if e != 19 {
-            assert_eq!(dom.contains_value(e), false);
+            assert!(!dom.contains_value(e));
         }
     }
     dom.restore_to_limit(1);
     for e in 10..100 {
-        assert_eq!(dom.contains_value(e), true);
+        assert!(dom.contains_value(e));
     }
 }
 
 #[test]
 fn is_boolean() {
-    assert_eq!(domain!(0=>2).is_boolean(), true);
-    assert_eq!(domain!(0, 1).is_boolean(), true);
-    assert_eq!(domain!(0, 1, 2).is_boolean(), false);
-    assert_eq!(domain!(0, -1).is_boolean(), false);
+    assert!(domain!(0=>2).is_boolean());
+    assert!(domain!(0, 1).is_boolean());
+    assert!(!domain!(0, 1, 2).is_boolean());
+    assert!(!domain!(0, -1).is_boolean());
 }
 
 #[test]
@@ -123,34 +123,34 @@ fn update_bound() {
     let mut dom = domain![100=>1000];
 
     for i in 0..900 {
-        assert_eq!(dom.contains_idx(i), true);
+        assert!(dom.contains_idx(i));
     }
     println!("{}", dom);
     dom.update_idx_lower_bound_at_level(150, 1);
     dom.record_limit(1);
     println!("{}", dom);
     for i in 0..150 {
-        assert_eq!(dom.contains_idx(i), false);
+        assert!(!dom.contains_idx(i));
     }
     for i in 150..900 {
-        assert_eq!(dom.contains_idx(i), true);
+        assert!(dom.contains_idx(i));
     }
     dom.update_idx_upper_bound_at_level(876, 2);
     dom.record_limit(2);
     println!("{}", dom);
     for i in 0..150 {
-        assert_eq!(dom.contains_idx(i), false);
+        assert!(!dom.contains_idx(i));
     }
     for i in 150..876 {
-        assert_eq!(dom.contains_idx(i), true);
+        assert!(dom.contains_idx(i));
     }
     for i in 876..900 {
-        assert_eq!(dom.contains_idx(i), false);
+        assert!(!dom.contains_idx(i));
     }
     dom.restore_to_limit(2);
     dom.restore_to_limit(1);
     for i in 0..900 {
-        assert_eq!(dom.contains_idx(i), true);
+        assert!(dom.contains_idx(i));
     }
 }
 
@@ -171,8 +171,8 @@ fn max_min() {
     dom.record_limit(1);
     dom.reduce_to_value(32, 2);
     dom.record_limit(2);
-    assert_eq!(dom.contains_value(32), true);
-    assert_eq!(dom.is_single_value(32), true);
+    assert!(dom.contains_value(32));
+    assert!(dom.is_single_value(32));
     assert_eq!(dom.maximum_value(), 32);
     assert_eq!(dom.maximum_idx(), 22);
     assert_eq!(dom.which_level_deleted_value(44).unwrap(), 2);

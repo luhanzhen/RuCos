@@ -29,7 +29,7 @@ fn add() {
 fn contain() {
     let set = SpareSet::new_with_fill(40);
     for i in 0..40usize {
-        assert_eq!(set.contains(i), true);
+        assert!(set.contains(i));
     }
 }
 
@@ -56,10 +56,10 @@ fn get_position() {
 fn reduce_to() {
     let mut set = SpareSet::new_with_fill(40);
     set.reduce_to(20);
-    assert_eq!(set.contains(20), true);
+    assert!(set.contains(20));
     for i in 0..40usize {
         if i != 20 {
-            assert_eq!(set.contains(i), false);
+            assert!(!set.contains(i));
         }
     }
 }
@@ -68,7 +68,7 @@ fn reduce_to() {
 fn delete() {
     let mut set = SpareSet::new_with_fill(40);
     set.delete(30);
-    assert_eq!(set.contains(30), false);
+    assert!(!set.contains(30));
 }
 
 #[test]
@@ -87,27 +87,27 @@ fn clone() {
 
     let set1 = set.clone();
     for i in 0..40usize {
-        assert_eq!(set1.contains(i / 2), false);
+        assert!(!set1.contains(i / 2));
     }
     for i in 20..40usize {
-        assert_eq!(set1.contains(i), true);
+        assert!(set1.contains(i));
     }
     set.clear();
     for i in 20..40usize {
-        assert_eq!(set1.contains(i), true);
+        assert!(set1.contains(i));
     }
 }
 
 #[test]
 fn is_empty() {
     let mut set = SpareSet::new_without_fill(40);
-    assert_eq!(set.is_empty(), true);
+    assert!(set.is_empty());
     for i in 0..40usize {
         set.add(i / 2);
-        assert_eq!(set.is_empty(), false);
+        assert!(!set.is_empty());
     }
     set.clear();
-    assert_eq!(set.is_empty(), true);
+    assert!(set.is_empty());
 }
 
 #[test]

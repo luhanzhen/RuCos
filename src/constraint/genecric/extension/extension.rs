@@ -18,14 +18,15 @@ use crate::constraint::genecric::extension::compact_table::CompactTable;
 use crate::constraint::propagator::PropagatorTrait;
 use crate::solve::solver::solver::Solver;
 use crate::variable::variable::Var;
-use std::cell::RefCell;
+
 use std::fmt::{Display, Formatter};
-use std::rc::Rc;
+
+use crate::solve::seal::Seal;
 
 #[allow(dead_code)]
 pub struct Extension {
     scope: Vec<Var>,
-    solver: Option<Rc<RefCell<Solver>>>,
+    solver: Option<Seal<Solver>>,
     propagators: Vec<Box<dyn PropagatorTrait>>,
     r#type: XConstraintType,
 }
@@ -71,7 +72,7 @@ impl ConstraintTrait for Extension {
         todo!()
     }
 
-    fn delay_construct(&mut self, solver: Rc<RefCell<Solver>>) {
+    fn delay_construct(&mut self, solver: Seal<Solver>) {
         self.solver = Some(solver);
         // println!("extension:")
     }

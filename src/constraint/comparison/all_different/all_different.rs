@@ -18,14 +18,15 @@ use crate::constraint::constraint_factory::XConstraintType;
 use crate::constraint::propagator::PropagatorTrait;
 use crate::solve::solver::solver::Solver;
 use crate::variable::variable::Var;
-use std::cell::RefCell;
+
 use std::fmt::{Display, Formatter};
-use std::rc::Rc;
+
+use crate::solve::seal::Seal;
 
 #[allow(dead_code)]
 pub struct AllDifferent {
     scope: Vec<Var>,
-    solver: Option<Rc<RefCell<Solver>>>,
+    solver: Option<Seal<Solver>>,
     propagators: Vec<Box<dyn PropagatorTrait>>,
     r#type: XConstraintType,
 }
@@ -72,7 +73,7 @@ impl ConstraintTrait for AllDifferent {
         todo!()
     }
 
-    fn delay_construct(&mut self, solver: Rc<RefCell<Solver>>) {
+    fn delay_construct(&mut self, solver: Seal<Solver>) {
         self.solver = Some(solver);
         // for e in self.solver.as_ref().unwrap().borrow().get_all_variables().iter()
         // {

@@ -50,7 +50,7 @@ fn contain() {
     set.delete_at_level(4, 4);
     for i in 0..40usize {
         if i != 3 && i != 4 {
-            assert_eq!(set.contains(i), true);
+            assert!(set.contains(i));
         }
     }
 }
@@ -59,12 +59,12 @@ fn contain() {
 fn reduce_to() {
     let mut set = LinkedSet::new_with_fill(40);
     set.reduce_to(20, 2);
-    assert_eq!(set.contains(20), true);
+    assert!(set.contains(20));
     // println!("{}",set);
     assert_eq!("elements[ 20, ] deleted[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, ]\n", set.to_string());
     for i in 0..40usize {
         if i != 20 {
-            assert_eq!(set.contains(i), false);
+            assert!(!set.contains(i));
         }
     }
 }
@@ -79,7 +79,7 @@ fn delete() {
     }
     for i in 0..40usize {
         if i % 2 == 1 {
-            assert_eq!(set.contains(i), true);
+            assert!(set.contains(i));
         }
     }
 }
@@ -99,29 +99,29 @@ fn clone() {
     }
     let set1 = set.clone();
     for i in 0..40usize {
-        assert_eq!(set1.contains(i / 2), false);
+        assert!(!set1.contains(i / 2));
     }
     for i in 20..40usize {
-        assert_eq!(set1.contains(i), true);
+        assert!(set1.contains(i));
     }
 
     for i in 0..20usize {
-        assert_eq!(set1.contains(i), false);
+        assert!(!set1.contains(i));
     }
 }
 
 #[test]
 fn is_empty() {
     let mut set = LinkedSet::new_with_fill(40);
-    assert_eq!(set.is_empty(), false);
+    assert!(!set.is_empty());
     for i in 0..39usize {
         set.delete_at_level(i, 0);
-        assert_eq!(set.is_empty(), false);
+        assert!(!set.is_empty());
     }
     set.delete_at_level(39, 0);
-    assert_eq!(set.is_empty(), true);
+    assert!(set.is_empty());
     set.restore_last_dropped();
-    assert_eq!(set.is_empty(), false);
+    assert!(!set.is_empty());
 }
 
 #[test]

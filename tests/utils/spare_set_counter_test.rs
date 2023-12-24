@@ -62,13 +62,13 @@ pub fn clone() {
     let set1 = set.clone();
 
     for i in 0..90usize {
-        assert_eq!(set1.contains(i / 2), false);
+        assert!(!set1.contains(i / 2));
     }
     for i in 45..90usize {
-        assert_eq!(set1.contains(i), true);
+        assert!(set1.contains(i));
     }
     set.clear();
     for i in 45..90usize {
-        assert_eq!(set1.contains(i), true);
+        assert!(set1.contains(i));
     }
 }

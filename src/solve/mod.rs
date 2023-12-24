@@ -19,3 +19,4 @@ pub mod solver;
 
 mod callbacks;
 mod nogood;
+pub mod seal;

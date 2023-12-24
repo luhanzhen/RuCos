@@ -15,11 +15,11 @@
 use crate::solve::restart::restart_trait::RestartTrait;
 use crate::solve::solver::solver::Solver;
 use rand::random;
-use std::cell::RefCell;
-use std::rc::Rc;
+
+use crate::solve::seal::Seal;
 
 pub struct LubyRestart {
-    solver: Rc<RefCell<Solver>>,
+    solver: Seal<Solver>,
     factor: u64,
     limit: u64,
     restart_counter: u64,
@@ -46,15 +46,15 @@ fn luby(mut x: u64, y: u64) -> u64 {
 
 #[allow(dead_code)]
 impl LubyRestart {
-    pub fn new_with_solver_and_factor(solver: &Rc<RefCell<Solver>>, factor: u64) -> Self {
+    pub fn new_with_solver_and_factor(solver: &Seal<Solver>, factor: u64) -> Self {
         Self {
-            solver: Rc::clone(solver),
+            solver: solver.clone(),
             factor,
             limit: luby(2, 0),
             restart_counter: 0,
         }
     }
-    pub fn new_with_solver_and_random_factor(solver: &Rc<RefCell<Solver>>) -> Self {
+    pub fn new_with_solver_and_random_factor(solver: &Seal<Solver>) -> Self {
         LubyRestart::new_with_solver_and_factor(solver, random::<u64>() % 100 + 1)
     }
 }

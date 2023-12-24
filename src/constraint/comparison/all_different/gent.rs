@@ -43,7 +43,7 @@ impl PropagatorTrait for GacRegin {
         todo!()
     }
 
-    fn restore_to_level(&mut self, level: usize) {
+    fn restore_to_level(&mut self, _level: usize) {
         todo!()
     }
 }

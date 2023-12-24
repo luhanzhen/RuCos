@@ -14,6 +14,7 @@
  */
 use crate::constraint::constraint_factory::XConstraintType;
 use crate::constraint::propagator::PropagatorTrait;
+use crate::solve::seal::Seal;
 use crate::solve::solver::solver::Solver;
 use crate::variable::variable::Var;
 use std::cell::RefCell;
@@ -33,7 +34,7 @@ pub trait ConstraintTrait: Display {
 
     fn arity(&self) -> usize;
 
-    fn delay_construct(&mut self, solver: Rc<RefCell<Solver>>);
+    fn delay_construct(&mut self, solver: Seal<Solver>);
 
     fn get_type(&self) -> &XConstraintType;
 

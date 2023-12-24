@@ -8,6 +8,7 @@ use crate::variable::variable::Var;
 use std::cell::RefCell;
 use std::rc::Rc;
 
+
 /**
  * @project_name: RuCos
  *
@@ -22,12 +23,14 @@ use std::rc::Rc;
  * @description:
  *
  */
+
 #[allow(dead_code)]
 pub struct CallbackSet {
     new_decision: Vec<Rc<RefCell<dyn NewDecision>>>,
     delete_decision: Vec<Rc<RefCell<dyn DeleteDecision>>>,
     domain_reduction: Vec<Rc<RefCell<dyn DomainReduction>>>,
     non_consistency: Vec<Rc<RefCell<dyn NonConsistency>>>,
+
 }
 
 #[allow(dead_code)]
