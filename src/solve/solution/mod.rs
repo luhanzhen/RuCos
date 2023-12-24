@@ -20,7 +20,7 @@ use std::time::Duration;
 
 pub struct Solution {
     variables: Vec<Var>,
-    variable_index: HashMap<i32, usize>,
+    variable_index: HashMap<usize, usize>,
     solution: Vec<Vec<usize>>,
     solution_time: Vec<Duration>,
     //seconds
@@ -71,7 +71,7 @@ impl Solution {
         let mut solution = vec![];
         solution.resize(self.variable_index.len(), 0);
         for var in variables_in.iter() {
-            match var.borrow().value_idx() {
+            match var.borrow().the_idx_of_the_only_value() {
                 None => {
                     return;
                 }

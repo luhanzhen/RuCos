@@ -1,7 +1,5 @@
 use crate::solve::heuristics::value::heuristic_value::HeuristicValueTrait;
-use crate::variable::variable::Variable;
-use std::cell::RefCell;
-use std::rc::Rc;
+use crate::variable::variable::Var;
 
 /**
  * @project_name: RuCos
@@ -35,11 +33,11 @@ impl Default for ValueFirst {
 }
 #[allow(dead_code)]
 impl HeuristicValueTrait for ValueFirst {
-    fn select_value(&mut self, var: &Rc<RefCell<Variable>>) -> i32 {
+    fn select_value(&mut self, var: &Var) -> i32 {
         var.borrow().minimum_value()
     }
 
-    fn select_idx(&mut self, var: &Rc<RefCell<Variable>>) -> usize {
+    fn select_idx(&mut self, var: &Var) -> usize {
         var.borrow().minimum_idx()
     }
 }

@@ -21,6 +21,7 @@ use crate::variable::domain::Domain;
 use std::cell::{Ref, RefCell, RefMut};
 use std::fmt::{Debug, Display, Formatter};
 use std::hash::{Hash, Hasher};
+use std::ops::Index;
 use std::rc::Rc;
 
 #[derive(Debug)]
@@ -85,7 +86,7 @@ impl Hash for Var {
 #[allow(dead_code)]
 #[derive(Debug)]
 pub struct Variable {
-    id: i32,
+    id: usize,
     name: String,
     // problem: Option<Rc<RefCell<Problem>>>,
     domain: Domain,
@@ -130,22 +131,22 @@ impl Variable {
         problem.add_variable(Var::new_with_rc_cell(var.clone()));
         var
     }
-
-    pub fn get_id(&self) -> i32 {
+    #[inline]
+    pub fn get_id(&self) -> usize {
         self.id
     }
-
+    #[inline]
     pub fn get_name(&self) -> &str {
         &self.name
     }
-
+    #[inline]
     pub fn is_empty(&self) -> bool {
         self.domain.is_empty()
     }
 
     pub fn new_without_problem(name: &str, dom: Domain) -> Rc<RefCell<Self>> {
         Rc::new(RefCell::new(Self {
-            id: i32::MAX,
+            id: usize::MAX,
             name: String::from(name),
             // problem: None,
             domain: dom,
@@ -160,8 +161,8 @@ impl Variable {
             ),
         }))
     }
-
-    pub(crate) fn set_id(&mut self, id: i32) {
+    #[inline]
+    pub(crate) fn set_id(&mut self, id: usize) {
         self.id = id;
     }
 
@@ -188,11 +189,22 @@ impl Variable {
             self.domain.values_at_position(0)
         }
     }
+    /// if the idx is not in the domain, return None
+    #[inline]
+    pub fn value_to_idx(&self, value: i32) -> Option<usize> {
+        self.domain.value_to_idx(value)
+    }
+
+    /// if the value is not in the domain, return None
+    #[inline]
+    pub fn idx_to_value(&self, idx: usize) -> Option<i32> {
+        self.domain.idx_to_value(idx)
+    }
 
     pub fn record_limit(&mut self, level: usize) {
         self.domain.record_limit(level)
     }
-    pub(crate) fn value_idx(&self) -> Option<usize> {
+    pub(crate) fn the_idx_of_the_only_value(&self) -> Option<usize> {
         if self.domain.size() != 1 {
             None
         } else {
@@ -329,4 +341,11 @@ impl Variable {
     // {
     //     &self.empty_domain_exception
     // }
+}
+impl Index<usize> for Variable {
+    type Output = usize;
+
+    fn index(&self, index: usize) -> &Self::Output {
+        &self.domain[index]
+    }
 }

@@ -32,9 +32,9 @@ use std::time::Duration;
 pub struct Problem {
     name: String,
     variables: Vec<Var>,
-    map_variables: HashMap<i32, Var>,
+    map_variables: HashMap<usize, Var>,
     constraints: Vec<Rc<RefCell<dyn ConstraintTrait>>>,
-    static_variables_id: i32,
+    static_variables_id: usize,
     timer: TimeInterval,
 }
 impl Hash for Problem {
@@ -78,7 +78,7 @@ impl Default for Problem {
 // impl<X, C> Problem<X, C> where X: VariableTrait, C: ConstraintTrait
 #[allow(dead_code)]
 impl Problem {
-    pub fn get_variable_by_id(&mut self, key: i32) -> Result<&Var, Box<dyn ExceptionTrait>> {
+    pub fn get_variable_by_id(&mut self, key: usize) -> Result<&Var, Box<dyn ExceptionTrait>> {
         match self.map_variables.get(&key) {
             None => Err(ExceptionFactory::new(
                 ExceptionType::InvalidVariableExceptionType,
@@ -135,7 +135,7 @@ impl Problem {
         self.variables.push(var)
     }
 
-    pub fn get_new_variable_id(&mut self) -> i32 {
+    pub fn get_new_variable_id(&mut self) -> usize {
         self.static_variables_id += 1;
         self.static_variables_id - 1
     }
