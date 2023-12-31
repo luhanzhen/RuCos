@@ -16,6 +16,7 @@ use crate::variable::variable::Var;
  * @description:
  *
  */
+#[derive(Debug)]
 pub struct GacRegin {}
 
 impl PropagatorTrait for GacRegin {

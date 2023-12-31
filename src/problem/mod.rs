@@ -13,3 +13,16 @@
  *
  */
 pub mod problem;
+
+/// problem!() return the empty problem.
+/// problem!(name:&str) return the  problem with name.
+#[macro_export]
+macro_rules! problem {
+    () => {
+        Problem::default();
+    };
+
+    ($name:expr) => {
+        Problem::new_with_name($name);
+    };
+}

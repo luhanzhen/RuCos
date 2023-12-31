@@ -17,7 +17,7 @@ use crate::variable::variable::Var;
 use std::collections::HashMap;
 use std::fmt::{Display, Formatter};
 use std::time::Duration;
-
+#[derive(Debug)]
 pub struct Solution {
     variables: Vec<Var>,
     variable_index: HashMap<usize, usize>,

@@ -12,7 +12,7 @@
  * @description:
  *
  */
-use crate::constraint::constraint::ConstraintTrait;
+use crate::constraint::constraint::Constraint;
 use crate::problem::problem::Problem;
 use crate::solve::heuristics::value::heuristic_value::HeuristicValueTrait;
 use crate::solve::heuristics::value::value_first::ValueFirst;
@@ -34,11 +34,11 @@ use std::rc::Rc;
 use std::time::Duration;
 
 #[allow(dead_code)]
-// #[derive(Debug)]
+#[derive(Debug)]
 pub struct Solver {
     problem: Seal<Problem>,
     variables: Vec<Var>,
-    constraints: Vec<Rc<RefCell<dyn ConstraintTrait>>>,
+    constraints: Vec<Constraint>,
     timer: TimeInterval,
     status: SearchStates,
     result: SearchResult,

@@ -19,6 +19,7 @@ use crate::exception::ExceptionType;
 use crate::variable::variable::Var;
 
 #[allow(dead_code)]
+#[derive(Debug)]
 pub struct CompactTable {
     scope: Vec<Var>,
     empty_domain_exception: Box<dyn ExceptionTrait>,

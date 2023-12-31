@@ -1,3 +1,4 @@
+use rucos::constraint::constraint::Constraint;
 /**
  * @project_name: RuCos
  *
@@ -12,17 +13,15 @@
  * @description:
  *
  */
-use rucos::constraint::comparison::all_different::all_different::AllDifferent;
 use rucos::problem::problem::Problem;
 use rucos::solve::solver::solver::Solver;
-use rucos::var;
 use rucos::variable::domain::Domain;
 use rucos::variable::variable::Var;
-use std::cell::RefCell;
-use std::rc::Rc;
+use rucos::{problem, var};
 
 fn n_queens(n: usize) -> Problem {
-    let mut problem = Default::default();
+    let mut problem = problem!();
+
     let mut vars = vec![];
 
     for i in 0..n {
@@ -33,10 +32,10 @@ fn n_queens(n: usize) -> Problem {
 
     for i in 0..n {
         for j in i + 1..n {
-            problem.new_constraint(Rc::new(RefCell::new(AllDifferent::new(vec![
+            problem.new_constraint(Constraint::new_all_different(vec![
                 vars[i].clone(),
                 vars[j].clone(),
-            ]))));
+            ]));
         }
     }
 

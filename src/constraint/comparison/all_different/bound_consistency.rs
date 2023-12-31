@@ -20,6 +20,7 @@ use crate::variable::variable::Var;
  */
 
 #[allow(dead_code)]
+#[derive(Debug)]
 pub struct BoundConsistency {
     scope: Vec<Var>,
     empty_domain_exception: Box<dyn ExceptionTrait>,

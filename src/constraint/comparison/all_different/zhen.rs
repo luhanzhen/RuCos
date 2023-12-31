@@ -16,7 +16,7 @@ use crate::variable::variable::Var;
  * @description:
  *
  */
-
+#[derive(Debug)]
 pub struct GacZhen {}
 
 impl PropagatorTrait for GacZhen {

@@ -15,7 +15,7 @@
 use crate::constraint::propagator::PropagatorTrait;
 use crate::exception::exception_trait::ExceptionTrait;
 use crate::variable::variable::Var;
-
+#[derive(Debug)]
 pub struct GacRegin {}
 
 impl PropagatorTrait for GacRegin {

@@ -1,6 +1,7 @@
 use crate::variable::variable::Variable;
 use std::cell::RefCell;
 use std::collections::HashSet;
+use std::fmt::Debug;
 use std::rc::Rc;
 
 /**
@@ -18,6 +19,6 @@ use std::rc::Rc;
  *
  */
 
-pub trait HeuristicVariableTrait {
+pub trait HeuristicVariableTrait: Debug {
     fn select_variable(&mut self, future_vars: &HashSet<Rc<RefCell<Variable>>>) -> i32;
 }

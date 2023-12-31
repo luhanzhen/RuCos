@@ -14,7 +14,7 @@
  */
 
 #[allow(dead_code)]
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub enum SearchResult {
     Unknown,
     Sat,
@@ -22,7 +22,7 @@ pub enum SearchResult {
 }
 
 #[allow(dead_code)]
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub enum SearchStates {
     Init,
     Running,

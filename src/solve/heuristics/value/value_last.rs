@@ -17,6 +17,7 @@ use crate::variable::variable::Var;
  *
  */
 #[allow(dead_code)]
+#[derive(Debug)]
 pub struct ValueLast {}
 
 #[allow(dead_code)]

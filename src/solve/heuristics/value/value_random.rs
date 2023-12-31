@@ -16,6 +16,7 @@ use crate::variable::variable::Var;
  *
  */
 #[allow(dead_code)]
+#[derive(Debug)]
 pub struct ValueRandom {}
 
 #[allow(dead_code)]

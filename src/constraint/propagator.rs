@@ -14,8 +14,9 @@
  */
 use crate::exception::exception_trait::ExceptionTrait;
 use crate::variable::variable::Var;
+use std::fmt::Debug;
 
-pub trait PropagatorTrait {
+pub trait PropagatorTrait: Debug {
     fn initialise(&mut self);
     fn filter_by_variable(&mut self, dummy: &Var) -> Result<usize, &Box<dyn ExceptionTrait>>;
     fn filter_by_arc(

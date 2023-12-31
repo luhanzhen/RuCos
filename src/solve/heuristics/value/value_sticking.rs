@@ -15,7 +15,7 @@ use crate::variable::variable::Var;
  * @description:
  *
  */
-
+#[derive(Debug)]
 pub struct ValueSticking {
     last_value: Vec<usize>,
     heuristic: Box<dyn HeuristicValueTrait>,

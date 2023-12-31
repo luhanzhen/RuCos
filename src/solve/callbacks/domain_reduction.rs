@@ -1,5 +1,6 @@
 use crate::solve::solver::solver::Solver;
 use crate::variable::variable::Var;
+use std::fmt::Debug;
 
 /**
  * @project_name: RuCos
@@ -16,7 +17,7 @@ use crate::variable::variable::Var;
  *
  */
 
-pub trait DomainReduction {
+pub trait DomainReduction: Debug {
     fn domain_reduction_callback(&mut self, var: &Var, value_idx: usize, solver: &Solver);
     fn domain_assignment_callback(&mut self, var: &Var, value_idx: usize, solver: &Solver);
 }

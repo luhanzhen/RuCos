@@ -12,28 +12,27 @@
  * @description:
  *
  */
-use crate::constraint::constraint::ConstraintTrait;
+use crate::constraint::constraint::Constraint;
 use crate::exception::exception_factory::ExceptionFactory;
 use crate::exception::exception_trait::ExceptionTrait;
 use crate::exception::ExceptionType;
 use crate::solve::solver::solver::Solver;
 use crate::utils::time_interval::TimeInterval;
 use crate::variable::variable::Var;
-use std::cell::RefCell;
+
 use std::collections::HashMap;
 use std::fmt::{Display, Formatter};
 use std::hash::{Hash, Hasher};
 
-use std::rc::Rc;
 use std::time::Duration;
 
 // pub struct Problem<X, C> where X: VariableTrait, C: ConstraintTrait {
-// #[derive(Debug)]
+#[derive(Debug)]
 pub struct Problem {
     name: String,
     variables: Vec<Var>,
     map_variables: HashMap<usize, Var>,
-    constraints: Vec<Rc<RefCell<dyn ConstraintTrait>>>,
+    constraints: Vec<Constraint>,
     static_variables_id: usize,
     timer: TimeInterval,
 }
@@ -114,7 +113,7 @@ impl Problem {
         }
     }
 
-    pub fn get_constraints(&self) -> &Vec<Rc<RefCell<dyn ConstraintTrait>>> {
+    pub fn get_constraints(&self) -> &Vec<Constraint> {
         &self.constraints
     }
 
@@ -124,7 +123,7 @@ impl Problem {
         self.variables.push(var);
     }
 
-    pub fn new_constraint(&mut self, cons: Rc<RefCell<dyn ConstraintTrait>>) {
+    pub fn new_constraint(&mut self, cons: Constraint) {
         self.constraints.push(cons)
     }
 

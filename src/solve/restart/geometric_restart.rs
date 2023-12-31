@@ -20,6 +20,7 @@ use crate::solve::seal::Seal;
  */
 
 #[allow(dead_code)]
+#[derive(Debug)]
 pub struct GeometricRestart {
     solver: Seal<Solver>,
     factor: u64,

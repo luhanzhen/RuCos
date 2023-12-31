@@ -17,6 +17,7 @@ use std::collections::HashSet;
  */
 
 #[allow(dead_code)]
+#[derive(Debug)]
 pub struct Core {
     pub(crate) level: usize,
     pub(crate) decides: usize,

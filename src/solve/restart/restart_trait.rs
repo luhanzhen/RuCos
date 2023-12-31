@@ -1,3 +1,5 @@
+use std::fmt::Debug;
+
 /**
  * @project_name: RuCos
  *
@@ -13,7 +15,7 @@
  *
  */
 
-pub trait RestartTrait {
+pub trait RestartTrait: Debug {
     fn should_restart(&mut self) -> bool;
 
     fn initialize(&mut self);

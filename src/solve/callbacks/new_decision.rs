@@ -1,5 +1,6 @@
 use crate::solve::solver::solver::Solver;
 use crate::variable::variable::Var;
+use std::fmt::Debug;
 
 /**
  * @project_name: RuCos
@@ -16,6 +17,6 @@ use crate::variable::variable::Var;
  *
  */
 
-pub trait NewDecision {
+pub trait NewDecision: Debug {
     fn new_decision_callback(&mut self, var: &Var, solver: &Solver);
 }

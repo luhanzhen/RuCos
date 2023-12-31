@@ -17,7 +17,7 @@ use crate::solve::solver::solver::Solver;
 use rand::random;
 
 use crate::solve::seal::Seal;
-
+#[derive(Debug)]
 pub struct LubyRestart {
     solver: Seal<Solver>,
     factor: u64,

@@ -1,23 +1,8 @@
-/**
- * @project_name: RuCos
- *
- * @author: luhan zhen
- *
- * @date:  2023/11/17 12:29
- *
- * @email: zhenluhan@qq.com
- *
- * @version: 1.0
- *
- * @description:
- *
- */
-use rucos::constraint::genecric::extension::extension::Extension;
 use rucos::variable::domain::Domain;
 use rucos::variable::variable::Var;
 use rucos::{domain, var};
-use std::cell::RefCell;
-use std::rc::Rc;
+
+use rucos::constraint::constraint::Constraint;
 
 #[test]
 fn add() {
@@ -29,15 +14,9 @@ fn add() {
 
     problem.new_variable(Var::new_without_problem("tt", domain![1=>100]));
 
-    problem.new_constraint(Rc::new(RefCell::new(Extension::new(vec![
-        v1.clone(),
-        v2.clone(),
-    ]))));
+    problem.new_constraint(Constraint::new_all_different(vec![v1.clone(), v2.clone()]));
 
-    problem.new_constraint(Rc::new(RefCell::new(Extension::new(vec![
-        var1.clone(),
-        v2.clone(),
-    ]))));
+    problem.new_constraint(Constraint::new_extension(vec![var1.clone(), v2.clone()]));
 
     // problem.new_constraint(Rc::new(RefCell::new(AllDifferent::new(vec![
     //     var1.clone(),
@@ -47,10 +26,7 @@ fn add() {
 
     let mut solver = problem.solver();
     solver.delay_construct();
-    problem.new_constraint(Rc::new(RefCell::new(Extension::new(vec![
-        v1.clone(),
-        v1.clone(),
-    ]))));
+    problem.new_constraint(Constraint::new_extension(vec![v1.clone(), v1.clone()]));
 
     for c in problem.get_constraints().iter() {
         for p in c.borrow_mut().get_propagators().iter_mut() {

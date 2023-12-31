@@ -1,4 +1,5 @@
 use crate::variable::variable::Var;
+use std::fmt::Debug;
 
 /**
  * @project_name: RuCos
@@ -15,7 +16,7 @@ use crate::variable::variable::Var;
  *
  */
 
-pub trait HeuristicValueTrait {
+pub trait HeuristicValueTrait: Debug {
     fn select_value(&mut self, var: &Var) -> i32;
     fn select_idx(&mut self, var: &Var) -> usize;
 }

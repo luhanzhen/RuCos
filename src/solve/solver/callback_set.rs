@@ -24,6 +24,7 @@ use std::rc::Rc;
  */
 
 #[allow(dead_code)]
+#[derive(Debug)]
 pub struct CallbackSet {
     new_decision: Vec<Rc<RefCell<dyn NewDecision>>>,
     delete_decision: Vec<Rc<RefCell<dyn DeleteDecision>>>,

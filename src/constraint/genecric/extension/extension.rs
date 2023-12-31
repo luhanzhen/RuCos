@@ -24,6 +24,7 @@ use std::fmt::{Display, Formatter};
 use crate::solve::seal::Seal;
 
 #[allow(dead_code)]
+#[derive(Debug)]
 pub struct Extension {
     scope: Vec<Var>,
     solver: Option<Seal<Solver>>,

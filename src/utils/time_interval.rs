@@ -202,7 +202,7 @@ use std::time::{Duration, Instant};
 //         Self::new()
 //     }
 // }
-
+#[derive(Debug)]
 pub struct TimeInterval {
     start: Instant,
 }

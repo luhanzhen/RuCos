@@ -24,6 +24,7 @@ use std::fmt::{Display, Formatter};
 use crate::solve::seal::Seal;
 
 #[allow(dead_code)]
+#[derive(Debug)]
 pub struct AllDifferent {
     scope: Vec<Var>,
     solver: Option<Seal<Solver>>,
@@ -32,12 +33,14 @@ pub struct AllDifferent {
 }
 
 #[allow(dead_code)]
+
 impl Display for AllDifferent {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "")
     }
 }
 #[allow(dead_code)]
+
 impl AllDifferent {
     pub fn new(scope: Vec<Var>) -> Self {
         let propagators: Vec<Box<dyn PropagatorTrait>> =
