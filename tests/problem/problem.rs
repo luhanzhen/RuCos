@@ -14,9 +14,9 @@ fn add() {
 
     problem.new_variable(Var::new_without_problem("tt", domain![1=>100]));
 
-    problem.new_constraint(Constraint::new_all_different(vec![v1.clone(), v2.clone()]));
+    problem.add_constraint(Constraint::new_all_different(vec![v1.clone(), v2.clone()]));
 
-    problem.new_constraint(Constraint::new_extension(vec![var1.clone(), v2.clone()]));
+    problem.add_constraint(Constraint::new_extension(vec![var1.clone(), v2.clone()]));
 
     // problem.new_constraint(Rc::new(RefCell::new(AllDifferent::new(vec![
     //     var1.clone(),
@@ -26,7 +26,7 @@ fn add() {
 
     let mut solver = problem.solver();
     solver.delay_construct();
-    problem.new_constraint(Constraint::new_extension(vec![v1.clone(), v1.clone()]));
+    problem.add_constraint(Constraint::new_extension(vec![v1.clone(), v1.clone()]));
 
     for c in problem.get_constraints().iter() {
         for p in c.borrow_mut().get_propagators().iter_mut() {

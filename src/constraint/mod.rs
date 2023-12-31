@@ -23,15 +23,41 @@ pub mod misceleanous;
 pub mod packing_and_scheduling;
 pub mod propagator;
 
+// #[macro_export]
+// macro_rules! constraint {
+//       (table $( $x:expr ),* ) => {
+//         {
+//             let mut temp_vec = Vec::new();
+//             $(
+//                 temp_vec.push($x);
+//             )*
+//             Extension::new(temp_vec)
+//         }
+//     };
+// }
+
 #[macro_export]
-macro_rules! constraint {
-      (table $( $x:expr ),* ) => {
+macro_rules! all_different {
+      ($( $x:expr ),* ) => {
         {
             let mut temp_vec = Vec::new();
             $(
                 temp_vec.push($x);
             )*
-            Extension::new(temp_vec)
+            Constraint::new_all_different(temp_vec)
+        }
+    };
+}
+
+#[macro_export]
+macro_rules! extension {
+      ($( $x:expr ),* ) => {
+        {
+            let mut temp_vec = Vec::new();
+            $(
+                temp_vec.push($x);
+            )*
+            Constraint::new_extension(temp_vec)
         }
     };
 }

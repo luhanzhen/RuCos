@@ -23,6 +23,7 @@ use crate::variable::variable::Var;
 use std::collections::HashMap;
 use std::fmt::{Display, Formatter};
 use std::hash::{Hash, Hasher};
+use std::ops::AddAssign;
 
 use std::time::Duration;
 
@@ -44,6 +45,18 @@ impl Hash for Problem {
 impl Display for Problem {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.name)
+    }
+}
+
+impl AddAssign<Var> for Problem {
+    fn add_assign(&mut self, rhs: Var) {
+        self.add_variable(rhs);
+    }
+}
+
+impl AddAssign<Constraint> for Problem {
+    fn add_assign(&mut self, rhs: Constraint) {
+        self.add_constraint(rhs)
     }
 }
 
@@ -117,13 +130,13 @@ impl Problem {
         &self.constraints
     }
 
-    pub(crate) fn add_variable(&mut self, var: Var) {
+    pub fn add_variable(&mut self, var: Var) {
         self.map_variables
             .insert(var.borrow().get_id(), var.clone());
         self.variables.push(var);
     }
 
-    pub fn new_constraint(&mut self, cons: Constraint) {
+    pub fn add_constraint(&mut self, cons: Constraint) {
         self.constraints.push(cons)
     }
 
