@@ -16,12 +16,10 @@ use crate::constraint::comparison::all_different::bound_consistency::BoundConsis
 use crate::constraint::constraint::ConstraintTrait;
 use crate::constraint::constraint_factory::XConstraintType;
 use crate::constraint::propagator::PropagatorTrait;
+use crate::solve::seal::Seal;
 use crate::solve::solver::solver::Solver;
 use crate::variable::variable::Var;
-
 use std::fmt::{Display, Formatter};
-
-use crate::solve::seal::Seal;
 
 #[allow(dead_code)]
 #[derive(Debug)]
@@ -40,7 +38,6 @@ impl Display for AllDifferent {
     }
 }
 #[allow(dead_code)]
-
 impl AllDifferent {
     pub fn new(scope: Vec<Var>) -> Self {
         let propagators: Vec<Box<dyn PropagatorTrait>> =
@@ -68,7 +65,7 @@ impl ConstraintTrait for AllDifferent {
         todo!()
     }
 
-    fn restore_to_level(&mut self) {
+    fn restore_to_level(&mut self, level: usize) {
         todo!()
     }
 

@@ -25,12 +25,10 @@ use crate::solve::solver::callback_set::CallbackSet;
 use crate::solve::solver::core::Core;
 use crate::solve::solver::status::*;
 use crate::utils::time_interval::TimeInterval;
-use crate::variable::variable::{Var, Variable};
+use crate::variable::variable::Var;
 use rand::prelude::*;
-use std::cell::RefCell;
 use std::fmt::{Display, Formatter};
 use std::hash::{Hash, Hasher};
-use std::rc::Rc;
 use std::time::Duration;
 
 #[allow(dead_code)]
@@ -53,8 +51,8 @@ pub struct Solver {
 }
 
 impl Display for Solver {
-    fn fmt(&self, _f: &mut Formatter<'_>) -> std::fmt::Result {
-        todo!()
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{:?}", &self)
     }
 }
 impl Hash for Solver {
@@ -130,14 +128,15 @@ impl Solver {
 
         for var in self.variables.iter() {
             let n = random::<usize>() % var.borrow().domain_size();
-            let _ = var.borrow_mut().assign_idx(n, self.core.level);
+            // let _ = var.borrow_mut().assign_idx(n, self.core.level);
+            self.decide_the_variable_with_idx(var, n);
         }
         self.solutions.record_solution(&self.variables, &self.timer);
         // self.solutions.record_solution(&self.variables, &self.timer);
     }
 
-    fn decide_the_variable_with_idx(&mut self, _var: &Rc<RefCell<Variable>>, _idx: usize) {
-        let _ = _var.borrow_mut().assign_idx(_idx, self.core.level);
+    fn decide_the_variable_with_idx(&self, var: &Var, idx: usize) {
+        let _ = var.borrow_mut().assign_idx(idx, self.core.level);
     }
 
     fn propagate(&mut self) {}

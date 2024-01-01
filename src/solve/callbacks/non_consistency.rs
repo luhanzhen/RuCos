@@ -1,8 +1,7 @@
-use crate::constraint::constraint::ConstraintTrait;
+use crate::constraint::constraint::Constraint;
 use crate::solve::solver::solver::Solver;
-use std::cell::RefCell;
+
 use std::fmt::Debug;
-use std::rc::Rc;
 
 /**
  * @project_name: RuCos
@@ -20,10 +19,5 @@ use std::rc::Rc;
  */
 
 pub trait NonConsistency: Debug {
-    fn non_consistency_callback(
-        &mut self,
-        cons: &Rc<RefCell<dyn ConstraintTrait>>,
-        level: usize,
-        solver: &Solver,
-    );
+    fn non_consistency_callback(&mut self, cons: &Constraint, level: usize, solver: &Solver);
 }

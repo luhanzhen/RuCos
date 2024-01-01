@@ -11,7 +11,7 @@ rust-version = "1.74"
 
 [dependencies]
 rand = "*"
-cpu-time = "*"
+#cpu-time = "*"
 
 [[bench]]
 name = "rucos_benches"

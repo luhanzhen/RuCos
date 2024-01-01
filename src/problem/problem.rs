@@ -23,7 +23,7 @@ use crate::variable::variable::Var;
 use std::collections::HashMap;
 use std::fmt::{Display, Formatter};
 use std::hash::{Hash, Hasher};
-use std::ops::AddAssign;
+use std::ops::{AddAssign, Index};
 
 use std::time::Duration;
 
@@ -33,10 +33,35 @@ pub struct Problem {
     name: String,
     variables: Vec<Var>,
     map_variables: HashMap<usize, Var>,
+    map_name_variables: HashMap<String, Var>,
     constraints: Vec<Constraint>,
     static_variables_id: usize,
     timer: TimeInterval,
 }
+impl Index<&str> for Problem {
+    type Output = Var;
+    fn index(&self, index: &str) -> &Self::Output {
+        match self.map_name_variables.get(index) {
+            None => {
+                panic!("wrong index for variable in the Problem!!!")
+            }
+            Some(var) => return var,
+        }
+    }
+}
+impl Index<usize> for Problem {
+    type Output = Var;
+
+    fn index(&self, index: usize) -> &Self::Output {
+        match self.get_variable_by_id(index) {
+            Ok(var) => return var,
+            Err(_) => {
+                panic!("wrong index for variable in the Problem!!!")
+            }
+        }
+    }
+}
+
 impl Hash for Problem {
     fn hash<H: Hasher>(&self, _state: &mut H) {
         todo!()
@@ -74,6 +99,7 @@ impl Clone for Problem {
             name: self.name.clone(),
             variables: vec![],
             map_variables: Default::default(),
+            map_name_variables: Default::default(),
             constraints: vec![],
             static_variables_id: self.static_variables_id,
             timer: Default::default(),
@@ -90,7 +116,7 @@ impl Default for Problem {
 // impl<X, C> Problem<X, C> where X: VariableTrait, C: ConstraintTrait
 #[allow(dead_code)]
 impl Problem {
-    pub fn get_variable_by_id(&mut self, key: usize) -> Result<&Var, Box<dyn ExceptionTrait>> {
+    pub fn get_variable_by_id(&self, key: usize) -> Result<&Var, Box<dyn ExceptionTrait>> {
         match self.map_variables.get(&key) {
             None => Err(ExceptionFactory::new(
                 ExceptionType::InvalidVariableExceptionType,
@@ -110,6 +136,7 @@ impl Problem {
             name: String::new(),
             variables: vec![],
             map_variables: Default::default(),
+            map_name_variables: Default::default(),
             constraints: vec![],
             static_variables_id: 0,
             timer: Default::default(),
@@ -120,6 +147,7 @@ impl Problem {
             name: name.to_string(),
             variables: vec![],
             map_variables: Default::default(),
+            map_name_variables: Default::default(),
             constraints: vec![],
             static_variables_id: 0,
             timer: Default::default(),
@@ -131,8 +159,13 @@ impl Problem {
     }
 
     pub fn add_variable(&mut self, var: Var) {
+        if var.borrow().get_id() == usize::MAX {
+            var.borrow_mut().set_id(self.get_new_variable_id());
+        }
         self.map_variables
             .insert(var.borrow().get_id(), var.clone());
+        self.map_name_variables
+            .insert(String::from(var.borrow().get_name()), var.clone());
         self.variables.push(var);
     }
 
@@ -144,6 +177,8 @@ impl Problem {
         var.borrow_mut().set_id(self.get_new_variable_id());
         self.map_variables
             .insert(var.borrow().get_id(), var.clone());
+        self.map_name_variables
+            .insert(String::from(var.borrow().get_name()), var.clone());
         self.variables.push(var)
     }
 

@@ -65,7 +65,7 @@ impl ConstraintTrait for Extension {
         todo!()
     }
 
-    fn restore_to_level(&mut self) {
+    fn restore_to_level(&mut self, level: usize) {
         todo!()
     }
 

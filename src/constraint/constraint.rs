@@ -73,7 +73,7 @@ pub trait ConstraintTrait: Display + Debug {
 
     fn get_name(&self) -> &str;
 
-    fn restore_to_level(&mut self);
+    fn restore_to_level(&mut self, level: usize);
 
     fn arity(&self) -> usize;
 
