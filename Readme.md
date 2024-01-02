@@ -15,6 +15,57 @@
 # The process of implementing the solver could take years, but I will keep updating....
 
 
+# Usage
+
+## define the problem
+### you can define the problem with the following code:
+```rust
+fn main(){
+    let  problem = Problem::new();
+}
+```
+### or the following code:
+```rust
+fn main(){
+    let problem = Default::default();
+}
+```
+### or the following code:
+```rust
+fn main(){
+    let problem = problem!();
+}
+```
+## define the variables
+### you can define the variables with following code:
+```rust
+fn main() {
+    let mut problem = problem!();
+    let v1 = var!(&mut problem; "v1"; domain![7, 43, 22, 33, 2234]);
+    let v2 = var!(&mut problem; "v2"; domain![7, 43, 22, 33, 2234, 43]);
+    let v3 = var!(&mut problem; "v3"; 7, 43, 22, 33, 2234, 43);
+    let v4 = var!(&mut problem; "v4"; 1=>100);
+    let v4 = var!(&mut problem; "v5"; domain![1=>1000]);
+    
+    problem += var!("v4"; 7=> 43);
+    problem += var!("v5";7, 54, 65, 43);
+    problem += var!("v6"; 7=> 43);
+    
+    problem += bool!("v5");
+    problem += bool!("v6");
+    problem += bool!("vbool_1");
+    problem += bool!("vbool_2");
+    problem += bool!();
+    
+    // you can get the variables by following code:
+    println!("{}",problem["v1"]);
+    println!("{}",problem["v4"]);
+    println!("{}",problem["v5"]);
+    println!("{}",problem[0]);
+}
+```
+## define the constraints
+
 ## the n-queen problem can be modelled by following code:
 ```rust
 fn n_queens(n: usize) -> Problem {
