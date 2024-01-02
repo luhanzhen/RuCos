@@ -36,7 +36,20 @@ fn main(){
     let problem = problem!();
 }
 ```
+
 ## define the variables
+```rust
+fn main(){
+    let problem = problem!();
+    problem += var!("var1"; 1=> 10);
+    problem += var!("var2";1=> 10);
+    problem += var!("var3";1=> 10);
+    problem += all_different!(
+                problem["var1"].clone(),
+                problem["var2"].clone(),
+                problem["var3"].clone());
+}
+```
 ### you can define the variables with following code:
 ```rust
 fn main() {
