@@ -19,17 +19,18 @@
 ```rust
 fn n_queens(n: usize) -> Problem {
     let mut problem = problem!();
-    let mut vars = vec![];
     for i in 0..n {
-        let var = var!(&mut problem,&format!("row_{}", &i), 0=>(n as i32));
-        vars.push(var);
+        problem += var!(&format!("row_{}"; &i), 0=>(n as i32));
     }
+
     for i in 0..n {
         for j in i + 1..n {
-            problem += all_different!(vars[i].clone(), vars[j].clone());
+            problem += all_different!(
+                problem[format!("row_{}", i).as_str()].clone(),
+                problem[j].clone()
+            );
         }
     }
     problem
 }
-
 ```

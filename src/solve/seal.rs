@@ -1,6 +1,5 @@
 use std::cell::{Ref, RefCell, RefMut};
 use std::fmt::{Debug, Display, Formatter};
-use std::ops::Deref;
 
 use std::rc::Rc;
 
@@ -68,18 +67,6 @@ where
         write!(f, "{}", self.date.borrow())
     }
 }
-impl<T> Deref for Seal<T>
-    where
-        T: Clone + Display + Sized,
-{
-    type Target = T;
-
-    fn deref(&self) -> &Self::Target {
-        self.date.borrow().deref()
-    }
-}
-
-
 
 // #[allow(dead_code)]
 // impl<T> Hash for Seal<T>

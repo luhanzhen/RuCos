@@ -50,7 +50,7 @@ impl PropagatorTrait for BoundConsistency {
     }
 
     fn filter_by_variable(&mut self, _dummy: &Var) -> Result<usize, &Box<dyn ExceptionTrait>> {
-        todo!()
+        Ok(0)
     }
 
     fn filter_by_arc(

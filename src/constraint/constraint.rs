@@ -34,6 +34,11 @@ impl Constraint {
             cell: Rc::new(RefCell::new(AllDifferent::new(scope))),
         }
     }
+    pub fn new_all_different_with_reference(scope: Vec<&Var>) -> Self {
+        Self {
+            cell: Rc::new(RefCell::new(AllDifferent::new_with_reference(scope))),
+        }
+    }
 
     pub fn new_extension(scope: Vec<Var>) -> Self {
         Self {

@@ -19,19 +19,55 @@
 /// var!(name, domain) this is a type for the variable.
 /// var!(name, x=>y) this is a type for the variable.
 /// var!(name, v1,v2,v3....) this is a type for the variable.
+///
+///
+///
+#[macro_export]
+macro_rules! bool {
+    () => {
+        Var::new_without_problem("", Domain::new_with_range(0..2))
+    };
+    ($name:expr ) => {
+        Var::new_without_problem($name, Domain::new_with_range(0..2))
+    };
+    ($problem:expr; $name:expr) => {
+        Var::new($problem, $name, Domain::new_with_range(0..2))
+    };
+}
+
 #[macro_export]
 macro_rules! var {
-
-
-    ( $problem:expr, $name:expr, $dom:expr  ) => {
+    ( $problem:expr; $name:expr; $dom:expr  ) => {
         Var::new($problem, $name, $dom)
     };
 
-     ( $problem:expr, $name:expr, $x:expr => $y:expr  ) => {
+     ( $problem:expr; $name:expr; $x:expr => $y:expr  ) => {
         Var::new($problem, $name, Domain::new_with_range($x..$y))
     };
 
-     ( $problem:expr, $name:expr, $( $x:expr ),*  ) => {
+     ( $( $x:expr ),* ) => {
+             {
+                let mut temp_vec = Vec::new();
+                $(
+                    temp_vec.push($x);
+                )*
+                Var::new_without_problem("", Domain::new_with_values(temp_vec))
+            }
+
+        };
+
+    ( $name:expr; $( $x:expr ),* ) => {
+             {
+                let mut temp_vec = Vec::new();
+                $(
+                    temp_vec.push($x);
+                )*
+                Var::new_without_problem($name, Domain::new_with_values(temp_vec))
+            }
+
+        };
+
+     ($problem:expr; $name:expr; $( $x:expr ),*  ) => {
          {
             let mut temp_vec = Vec::new();
             $(
@@ -41,24 +77,24 @@ macro_rules! var {
         }
     };
 
-    ( $name:expr, $dom:expr  ) => {
+
+    ( $name:expr; $dom:expr  ) => {
         Var::new_without_problem($name, $dom)
     };
 
-     ( $name:expr, $x:expr => $y:expr   ) => {
+
+    ( $name:expr; $x:expr => $y:expr   ) => {
         Var::new_without_problem($name, Domain::new_with_range($x..$y))
     };
 
-     ( $name:expr, $( $x:expr ),* ) => {
-         {
-            let mut temp_vec = Vec::new();
-            $(
-                temp_vec.push($x);
-            )*
-            Var::new_without_problem($name, Domain::new_with_values(temp_vec))
-        }
-
+    ( $x:expr => $y:expr ) => {
+        Var::new_without_problem("", Domain::new_with_range($x..$y))
     };
+
+
+
+
+
 }
 
 pub mod domain;

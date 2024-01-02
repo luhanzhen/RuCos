@@ -23,7 +23,7 @@ fn n_queens(n: usize) -> Problem {
     let mut problem = problem!();
     for i in 0..n {
         // let var = Var::new(&mut problem, &format!("row_{}", &i), domain![0=>(n as i32)]);
-        problem += var!(&format!("row_{}", &i), 0=>(n as i32));
+        problem += var!(&format!("row_{}", &i); 0=>(n as i32));
     }
 
     for i in 0..n {

@@ -49,6 +49,22 @@ impl AllDifferent {
             r#type: XConstraintType::XAllDifferent,
         }
     }
+
+    pub fn new_with_reference(scope_ref: Vec<&Var>) -> Self {
+        let mut scope = vec![];
+        for &e in scope_ref.iter() {
+            scope.push(e.clone())
+        }
+
+        let propagators: Vec<Box<dyn PropagatorTrait>> =
+            vec![Box::new(BoundConsistency::new(&scope))];
+        Self {
+            scope,
+            solver: None,
+            propagators,
+            r#type: XConstraintType::XAllDifferent,
+        }
+    }
 }
 
 #[allow(dead_code)]

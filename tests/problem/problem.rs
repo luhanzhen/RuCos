@@ -8,9 +8,9 @@ use rucos::constraint::constraint::Constraint;
 fn add() {
     let mut problem = Default::default();
 
-    let var1 = Var::new(&mut problem, "var1", domain![1=>10]);
-    let v1 = Var::new(&mut problem, "v1", domain![7, 43, 22, 33, 2234]);
-    let v2 = var!(&mut problem, "v2", 7, 43, 22, 33, 2234, 43);
+    let var1 = var!(&mut problem; "var1"; domain![1=>10]);
+    let v1 = var!(&mut problem; "v1"; domain![7, 43, 22, 33, 2234]);
+    let v2 = var!(&mut problem; "v2"; 7, 43, 22, 33, 2234, 43);
 
     problem.new_variable(Var::new_without_problem("tt", domain![1=>100]));
 
