@@ -4,7 +4,7 @@ use std::collections::HashSet;
 use std::fmt::Debug;
 use std::rc::Rc;
 
-/**
+/* * *
  * @project_name: RuCos
  *
  * @author: luhan zhen
@@ -17,7 +17,7 @@ use std::rc::Rc;
  *
  * @description:
  *
- */
+ * * */
 
 pub trait HeuristicVariableTrait: Debug {
     fn select_variable(&mut self, future_vars: &HashSet<Rc<RefCell<Variable>>>) -> i32;

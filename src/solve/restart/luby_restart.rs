@@ -1,4 +1,4 @@
-/**
+/* * *
  * @project_name: RuCos
  *
  * @author: luhan zhen
@@ -11,7 +11,7 @@
  *
  * @description:
  *
- */
+ * * */
 use crate::solve::restart::restart_trait::RestartTrait;
 use crate::solve::solver::solver::Solver;
 use rand::random;

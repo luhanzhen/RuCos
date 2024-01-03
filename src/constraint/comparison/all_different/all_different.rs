@@ -1,5 +1,5 @@
 use crate::constraint::comparison::all_different::bound_consistency::BoundConsistency;
-/**
+/* * *
  * @project_name: RuCos
  *
  * @author: luhan zhen
@@ -12,7 +12,7 @@ use crate::constraint::comparison::all_different::bound_consistency::BoundConsis
  *
  * @description:
  *
- */
+ * * */
 use crate::constraint::constraint::ConstraintTrait;
 use crate::constraint::constraint_factory::XConstraintType;
 use crate::constraint::propagator::PropagatorTrait;
@@ -81,11 +81,7 @@ impl ConstraintTrait for AllDifferent {
         todo!()
     }
 
-    fn restore_to_level(&mut self, level: usize) {
-        todo!()
-    }
-
-    fn arity(&self) -> usize {
+    fn restore_to_level(&mut self, _level: usize) {
         todo!()
     }
 
@@ -104,5 +100,9 @@ impl ConstraintTrait for AllDifferent {
 
     fn get_scope(&self) -> &Vec<Var> {
         &self.scope
+    }
+
+    fn get_arity(&self) -> usize {
+        self.scope.len()
     }
 }

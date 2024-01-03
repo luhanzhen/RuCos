@@ -1,4 +1,4 @@
-/**
+/* * *
 * @project_name: RuCos
 *
 * @author: luhan zhen
@@ -11,7 +11,8 @@
 *
  * @description: 1.0
 *
- */
+* * */
+
 pub mod exception;
 pub mod utils;
 
@@ -21,3 +22,5 @@ pub mod variable;
 
 pub mod constraint;
 pub mod solve;
+
+pub mod prelude;

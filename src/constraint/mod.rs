@@ -1,4 +1,4 @@
-/**
+/* * *
  * @project_name: RuCos
  *
  * @author: luhan zhen
@@ -11,7 +11,7 @@
  *
  * @description:
  *
- */
+ * * */
 pub mod comparison;
 pub mod connection;
 pub mod constraint;

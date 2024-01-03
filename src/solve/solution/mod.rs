@@ -1,4 +1,4 @@
-/**
+/* * *
  * @project_name: RuCos
  *
  * @author: luhan zhen
@@ -11,12 +11,13 @@
  *
  * @description:
  *
- */
+ * * */
 use crate::utils::time_interval::TimeInterval;
 use crate::variable::variable::Var;
 use std::collections::HashMap;
 use std::fmt::{Display, Formatter};
 use std::time::Duration;
+
 #[derive(Debug)]
 pub struct Solution {
     variables: Vec<Var>,
@@ -49,7 +50,7 @@ impl Display for Solution {
 
 #[allow(dead_code)]
 impl Solution {
-    pub fn new(variables_in: &Vec<Var>) -> Self {
+    pub(crate) fn new(variables_in: &Vec<Var>) -> Self {
         let mut variable_index = HashMap::new();
         let mut variables = vec![];
         for (i, var) in variables_in.iter().enumerate() {
@@ -66,7 +67,7 @@ impl Solution {
         }
     }
 
-    pub fn record_solution(&mut self, variables_in: &Vec<Var>, timer: &TimeInterval) {
+    pub(crate) fn record_solution(&mut self, variables_in: &Vec<Var>, timer: &TimeInterval) {
         let time = timer.get();
         let mut solution = vec![];
         solution.resize(self.variable_index.len(), 0);

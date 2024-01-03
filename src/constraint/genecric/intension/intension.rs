@@ -1,4 +1,4 @@
-/**
+/* * *
  * @project_name: RuCos
  *
  * @author: luhan zhen
@@ -11,6 +11,6 @@
  *
  * @description:
  *
- */
+ * * */
 
 pub struct Intension {}

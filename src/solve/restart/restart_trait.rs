@@ -1,6 +1,6 @@
 use std::fmt::Debug;
 
-/**
+/* * *
  * @project_name: RuCos
  *
  * @author: luhan zhen
@@ -13,7 +13,7 @@ use std::fmt::Debug;
  *
  * @description:
  *
- */
+ * * */
 
 pub trait RestartTrait: Debug {
     fn should_restart(&mut self) -> bool;

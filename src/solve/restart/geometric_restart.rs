@@ -4,7 +4,7 @@ use rand::random;
 
 use crate::solve::seal::Seal;
 
-/**
+/* * *
  * @project_name: RuCos
  *
  * @author: luhan zhen
@@ -17,7 +17,7 @@ use crate::solve::seal::Seal;
  *
  * @description:
  *
- */
+ * * */
 
 #[allow(dead_code)]
 #[derive(Debug)]

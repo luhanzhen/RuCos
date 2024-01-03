@@ -1,4 +1,4 @@
-/**
+/* * *
  * @project_name: RuCos
  *
  * @author: luhan zhen
@@ -11,7 +11,7 @@
  *
  * @description:
  *
- */
+ * * */
 use crate::utils::set_trait::SetTrait;
 use std::fmt::{Display, Formatter};
 use std::hash::{Hash, Hasher};

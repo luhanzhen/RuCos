@@ -1,7 +1,7 @@
 use crate::solve::heuristics::value::heuristic_value::HeuristicValueTrait;
 use crate::variable::variable::Var;
 
-/**
+/* * *
  * @project_name: RuCos
  *
  * @author: luhan zhen
@@ -14,7 +14,7 @@ use crate::variable::variable::Var;
  *
  * @description:
  *
- */
+ * * */
 #[derive(Debug)]
 pub struct ValueSticking {
     last_value: Vec<usize>,

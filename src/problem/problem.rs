@@ -1,4 +1,4 @@
-/**
+/* * *
  * @project_name: RuCos
  *
  * @author: luhan zhen
@@ -11,7 +11,7 @@
  *
  * @description:
  *
- */
+ * * */
 use crate::constraint::constraint::Constraint;
 use crate::exception::exception_factory::ExceptionFactory;
 use crate::exception::exception_trait::ExceptionTrait;
@@ -87,14 +87,6 @@ impl AddAssign<Constraint> for Problem {
 
 impl Clone for Problem {
     fn clone(&self) -> Self {
-        // let mut v: Vec<Rc<RefCell<Variable>>> = vec![];
-        // for e in self.variables.iter() {
-        //     v.push(e.clone())
-        // }
-        // let mut c: Vec<Rc<RefCell<dyn ConstraintTrait>>> = vec![];
-        // for e in self.constraints.iter() {
-        //     c.push(e.clone())
-        // }
         Self {
             name: self.name.clone(),
             variables: vec![],
@@ -116,21 +108,6 @@ impl Default for Problem {
 // impl<X, C> Problem<X, C> where X: VariableTrait, C: ConstraintTrait
 #[allow(dead_code)]
 impl Problem {
-    pub fn get_variable_by_id(&self, key: usize) -> Result<&Var, Box<dyn ExceptionTrait>> {
-        match self.map_variables.get(&key) {
-            None => Err(ExceptionFactory::new(
-                ExceptionType::InvalidVariableExceptionType,
-                "the variable is not found.",
-            )),
-            Some(v) => Ok(v),
-        }
-        // if self.map_variables.contains_key(&key)
-        // {
-        //
-        // }else {
-        //     Err(Box::new(ExceptionFactory::new(ExceptionType::InvalidVariableExceptionType,"the variable is not found.")))
-        // }
-    }
     pub fn new() -> Problem {
         Self {
             name: String::new(),
@@ -152,10 +129,6 @@ impl Problem {
             static_variables_id: 0,
             timer: Default::default(),
         }
-    }
-
-    pub fn get_constraints(&self) -> &Vec<Constraint> {
-        &self.constraints
     }
 
     pub fn add_variable(&mut self, var: Var) {
@@ -182,40 +155,6 @@ impl Problem {
         self.variables.push(var)
     }
 
-    pub fn get_new_variable_id(&mut self) -> usize {
-        self.static_variables_id += 1;
-        self.static_variables_id - 1
-    }
-
-    pub fn maximum_arity(&self) -> usize {
-        todo!()
-    }
-
-    pub fn minimum_arity(&self) -> usize {
-        todo!()
-    }
-
-    pub fn maximum_domain_size(&self) -> usize {
-        let mut max = usize::MIN;
-        for var in self.variables.iter() {
-            let m = var.borrow().domain_size();
-            if max < m {
-                max = m;
-            }
-        }
-        max
-    }
-
-    pub fn minimum_domain_size(&self) -> usize {
-        let mut min = usize::MAX;
-        for var in self.variables.iter() {
-            let m = var.borrow().domain_size();
-            if min > m {
-                min = m;
-            }
-        }
-        min
-    }
     pub fn number_of_constraints(&self) -> usize {
         self.constraints.len()
     }
@@ -228,11 +167,75 @@ impl Problem {
         Solver::new(self)
     }
 
+    pub fn time(&self) -> Duration {
+        self.timer.get()
+    }
+}
+#[allow(dead_code)]
+impl Problem {
+    pub(crate) fn get_variable_by_id(&self, key: usize) -> Result<&Var, Box<dyn ExceptionTrait>> {
+        match self.map_variables.get(&key) {
+            None => Err(ExceptionFactory::new(
+                ExceptionType::InvalidVariableExceptionType,
+                "the variable is not found.",
+            )),
+            Some(v) => Ok(v),
+        }
+    }
+    pub(crate) fn get_constraints(&self) -> &Vec<Constraint> {
+        &self.constraints
+    }
+
     pub(crate) fn get_all_variables(&self) -> &Vec<Var> {
         &self.variables
     }
 
-    pub fn time(&self) -> Duration {
-        self.timer.get()
+    pub(crate) fn get_new_variable_id(&mut self) -> usize {
+        self.static_variables_id += 1;
+        self.static_variables_id - 1
+    }
+
+    pub(crate) fn maximum_arity(&self) -> usize {
+        let mut max = usize::MIN;
+        for con in self.constraints.iter() {
+            let m = con.borrow().get_arity();
+            if max < m {
+                max = m;
+            }
+        }
+        max
+    }
+
+    pub(crate) fn minimum_arity(&self) -> usize {
+        let mut min = usize::MIN;
+        for con in self.constraints.iter() {
+            let m = con.borrow().get_arity();
+            if min > m {
+                min = m;
+            }
+        }
+        min
+    }
+
+    pub(crate) fn maximum_domain_size(&self) -> usize {
+        let mut max = usize::MIN;
+        for var in self.variables.iter() {
+            let m = var.borrow().domain_size();
+            if max < m {
+                max = m;
+            }
+        }
+        max
+    }
+
+    pub(crate) fn minimum_domain_size(&self) -> usize {
+        let mut min = usize::MAX;
+        for var in self.variables.iter() {
+            let m = var.borrow().domain_size();
+            if min > m {
+                min = m;
+            }
+        }
+        min
     }
 }

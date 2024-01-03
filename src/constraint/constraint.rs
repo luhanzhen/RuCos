@@ -1,5 +1,5 @@
 use crate::constraint::comparison::all_different::all_different::AllDifferent;
-/**
+/* * *
  * @project_name: RuCos
  *
  * @author: luhan zhen
@@ -12,7 +12,7 @@ use crate::constraint::comparison::all_different::all_different::AllDifferent;
  *
  * @description:
  *
- */
+ * * */
 use crate::constraint::constraint_factory::XConstraintType;
 use crate::constraint::genecric::extension::extension::Extension;
 use crate::constraint::propagator::PropagatorTrait;
@@ -27,7 +27,7 @@ use std::rc::Rc;
 pub struct Constraint {
     cell: Rc<RefCell<dyn ConstraintTrait>>,
 }
-
+#[allow(dead_code)]
 impl Constraint {
     pub fn new_all_different(scope: Vec<Var>) -> Self {
         Self {
@@ -45,15 +45,15 @@ impl Constraint {
             cell: Rc::new(RefCell::new(Extension::new(scope))),
         }
     }
-    pub fn new_with_rc_cell(cell: Rc<RefCell<dyn ConstraintTrait>>) -> Self {
+    pub(crate) fn new_with_rc_cell(cell: Rc<RefCell<dyn ConstraintTrait>>) -> Self {
         Self { cell }
     }
     #[inline]
-    pub fn borrow(&self) -> Ref<'_, dyn ConstraintTrait> {
+    pub(crate) fn borrow(&self) -> Ref<'_, dyn ConstraintTrait> {
         self.cell.borrow()
     }
     #[inline]
-    pub fn borrow_mut(&self) -> RefMut<'_, dyn ConstraintTrait> {
+    pub(crate) fn borrow_mut(&self) -> RefMut<'_, dyn ConstraintTrait> {
         self.cell.borrow_mut()
     }
 }
@@ -71,7 +71,7 @@ impl Display for Constraint {
     }
 }
 
-pub trait ConstraintTrait: Display + Debug {
+pub(crate) trait ConstraintTrait: Display + Debug {
     fn get_propagators(&mut self) -> &mut Vec<Box<dyn PropagatorTrait>>;
 
     fn is_satisfied(&self) -> bool;
@@ -80,11 +80,11 @@ pub trait ConstraintTrait: Display + Debug {
 
     fn restore_to_level(&mut self, level: usize);
 
-    fn arity(&self) -> usize;
-
     fn delay_construct(&mut self, solver: Seal<Solver>);
 
     fn get_type(&self) -> &XConstraintType;
 
     fn get_scope(&self) -> &Vec<Var>;
+
+    fn get_arity(&self) -> usize;
 }

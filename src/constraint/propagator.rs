@@ -1,4 +1,4 @@
-/**
+/* * *
  * @project_name: RuCos
  *
  * @author: luhan zhen
@@ -11,12 +11,12 @@
  *
  * @description:
  *
- */
+ * * */
 use crate::exception::exception_trait::ExceptionTrait;
 use crate::variable::variable::Var;
 use std::fmt::Debug;
 
-pub trait PropagatorTrait: Debug {
+pub(crate) trait PropagatorTrait: Debug {
     fn initialise(&mut self);
     fn filter_by_variable(&mut self, dummy: &Var) -> Result<usize, &Box<dyn ExceptionTrait>>;
     fn filter_by_arc(

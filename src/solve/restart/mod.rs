@@ -1,5 +1,5 @@
 pub mod geometric_restart;
-/**
+/* * *
  * @project_name: RuCos
  *
  * @author: luhan zhen
@@ -12,6 +12,6 @@ pub mod geometric_restart;
  *
  * @description:
  *
- */
+ * * */
 pub mod luby_restart;
 pub mod restart_trait;

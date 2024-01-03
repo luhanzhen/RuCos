@@ -3,7 +3,7 @@ use crate::solve::solver::solver::Solver;
 
 use std::fmt::Debug;
 
-/**
+/* * *
  * @project_name: RuCos
  *
  * @author: luhan zhen
@@ -16,7 +16,7 @@ use std::fmt::Debug;
  *
  * @description:
  *
- */
+ * * */
 
 pub trait NonConsistency: Debug {
     fn non_consistency_callback(&mut self, cons: &Constraint, level: usize, solver: &Solver);

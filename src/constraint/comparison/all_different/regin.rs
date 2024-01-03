@@ -2,7 +2,7 @@ use crate::constraint::propagator::PropagatorTrait;
 use crate::exception::exception_trait::ExceptionTrait;
 use crate::variable::variable::Var;
 
-/**
+/* * *
  * @project_name: RuCos
  *
  * @author: luhan zhen
@@ -15,7 +15,7 @@ use crate::variable::variable::Var;
  *
  * @description:
  *
- */
+ * * */
 #[derive(Debug)]
 pub struct GacRegin {}
 

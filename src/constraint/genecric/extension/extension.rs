@@ -1,4 +1,4 @@
-/**
+/* * *
  * @project_name: RuCos
  *
  * @author: luhan zhen
@@ -11,7 +11,7 @@
  *
  * @description:
  *
- */
+ * * */
 use crate::constraint::constraint::ConstraintTrait;
 use crate::constraint::constraint_factory::XConstraintType;
 use crate::constraint::genecric::extension::compact_table::CompactTable;
@@ -65,12 +65,12 @@ impl ConstraintTrait for Extension {
         todo!()
     }
 
-    fn restore_to_level(&mut self, level: usize) {
+    fn restore_to_level(&mut self, _level: usize) {
         todo!()
     }
 
-    fn arity(&self) -> usize {
-        todo!()
+    fn get_arity(&self) -> usize {
+        self.scope.len()
     }
 
     fn delay_construct(&mut self, solver: Seal<Solver>) {

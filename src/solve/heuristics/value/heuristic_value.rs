@@ -1,7 +1,7 @@
 use crate::variable::variable::Var;
 use std::fmt::Debug;
 
-/**
+/* * *
  * @project_name: RuCos
  *
  * @author: luhan zhen
@@ -14,7 +14,7 @@ use std::fmt::Debug;
  *
  * @description:
  *
- */
+ * * */
 
 pub trait HeuristicValueTrait: Debug {
     fn select_value(&mut self, var: &Var) -> i32;

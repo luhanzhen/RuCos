@@ -1,4 +1,4 @@
-/**
+/* * *
  * @project_name: RuCos
  *
  * @author: luhan zhen
@@ -11,7 +11,7 @@
  *
  * @description:
  *
- */
+ * * */
 use crate::utils::linked_set::LinkedSet;
 use crate::variable::domain::domain_trait::DomainTrait;
 use std::collections::HashMap;

@@ -1,6 +1,6 @@
 mod callback_set;
 mod core;
-/**
+/* * *
  * @project_name: RuCos
  *
  * @author: luhan zhen
@@ -13,6 +13,6 @@ mod core;
  *
  * @description:
  *
- */
+ * * */
 pub mod solver;
 mod status;

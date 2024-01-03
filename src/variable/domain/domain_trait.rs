@@ -16,7 +16,7 @@ use std::ops::Index;
  *
  * @description:
  *
- */
+ * * */
 #[allow(dead_code)]
 pub trait DomainTrait: Display + Clone + PartialEq + Index<usize> + Hash {
     /// if the value is not in the domain, return None

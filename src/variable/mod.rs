@@ -1,4 +1,4 @@
-/**
+/* * *
  * @project_name: RuCos
  *
  * @author: luhan zhen
@@ -11,7 +11,7 @@
  *
  * @description:
  *
- */
+ * * */
 
 /// var!(problem, name, domain) this is a type for the variable.
 /// var!(problem, name, x=>y) this is a type for the variable.

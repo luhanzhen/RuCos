@@ -1,4 +1,4 @@
-/**
+/* * *
  * @project_name: RuCos
  *
  * @author: luhan zhen
@@ -11,7 +11,7 @@
  *
  * @description:
  *
- */
+ * * */
 use crate::constraint::constraint::Constraint;
 use crate::problem::problem::Problem;
 use crate::solve::heuristics::value::heuristic_value::HeuristicValueTrait;
@@ -27,6 +27,7 @@ use crate::solve::solver::status::*;
 use crate::utils::time_interval::TimeInterval;
 use crate::variable::variable::Var;
 use rand::prelude::*;
+use std::collections::HashSet;
 use std::fmt::{Display, Formatter};
 use std::hash::{Hash, Hasher};
 use std::time::Duration;
@@ -50,20 +51,80 @@ pub struct Solver {
     callback_set: CallbackSet,
 }
 
-impl Display for Solver {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{:?}", &self)
-    }
-}
-impl Hash for Solver {
-    fn hash<H: Hasher>(&self, _state: &mut H) {
-        todo!()
-    }
-}
 #[allow(dead_code)]
-impl From<&Problem> for Solver {
-    fn from(value: &Problem) -> Self {
-        value.solver()
+impl Solver {
+    pub(crate) fn get_conflicts(&self) -> usize {
+        self.core.conflicts
+    }
+
+    pub(crate) fn get_future_vars(&self) -> &HashSet<Var> {
+        &self.core.future_vars
+    }
+
+    pub(crate) fn get_past_vars(&self) -> &HashSet<Var> {
+        &self.core.past_vars
+    }
+
+    pub(crate) fn get_level(&self) -> usize {
+        self.core.level
+    }
+
+    fn delay_construct(&mut self) {
+        for e in self.constraints.iter_mut() {
+            if let Some(op) = &self.option_self {
+                e.borrow_mut().delay_construct(op.clone());
+            }
+        }
+    }
+    fn get_all_variables(&self) -> &Vec<Var> {
+        &self.variables
+    }
+
+    fn choose_strategy(&mut self) {
+        self.value_heuristic = Some(Box::new(ValueFirst::new()));
+        if let Some(value) = &self.option_self {
+            self.restart = Some(Box::new(LubyRestart::new_with_solver_and_random_factor(
+                value,
+            )))
+        }
+    }
+
+    fn decide_the_variable_with_idx(&self, var: &Var, idx: usize) {
+        let _ = var.borrow_mut().assign_idx(idx, self.core.level);
+    }
+
+    fn propagate(&mut self) {}
+
+    fn first_propagate(&mut self) {}
+
+    fn backtrack_to_level(&mut self, _level: usize) {}
+    fn backtrack(&mut self) {}
+
+    fn shuffle_variables(&mut self) {
+        for i in (1..=self.variables.len()).rev() {
+            self.variables.swap(i - 1, random::<usize>() % i);
+        }
+    }
+}
+
+impl Clone for Solver {
+    fn clone(&self) -> Self {
+        Self {
+            problem: self.problem.clone(),
+            variables: self.variables.clone(),
+            constraints: self.constraints.clone(),
+            timer: Default::default(),
+            status: self.status.clone(),
+            result: self.result.clone(),
+            solutions: Solution::new(&self.variables),
+            option_self: None,
+            init_time: None,
+            core: Core::new(&self.variables),
+            restart: None,
+            value_heuristic: None,
+            variable_heuristic: None,
+            callback_set: CallbackSet::new(),
+        }
     }
 }
 
@@ -96,28 +157,6 @@ impl Solver {
         ret
     }
 
-    pub fn get_conflicts(&self) -> usize {
-        self.core.conflicts
-    }
-    pub fn delay_construct(&mut self) {
-        for e in self.constraints.iter_mut() {
-            if let Some(op) = &self.option_self {
-                e.borrow_mut().delay_construct(op.clone());
-            }
-        }
-    }
-    pub(crate) fn get_all_variables(&self) -> &Vec<Var> {
-        &self.variables
-    }
-
-    fn choose_strategy(&mut self) {
-        self.value_heuristic = Some(Box::new(ValueFirst::new()));
-        if let Some(value) = &self.option_self {
-            self.restart = Some(Box::new(LubyRestart::new_with_solver_and_random_factor(
-                value,
-            )))
-        }
-    }
     pub fn solve(&mut self) {
         self.init_time = Some(self.problem.borrow_mut().time());
         self.timer.reset();
@@ -135,47 +174,26 @@ impl Solver {
         // self.solutions.record_solution(&self.variables, &self.timer);
     }
 
-    fn decide_the_variable_with_idx(&self, var: &Var, idx: usize) {
-        let _ = var.borrow_mut().assign_idx(idx, self.core.level);
-    }
-
-    fn propagate(&mut self) {}
-
-    fn first_propagate(&mut self) {}
-
-    fn backtrack_to_level(&mut self, _level: usize) {}
-    fn backtrack(&mut self) {}
-
     pub fn print_statistics(&self) {
         println!("init time: {:?}", self.init_time.unwrap());
         println!("{}", self.solutions);
         println!("solving time: {:?}", self.timer.get());
     }
-
-    fn shuffle_variables(&mut self) {
-        for i in (1..=self.variables.len()).rev() {
-            self.variables.swap(i - 1, random::<usize>() % i);
-        }
-    }
 }
 
-impl Clone for Solver {
-    fn clone(&self) -> Self {
-        Self {
-            problem: self.problem.clone(),
-            variables: self.variables.clone(),
-            constraints: self.constraints.clone(),
-            timer: Default::default(),
-            status: self.status.clone(),
-            result: self.result.clone(),
-            solutions: Solution::new(&self.variables),
-            option_self: None,
-            init_time: None,
-            core: Core::new(&self.variables),
-            restart: None,
-            value_heuristic: None,
-            variable_heuristic: None,
-            callback_set: CallbackSet::new(),
-        }
+impl Display for Solver {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{:?}", &self)
+    }
+}
+impl Hash for Solver {
+    fn hash<H: Hasher>(&self, _state: &mut H) {
+        todo!()
+    }
+}
+#[allow(dead_code)]
+impl From<&Problem> for Solver {
+    fn from(value: &Problem) -> Self {
+        value.solver()
     }
 }

@@ -1,4 +1,4 @@
-/**
+/* * *
  * @project_name: RuCos
  *
  * @author: luhan zhen
@@ -11,7 +11,7 @@
  *
  * @description:
  *
- */
+ * * */
 use crate::exception::exception_trait::ExceptionTrait;
 use crate::exception::ExceptionLevel;
 use std::fmt::{Debug, Display, Formatter};

@@ -3,7 +3,7 @@ use std::fmt::{Debug, Display, Formatter};
 
 use std::rc::Rc;
 
-/**
+/* * *
  * @project_name: RuCos
  *
  * @author: luhan zhen
@@ -16,7 +16,7 @@ use std::rc::Rc;
  *
  * @description:
  *
- */
+ * * */
 #[allow(dead_code)]
 #[derive(Debug)]
 pub struct Seal<T>

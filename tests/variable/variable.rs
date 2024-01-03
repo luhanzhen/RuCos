@@ -2,7 +2,7 @@ use rucos::problem::problem::Problem;
 use rucos::variable::domain::Domain;
 use rucos::variable::variable::Var;
 
-/**
+/* * *
  * @project_name: RuCos
  *
  * @author: luhan zhen
@@ -15,7 +15,7 @@ use rucos::variable::variable::Var;
  *
  * @description:
  *
- */
+ * * */
 use rucos::{bool, domain, var};
 
 #[test]

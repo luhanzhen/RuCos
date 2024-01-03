@@ -4,7 +4,7 @@ use crate::exception::exception_trait::ExceptionTrait;
 use crate::exception::ExceptionType;
 use crate::variable::variable::Var;
 
-/**
+/* * *
  * @project_name: RuCos
  *
  * @author: luhan zhen
@@ -17,7 +17,7 @@ use crate::variable::variable::Var;
  *
  * @description:
  *
- */
+ * * */
 
 #[allow(dead_code)]
 #[derive(Debug)]

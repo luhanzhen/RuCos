@@ -1,4 +1,4 @@
-/**
+/* * *
  * @project_name: RuCos
  *
  * @author: luhan zhen
@@ -11,10 +11,10 @@
  *
  * @description:
  *
- */
+ * * */
 
 #[allow(dead_code)]
-pub struct ConstraintFactory();
+pub(crate) struct ConstraintFactory();
 
 // impl ConstraintFactory {
 //     pub fn new(exception_type: ConstraintFactory, msg: &str) -> Box<dyn ExceptionTrait> {

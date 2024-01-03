@@ -1,7 +1,7 @@
 use crate::variable::variable::Var;
 use std::collections::HashSet;
 
-/**
+/* * *
  * @project_name: RuCos
  *
  * @author: luhan zhen
@@ -14,7 +14,7 @@ use std::collections::HashSet;
  *
  * @description:
  *
- */
+ * * */
 
 #[allow(dead_code)]
 #[derive(Debug)]

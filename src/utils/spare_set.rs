@@ -1,5 +1,5 @@
-/**
-* @project_name: RuCos
+/* * *
+ * @project_name: RuCos
 *
 * @author: luhan zhen
 *
@@ -11,7 +11,7 @@
 *
  * @description: 1.0
 *
- */
+ * * */
 use crate::utils::set_trait::SetTrait;
 use std::fmt::{Display, Formatter};
 use std::ops::Index;

@@ -2,7 +2,7 @@ use crate::solve::heuristics::value::heuristic_value::HeuristicValueTrait;
 
 use crate::variable::variable::Var;
 
-/**
+/* * *
  * @project_name: RuCos
  *
  * @author: luhan zhen
@@ -15,7 +15,7 @@ use crate::variable::variable::Var;
  *
  * @description:
  *
- */
+ * * */
 #[allow(dead_code)]
 #[derive(Debug)]
 pub struct ValueLast {}

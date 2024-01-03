@@ -1,4 +1,4 @@
-/**
+/* * *
  * @project_name: RuCos
  *
  * @author: luhan zhen
@@ -11,7 +11,7 @@
  *
  * @description:
  *
- */
+ * * */
 use rucos::exception::exception_factory::ExceptionFactory;
 
 use rucos::exception::{ExceptionLevel, ExceptionType};

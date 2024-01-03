@@ -2,7 +2,7 @@ use crate::solve::solver::solver::Solver;
 use crate::variable::variable::Var;
 use std::fmt::Debug;
 
-/**
+/* * *
  * @project_name: RuCos
  *
  * @author: luhan zhen
@@ -15,7 +15,7 @@ use std::fmt::Debug;
  *
  * @description:
  *
- */
+ * * */
 
 pub trait DomainReduction: Debug {
     fn domain_reduction_callback(&mut self, var: &Var, value_idx: usize, solver: &Solver);
