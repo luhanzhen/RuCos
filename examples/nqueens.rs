@@ -23,17 +23,14 @@ fn n_queens(n: usize) -> Problem {
 
     for i in 0..n {
         for j in i + 1..n {
-            problem += all_different!(
-                problem[format!("row_{}", i).as_str()].clone(),
-                problem[j].clone()
-            );
+            problem += all_different!(&problem[format!("row_{}", i).as_str()], &problem[j]);
         }
     }
     problem
 }
 
 fn main() {
-    let problem = n_queens(20);
+    let problem = n_queens(200);
     // let mut solver = problem.solver();
     let mut solver = Solver::from(&problem);
 

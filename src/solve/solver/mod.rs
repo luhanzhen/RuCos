@@ -1,5 +1,3 @@
-mod callback_set;
-mod core;
 /* * *
  * @project_name: RuCos
  *
@@ -14,5 +12,9 @@ mod core;
  * @description:
  *
  * * */
+mod callback_set;
+mod core_component;
+mod heuristic_component;
 pub mod solver;
-mod status;
+mod status_component;
+mod time_component;

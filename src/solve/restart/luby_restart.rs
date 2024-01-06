@@ -19,7 +19,6 @@ use rand::random;
 use crate::solve::seal::Seal;
 #[derive(Debug)]
 pub struct LubyRestart {
-    solver: Seal<Solver>,
     factor: u64,
     limit: u64,
     restart_counter: u64,
@@ -46,22 +45,21 @@ fn luby(mut x: u64, y: u64) -> u64 {
 
 #[allow(dead_code)]
 impl LubyRestart {
-    pub fn new_with_solver_and_factor(solver: &Seal<Solver>, factor: u64) -> Self {
+    pub fn new_with_solver_and_factor(factor: u64) -> Self {
         Self {
-            solver: solver.clone(),
             factor,
             limit: luby(2, 0),
             restart_counter: 0,
         }
     }
-    pub fn new_with_solver_and_random_factor(solver: &Seal<Solver>) -> Self {
-        LubyRestart::new_with_solver_and_factor(solver, random::<u64>() % 100 + 1)
+    pub fn new_with_solver_and_random_factor() -> Self {
+        LubyRestart::new_with_solver_and_factor(random::<u64>() % 100 + 1)
     }
 }
 #[allow(dead_code)]
 impl RestartTrait for LubyRestart {
-    fn should_restart(&mut self) -> bool {
-        let conflicts = self.solver.borrow().get_conflicts() as u64;
+    fn should_restart(&mut self,solver: &mut Solver) -> bool {
+        let conflicts = solver.get_conflicts() as u64;
         if conflicts >= self.limit {
             self.restart_counter += 1;
             self.limit = conflicts + (luby(2, self.restart_counter) * self.factor);
@@ -71,9 +69,9 @@ impl RestartTrait for LubyRestart {
         }
     }
 
-    fn initialize(&mut self) {
+    fn initialize(&mut self,solver: &mut Solver) {
         self.restart_counter = 0;
         self.limit =
-            (self.solver.borrow().get_conflicts() + (luby(2, 0) * self.factor) as usize) as u64
+            (solver.get_conflicts() + (luby(2, 0) * self.factor) as usize) as u64
     }
 }

@@ -24,17 +24,17 @@ fn add() {
     //     v1.clone(),
     // ]))));
 
-    let mut solver = problem.solver();
-    solver.delay_construct();
+    let _ = problem.solver();
+    // solver.delay_construct();
     problem.add_constraint(Constraint::new_extension(vec![v1.clone(), v1.clone()]));
 
-    for c in problem.get_constraints().iter() {
-        for p in c.borrow_mut().get_propagators().iter_mut() {
-            let _ = p.filter_by_variable(&v1);
-        }
-    }
-    v1.borrow_mut().restore_to_limit(0);
-    v2.borrow_mut().restore_to_limit(1);
-    println!("v1 {}", v1.borrow());
-    println!("v2 {}", v2.borrow());
+    // for c in problem.get_constraints().iter() {
+    //     for p in c.borrow_mut().get_propagators().iter_mut() {
+    //         let _ = p.filter_by_variable(&v1);
+    //     }
+    // // }
+    // v1.borrow_mut().restore_to_limit(0);
+    // v2.borrow_mut().restore_to_limit(1);
+    // println!("v1 {}", v1.borrow());
+    // println!("v2 {}", v2.borrow());
 }

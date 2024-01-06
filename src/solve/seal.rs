@@ -21,14 +21,14 @@ use std::rc::Rc;
 #[derive(Debug)]
 pub struct Seal<T>
 where
-    T: Clone + Display + Sized,
+    T: Clone + Debug + Sized,
 {
     date: Rc<RefCell<T>>,
 }
 #[allow(dead_code)]
 impl<T> Seal<T>
 where
-    T: Clone + Display + Sized,
+    T: Clone + Debug + Sized,
 {
     #[inline]
     pub fn new(date: T) -> Self {
@@ -48,7 +48,7 @@ where
 #[allow(dead_code)]
 impl<T> Clone for Seal<T>
 where
-    T: Clone + Display + Sized,
+    T: Clone + Debug + Sized,
 {
     #[inline]
     fn clone(&self) -> Self {
@@ -57,16 +57,16 @@ where
         }
     }
 }
-#[allow(dead_code)]
-impl<T> Display for Seal<T>
-where
-    T: Clone + Display + Sized,
-{
-    #[inline]
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self.date.borrow())
-    }
-}
+// #[allow(dead_code)]
+// impl<T> Display for Seal<T>
+// where
+//     T: Clone + Debug + Sized,
+// {
+//     #[inline]
+//     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+//         write!(f, "{}", self.date.borrow())
+//     }
+// }
 
 // #[allow(dead_code)]
 // impl<T> Hash for Seal<T>

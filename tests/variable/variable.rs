@@ -47,6 +47,6 @@ fn new() {
     problem += bool!("vbooll");
     problem += bool!();
 
-    assert_eq!(problem.maximum_domain_size(), 36);
-    assert_eq!(problem.minimum_domain_size(), 2);
+    assert_eq!(problem["vbool"].borrow().maximum_idx(), 1);
+    assert_eq!(problem["vbool"].borrow().minimum_value(), 0);
 }

@@ -78,6 +78,21 @@ fn main() {
 }
 ```
 ## define the constraints
+### you can define the constraint with following code:
+```rust
+fn main() {
+    let mut problem = problem!();
+    for i in 0..n {
+        problem += var!(&format!("row_{}"; &i), 0=>(n as i32));
+    }
+    
+    problem += all_different!(
+                &problem[format!("row_{}", i).as_str()],
+                &problem[i],
+            );
+}
+
+```
 
 ## the n-queen problem can be modelled by following code:
 ```rust
@@ -90,8 +105,8 @@ fn n_queens(n: usize) -> Problem {
     for i in 0..n {
         for j in i + 1..n {
             problem += all_different!(
-                problem[format!("row_{}", i).as_str()].clone(),
-                problem[j].clone()
+                &problem[format!("row_{}", i).as_str()],
+                &problem[j]
             );
         }
     }

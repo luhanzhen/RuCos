@@ -27,7 +27,7 @@ use crate::solve::seal::Seal;
 #[derive(Debug)]
 pub struct Extension {
     scope: Vec<Var>,
-    solver: Option<Seal<Solver>>,
+
     propagators: Vec<Box<dyn PropagatorTrait>>,
     r#type: XConstraintType,
 }
@@ -44,7 +44,7 @@ impl Extension {
         let propagators: Vec<Box<dyn PropagatorTrait>> = vec![Box::new(CompactTable::new(&scope))];
         Self {
             scope,
-            solver: None,
+
             propagators,
             r#type: XConstraintType::XExtension,
         }
@@ -73,8 +73,8 @@ impl ConstraintTrait for Extension {
         self.scope.len()
     }
 
-    fn delay_construct(&mut self, solver: Seal<Solver>) {
-        self.solver = Some(solver);
+     fn delay_construct(&mut self, solver: &mut Solver){
+
         // println!("extension:")
     }
 

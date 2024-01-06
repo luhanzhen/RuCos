@@ -1,3 +1,4 @@
+
 use crate::solve::restart::restart_trait::RestartTrait;
 use crate::solve::solver::solver::Solver;
 use rand::random;
@@ -22,7 +23,7 @@ use crate::solve::seal::Seal;
 #[allow(dead_code)]
 #[derive(Debug)]
 pub struct GeometricRestart {
-    solver: Seal<Solver>,
+
     factor: u64,
     limit: u64,
     restart_counter: u64,
@@ -30,23 +31,25 @@ pub struct GeometricRestart {
 
 #[allow(dead_code)]
 impl GeometricRestart {
-    pub fn new_with_solver_and_factor(solver: &Seal<Solver>, factor: u64) -> Self {
+    pub fn new_with_solver_and_factor(factor: u64) -> Self {
         Self {
-            solver: solver.clone(),
+
             factor,
-            limit: solver.borrow().get_conflicts() as u64,
+            // limit: solver.borrow().get_conflicts() as u64,
+            limit: 0,
             restart_counter: 100,
         }
     }
 
-    pub fn new_with_solver_and_random_factor(solver: &Seal<Solver>) -> Self {
-        GeometricRestart::new_with_solver_and_factor(solver, random::<u64>() % 100 + 1)
+    pub fn new_with_solver_and_random_factor() -> Self {
+        GeometricRestart::new_with_solver_and_factor(random::<u64>() % 100 + 1)
     }
 }
 #[allow(dead_code)]
 impl RestartTrait for GeometricRestart {
-    fn should_restart(&mut self) -> bool {
-        let conflicts = self.solver.borrow().get_conflicts() as u64;
+    fn should_restart(&mut self,solver: &mut Solver) -> bool {
+        // let conflicts = self.solver.borrow().get_conflicts() as u64;
+        let conflicts = 0;
         if conflicts >= self.limit {
             self.restart_counter *= self.factor;
             self.limit += conflicts;
@@ -56,8 +59,9 @@ impl RestartTrait for GeometricRestart {
         }
     }
 
-    fn initialize(&mut self) {
+    fn initialize(&mut self,solver: &mut Solver) {
         self.restart_counter = 100;
-        self.limit = self.solver.borrow().get_conflicts() as u64
+        // self.limit = self.solver.borrow().get_conflicts() as u64
+        self.limit = 0
     }
 }

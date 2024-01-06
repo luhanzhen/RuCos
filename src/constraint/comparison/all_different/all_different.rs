@@ -25,7 +25,6 @@ use std::fmt::{Display, Formatter};
 #[derive(Debug)]
 pub struct AllDifferent {
     scope: Vec<Var>,
-    solver: Option<Seal<Solver>>,
     propagators: Vec<Box<dyn PropagatorTrait>>,
     r#type: XConstraintType,
 }
@@ -44,7 +43,6 @@ impl AllDifferent {
             vec![Box::new(BoundConsistency::new(&scope))];
         Self {
             scope,
-            solver: None,
             propagators,
             r#type: XConstraintType::XAllDifferent,
         }
@@ -60,7 +58,6 @@ impl AllDifferent {
             vec![Box::new(BoundConsistency::new(&scope))];
         Self {
             scope,
-            solver: None,
             propagators,
             r#type: XConstraintType::XAllDifferent,
         }
@@ -85,8 +82,8 @@ impl ConstraintTrait for AllDifferent {
         todo!()
     }
 
-    fn delay_construct(&mut self, solver: Seal<Solver>) {
-        self.solver = Some(solver);
+    fn delay_construct(&mut self, solver: &mut Solver) {
+
         // for e in self.solver.as_ref().unwrap().borrow().get_all_variables().iter()
         // {
         //     print!("{} ",e.borrow().get_id());

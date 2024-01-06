@@ -80,7 +80,7 @@ pub(crate) trait ConstraintTrait: Display + Debug {
 
     fn restore_to_level(&mut self, level: usize);
 
-    fn delay_construct(&mut self, solver: Seal<Solver>);
+    fn delay_construct(&mut self, solver: &mut Solver);
 
     fn get_type(&self) -> &XConstraintType;
 

@@ -324,7 +324,7 @@ impl Variable {
     }
 
     #[inline]
-    pub(crate) fn minimum_idx(&self) -> usize {
+    pub fn minimum_idx(&self) -> usize {
         self.domain.minimum_idx()
     }
 
@@ -332,6 +332,7 @@ impl Variable {
     pub fn maximum_idx(&self) -> usize {
         self.domain.maximum_idx()
     }
+
     #[inline]
     pub fn minimum_value(&self) -> i32 {
         self.domain.minimum_value()

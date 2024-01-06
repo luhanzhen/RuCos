@@ -14,23 +14,22 @@
  * * */
 use crate::constraint::constraint::Constraint;
 use crate::problem::problem::Problem;
-use crate::solve::heuristics::value::heuristic_value::HeuristicValueTrait;
-use crate::solve::heuristics::value::value_first::ValueFirst;
-use crate::solve::heuristics::variable::heuristic_variable::HeuristicVariableTrait;
-use crate::solve::restart::luby_restart::LubyRestart;
-use crate::solve::restart::restart_trait::RestartTrait;
 use crate::solve::seal::Seal;
 use crate::solve::solution::Solution;
 use crate::solve::solver::callback_set::CallbackSet;
-use crate::solve::solver::core::Core;
-use crate::solve::solver::status::*;
-use crate::utils::time_interval::TimeInterval;
+use crate::solve::solver::core_component::CoreComponent;
+use crate::solve::solver::heuristic_component::HeuristicComponent;
+use crate::solve::solver::status_component::*;
+use crate::solve::solver::time_component::TimeComponent;
 use crate::variable::variable::Var;
 use rand::prelude::*;
 use std::collections::HashSet;
 use std::fmt::{Display, Formatter};
 use std::hash::{Hash, Hasher};
-use std::time::Duration;
+use std::marker::PhantomPinned;
+use std::ptr::NonNull;
+
+
 
 #[allow(dead_code)]
 #[derive(Debug)]
@@ -38,59 +37,36 @@ pub struct Solver {
     problem: Seal<Problem>,
     variables: Vec<Var>,
     constraints: Vec<Constraint>,
-    timer: TimeInterval,
-    status: SearchStates,
-    result: SearchResult,
     solutions: Solution,
-    option_self: Option<Seal<Solver>>,
-    init_time: Option<Duration>,
-    core: Core,
-    restart: Option<Box<dyn RestartTrait>>,
-    value_heuristic: Option<Box<dyn HeuristicValueTrait>>,
-    variable_heuristic: Option<Box<dyn HeuristicVariableTrait>>,
+    status_component: StatusComponent,
+    core_component: CoreComponent,
+    time_component: TimeComponent,
+    heuristic_component: HeuristicComponent,
     callback_set: CallbackSet,
+    slice: NonNull<Self>,
 }
 
 #[allow(dead_code)]
 impl Solver {
-    pub(crate) fn get_conflicts(&self) -> usize {
-        self.core.conflicts
-    }
-
-    pub(crate) fn get_future_vars(&self) -> &HashSet<Var> {
-        &self.core.future_vars
-    }
-
-    pub(crate) fn get_past_vars(&self) -> &HashSet<Var> {
-        &self.core.past_vars
-    }
-
-    pub(crate) fn get_level(&self) -> usize {
-        self.core.level
-    }
-
-    fn delay_construct(&mut self) {
-        for e in self.constraints.iter_mut() {
-            if let Some(op) = &self.option_self {
-                e.borrow_mut().delay_construct(op.clone());
-            }
-        }
-    }
+    // fn delay_construct(&mut self) {
+    //     for e in self.constraints.iter() {
+    //         e.borrow_mut().delay_construct(&mut self);
+    //     }
+    // }
     fn get_all_variables(&self) -> &Vec<Var> {
         &self.variables
     }
-
+    fn get_variables_size(&self) -> usize {
+        self.variables.len()
+    }
     fn choose_strategy(&mut self) {
-        self.value_heuristic = Some(Box::new(ValueFirst::new()));
-        if let Some(value) = &self.option_self {
-            self.restart = Some(Box::new(LubyRestart::new_with_solver_and_random_factor(
-                value,
-            )))
-        }
+
+            self.heuristic_component.choose_strategy()
+
     }
 
     fn decide_the_variable_with_idx(&self, var: &Var, idx: usize) {
-        let _ = var.borrow_mut().assign_idx(idx, self.core.level);
+        let _ = var.borrow_mut().assign_idx(idx, self.core_component.level);
     }
 
     fn propagate(&mut self) {}
@@ -107,23 +83,81 @@ impl Solver {
     }
 }
 
+#[allow(dead_code)]
+impl Solver {
+    pub(crate) fn get_conflicts(&self) -> usize {
+        self.core_component.conflicts
+    }
+
+    pub(crate) fn get_future_vars(&self) -> &HashSet<Var> {
+        &self.core_component.future_vars
+    }
+
+    pub(crate) fn get_past_vars(&self) -> &HashSet<Var> {
+        &self.core_component.past_vars
+    }
+
+    pub(crate) fn get_level(&self) -> usize {
+        self.core_component.level
+    }
+    pub(crate) fn maximum_arity(&self) -> usize {
+        let mut max = usize::MIN;
+        for con in self.constraints.iter() {
+            let m = con.borrow().get_arity();
+            if max < m {
+                max = m;
+            }
+        }
+        max
+    }
+
+    pub(crate) fn minimum_arity(&self) -> usize {
+        let mut min = usize::MIN;
+        for con in self.constraints.iter() {
+            let m = con.borrow().get_arity();
+            if min > m {
+                min = m;
+            }
+        }
+        min
+    }
+
+    pub(crate) fn maximum_domain_size(&self) -> usize {
+        let mut max = usize::MIN;
+        for var in self.variables.iter() {
+            let m = var.borrow().domain_size();
+            if max < m {
+                max = m;
+            }
+        }
+        max
+    }
+
+    pub(crate) fn minimum_domain_size(&self) -> usize {
+        let mut min = usize::MAX;
+        for var in self.variables.iter() {
+            let m = var.borrow().domain_size();
+            if min > m {
+                min = m;
+            }
+        }
+        min
+    }
+}
 impl Clone for Solver {
     fn clone(&self) -> Self {
+        println!("Cloning Solver");
         Self {
             problem: self.problem.clone(),
             variables: self.variables.clone(),
             constraints: self.constraints.clone(),
-            timer: Default::default(),
-            status: self.status.clone(),
-            result: self.result.clone(),
             solutions: Solution::new(&self.variables),
-            option_self: None,
-            init_time: None,
-            core: Core::new(&self.variables),
-            restart: None,
-            value_heuristic: None,
-            variable_heuristic: None,
+            time_component: TimeComponent::new(),
+            core_component: CoreComponent::new(&self.variables),
+            heuristic_component: self.heuristic_component.clone(),
             callback_set: CallbackSet::new(),
+            status_component: self.status_component.clone(),
+            slice: NonNull::dangling(),
         }
     }
 }
@@ -133,51 +167,50 @@ impl Solver {
     pub fn new(problem: &Problem) -> Solver {
         let tmp_cons = problem.get_constraints().clone();
         let tmp_var = problem.get_all_variables().clone();
-        let core = Core::new(&tmp_var);
+        let core = CoreComponent::new(&tmp_var);
         let mut ret = Self {
             problem: Seal::new(problem.clone()),
-            timer: Default::default(),
             solutions: Solution::new(&tmp_var),
-            option_self: None,
+            slice: NonNull::dangling(),
             variables: tmp_var,
             constraints: tmp_cons,
-            status: SearchStates::Init,
-            result: SearchResult::Unknown,
-            init_time: None,
-            core,
-            restart: None,
-            value_heuristic: None,
-            variable_heuristic: None,
+            core_component: core,
+            time_component: TimeComponent::new(),
+            heuristic_component: HeuristicComponent::new(),
             callback_set: CallbackSet::new(),
+            status_component: StatusComponent::new(),
         };
-        match ret.option_self {
-            None => ret.option_self = Some(Seal::new(ret.clone())),
-            Some(_) => {}
-        }
+
         ret
     }
 
     pub fn solve(&mut self) {
-        self.init_time = Some(self.problem.borrow_mut().time());
-        self.timer.reset();
+        self.time_component.init(self.problem.borrow_mut().time());
         self.choose_strategy();
         self.shuffle_variables();
 
-        self.delay_construct();
+        // self.delay_construct();
 
         for var in self.variables.iter() {
             let n = random::<usize>() % var.borrow().domain_size();
             // let _ = var.borrow_mut().assign_idx(n, self.core.level);
             self.decide_the_variable_with_idx(var, n);
         }
-        self.solutions.record_solution(&self.variables, &self.timer);
+        self.solutions
+            .record_solution(&self.variables, &self.time_component.get_timer());
         // self.solutions.record_solution(&self.variables, &self.timer);
     }
 
     pub fn print_statistics(&self) {
-        println!("init time: {:?}", self.init_time.unwrap());
+        println!(
+            "init time: {:?}",
+            self.time_component.get_problem_set_time()
+        );
         println!("{}", self.solutions);
-        println!("solving time: {:?}", self.timer.get());
+        println!(
+            "solving time: {:?}",
+            self.time_component.get_time_interval()
+        );
     }
 }
 

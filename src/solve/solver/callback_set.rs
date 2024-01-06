@@ -1,11 +1,3 @@
-use crate::constraint::constraint::Constraint;
-use crate::solve::callbacks::delete_decision::DeleteDecision;
-use crate::solve::callbacks::domain_reduction::DomainReduction;
-use crate::solve::callbacks::new_decision::NewDecision;
-use crate::solve::callbacks::non_consistency::NonConsistency;
-use crate::solve::solver::solver::Solver;
-use crate::variable::variable::Var;
-
 /* * *
  * @project_name: RuCos
  *
@@ -20,6 +12,14 @@ use crate::variable::variable::Var;
  * @description:
  *
  * * */
+
+use crate::constraint::constraint::Constraint;
+use crate::solve::callbacks::delete_decision::DeleteDecision;
+use crate::solve::callbacks::domain_reduction::DomainReduction;
+use crate::solve::callbacks::new_decision::NewDecision;
+use crate::solve::callbacks::non_consistency::NonConsistency;
+use crate::solve::solver::solver::Solver;
+use crate::variable::variable::Var;
 
 #[allow(dead_code)]
 #[derive(Debug)]

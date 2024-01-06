@@ -194,48 +194,4 @@ impl Problem {
         self.static_variables_id += 1;
         self.static_variables_id - 1
     }
-
-    pub(crate) fn maximum_arity(&self) -> usize {
-        let mut max = usize::MIN;
-        for con in self.constraints.iter() {
-            let m = con.borrow().get_arity();
-            if max < m {
-                max = m;
-            }
-        }
-        max
-    }
-
-    pub(crate) fn minimum_arity(&self) -> usize {
-        let mut min = usize::MIN;
-        for con in self.constraints.iter() {
-            let m = con.borrow().get_arity();
-            if min > m {
-                min = m;
-            }
-        }
-        min
-    }
-
-    pub(crate) fn maximum_domain_size(&self) -> usize {
-        let mut max = usize::MIN;
-        for var in self.variables.iter() {
-            let m = var.borrow().domain_size();
-            if max < m {
-                max = m;
-            }
-        }
-        max
-    }
-
-    pub(crate) fn minimum_domain_size(&self) -> usize {
-        let mut min = usize::MAX;
-        for var in self.variables.iter() {
-            let m = var.borrow().domain_size();
-            if min > m {
-                min = m;
-            }
-        }
-        min
-    }
 }

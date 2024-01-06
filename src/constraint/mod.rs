@@ -36,13 +36,14 @@ pub mod propagator;
 //     };
 // }
 
+///all_different!(&var1,&var2,&var3....)
 #[macro_export]
 macro_rules! all_different {
       ($( $x:expr ),* ) => {
         {
             let mut temp_vec = Vec::new();
             $(
-                temp_vec.push($x);
+                temp_vec.push($x.clone());
             )*
             Constraint::new_all_different(temp_vec)
         }
