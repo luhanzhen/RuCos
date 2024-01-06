@@ -18,13 +18,13 @@ use crate::solve::callbacks::delete_decision::DeleteDecision;
 use crate::solve::callbacks::new_decision::NewDecision;
 use crate::solve::seal::Seal;
 use std::collections::HashMap;
-use std::fmt::{Debug};
+use std::fmt::Debug;
 use std::ptr::NonNull;
 
 #[allow(dead_code)]
 #[derive(Debug)]
 pub struct NoGoodEngine {
-    solver: Seal<NonNull<Solver>>,
+    // solver: Seal<NonNull<Solver>>,
     current_branch: Vec<u128>,
     nogood_equals_to_one: Vec<u128>,
     watcher_position: HashMap<u128, u32>,
@@ -36,7 +36,7 @@ pub struct NoGoodEngine {
 impl NoGoodEngine {
     pub fn new(solver: Seal<NonNull<Solver>>) -> Self {
         Self {
-            solver,
+            // solver,
             current_branch: vec![],
             nogood_equals_to_one: vec![],
             watcher_position: Default::default(),

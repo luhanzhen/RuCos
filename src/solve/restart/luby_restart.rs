@@ -58,7 +58,7 @@ impl LubyRestart {
 }
 #[allow(dead_code)]
 impl RestartTrait for LubyRestart {
-    fn should_restart(&mut self,solver: &mut Solver) -> bool {
+    fn should_restart(&mut self, solver: &mut Solver) -> bool {
         let conflicts = solver.get_conflicts() as u64;
         if conflicts >= self.limit {
             self.restart_counter += 1;
@@ -69,9 +69,8 @@ impl RestartTrait for LubyRestart {
         }
     }
 
-    fn initialize(&mut self,solver: &mut Solver) {
+    fn initialize(&mut self, solver: &mut Solver) {
         self.restart_counter = 0;
-        self.limit =
-            (solver.get_conflicts() + (luby(2, 0) * self.factor) as usize) as u64
+        self.limit = (solver.get_conflicts() + (luby(2, 0) * self.factor) as usize) as u64
     }
 }

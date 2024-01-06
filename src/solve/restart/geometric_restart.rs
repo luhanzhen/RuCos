@@ -1,4 +1,3 @@
-
 use crate::solve::restart::restart_trait::RestartTrait;
 use crate::solve::solver::solver::Solver;
 use rand::random;
@@ -23,7 +22,6 @@ use crate::solve::seal::Seal;
 #[allow(dead_code)]
 #[derive(Debug)]
 pub struct GeometricRestart {
-
     factor: u64,
     limit: u64,
     restart_counter: u64,
@@ -33,7 +31,6 @@ pub struct GeometricRestart {
 impl GeometricRestart {
     pub fn new_with_solver_and_factor(factor: u64) -> Self {
         Self {
-
             factor,
             // limit: solver.borrow().get_conflicts() as u64,
             limit: 0,
@@ -47,7 +44,7 @@ impl GeometricRestart {
 }
 #[allow(dead_code)]
 impl RestartTrait for GeometricRestart {
-    fn should_restart(&mut self,solver: &mut Solver) -> bool {
+    fn should_restart(&mut self, solver: &mut Solver) -> bool {
         // let conflicts = self.solver.borrow().get_conflicts() as u64;
         let conflicts = 0;
         if conflicts >= self.limit {
@@ -59,7 +56,7 @@ impl RestartTrait for GeometricRestart {
         }
     }
 
-    fn initialize(&mut self,solver: &mut Solver) {
+    fn initialize(&mut self, solver: &mut Solver) {
         self.restart_counter = 100;
         // self.limit = self.solver.borrow().get_conflicts() as u64
         self.limit = 0

@@ -27,11 +27,13 @@ use std::collections::HashSet;
 use std::fmt::{Display, Formatter};
 use std::hash::{Hash, Hasher};
 use std::marker::PhantomPinned;
+use std::pin::Pin;
 use std::ptr::NonNull;
+
 
 #[allow(dead_code)]
 #[derive(Debug)]
-pub struct Solver<'a> {
+pub struct InnerSolver {
     problem: Seal<Problem>,
     variables: Vec<Var>,
     constraints: Vec<Constraint>,
@@ -41,11 +43,12 @@ pub struct Solver<'a> {
     time_component: TimeComponent,
     heuristic_component: HeuristicComponent,
     callback_set: CallbackSet,
-    self_reference: Seal<Option<&'a Self>>,
+    pub(crate) self_reference: Seal<NonNull<Pin<Box<InnerSolver>>>>,
+    _pin: PhantomPinned,
 }
 
 #[allow(dead_code)]
-impl Solver<'_> {
+impl InnerSolver {
     // fn delay_construct(&mut self) {
     //     for e in self.constraints.iter() {
     //         e.borrow_mut().delay_construct(&mut self);
@@ -58,7 +61,9 @@ impl Solver<'_> {
         self.variables.len()
     }
     fn choose_strategy(&mut self) {
-        self.heuristic_component.choose_strategy()
+
+            self.heuristic_component.choose_strategy()
+
     }
 
     fn decide_the_variable_with_idx(&self, var: &Var, idx: usize) {
@@ -80,7 +85,7 @@ impl Solver<'_> {
 }
 
 #[allow(dead_code)]
-impl Solver<'_> {
+impl InnerSolver {
     pub(crate) fn get_conflicts(&self) -> usize {
         self.core_component.conflicts
     }
@@ -140,7 +145,7 @@ impl Solver<'_> {
         min
     }
 }
-impl Clone for Solver<'_> {
+impl Clone for InnerSolver {
     fn clone(&self) -> Self {
         println!("Cloning Solver");
         Self {
@@ -153,21 +158,23 @@ impl Clone for Solver<'_> {
             heuristic_component: self.heuristic_component.clone(),
             callback_set: CallbackSet::new(),
             status_component: self.status_component.clone(),
-            self_reference: Seal::new(None),
+            self_reference: Seal::new(NonNull::dangling()),
+            _pin: PhantomPinned,
         }
     }
 }
 
 #[allow(dead_code)]
-impl<'a> Solver<'a> {
-    pub fn new(problem: &Problem) -> Solver {
+impl InnerSolver {
+    pub fn new(problem: &Problem) -> Pin<Box<InnerSolver>> {
         let tmp_cons = problem.get_constraints().clone();
         let tmp_var = problem.get_all_variables().clone();
         let core = CoreComponent::new(&tmp_var);
-        let mut ret = Self {
+
+        let res =Self {
             problem: Seal::new(problem.clone()),
             solutions: Solution::new(&tmp_var),
-            self_reference: Seal::new(None),
+            self_reference: Seal::new(NonNull::dangling()),
             variables: tmp_var,
             constraints: tmp_cons,
             core_component: core,
@@ -175,10 +182,17 @@ impl<'a> Solver<'a> {
             heuristic_component: HeuristicComponent::new(),
             callback_set: CallbackSet::new(),
             status_component: StatusComponent::new(),
+            _pin: PhantomPinned,
         };
-        let a = Some(&ret);
-        ret.self_reference.replace(a);
-        ret
+        let mut boxed = Box::pin(res);
+
+        let reference = NonNull::from(&boxed);
+
+        unsafe {
+            let mut_ref: Pin<&mut Self> = Pin::as_mut(&mut boxed);
+            Pin::get_unchecked_mut(mut_ref).self_reference.replace( reference);
+        }
+        boxed
     }
 
     pub fn solve(&mut self) {
@@ -194,7 +208,7 @@ impl<'a> Solver<'a> {
             self.decide_the_variable_with_idx(var, n);
         }
         self.solutions
-            .record_solution(&self.variables, &self.time_component.get_timer());
+            .record_solution(&self.variables, self.time_component.get_timer());
         // self.solutions.record_solution(&self.variables, &self.timer);
     }
 
@@ -211,19 +225,13 @@ impl<'a> Solver<'a> {
     }
 }
 
-impl Display for Solver<'_> {
+impl Display for InnerSolver {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{:?}", &self)
     }
 }
-impl Hash for Solver<'_> {
+impl Hash for InnerSolver {
     fn hash<H: Hasher>(&self, _state: &mut H) {
         todo!()
-    }
-}
-#[allow(dead_code)]
-impl From<&Problem> for Solver<'_> {
-    fn from(value: &Problem) -> Self {
-        value.solver()
     }
 }

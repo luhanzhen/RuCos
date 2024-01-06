@@ -1,8 +1,11 @@
 use std::cell::{Ref, RefCell, RefMut};
 use std::fmt::{Debug, Display, Formatter};
 
+use crate::domain;
 use std::rc::Rc;
 
+use crate::prelude::{Domain, Problem};
+use crate::variable::variable::Variable;
 /* * *
  * @project_name: RuCos
  *
@@ -35,6 +38,16 @@ where
         Self {
             date: Rc::new(RefCell::new(date)),
         }
+    }
+    // #[inline]
+    // pub fn empty() -> Self {
+    //     Self {
+    //         date: Rc::new(RefCell::new(Problem::new())),
+    //     }
+    // }
+    #[inline]
+    pub fn replace(&mut self, date: T) {
+        self.date = Rc::new(RefCell::new(date))
     }
     #[inline]
     pub fn borrow(&self) -> Ref<'_, T> {

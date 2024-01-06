@@ -36,7 +36,7 @@ impl HeuristicComponent {
             variable_heuristic: None,
         }
     }
-    pub(crate) fn choose_strategy(&mut self,) {
+    pub(crate) fn choose_strategy(&mut self) {
         self.value_heuristic = Some(Box::new(ValueFirst::new()));
 
         self.restart = Some(Box::new(LubyRestart::new_with_solver_and_random_factor()))

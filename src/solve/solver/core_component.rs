@@ -1,5 +1,3 @@
-
-
 /* * *
  * @project_name: RuCos
  *

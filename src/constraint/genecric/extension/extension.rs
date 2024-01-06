@@ -73,7 +73,7 @@ impl ConstraintTrait for Extension {
         self.scope.len()
     }
 
-     fn delay_construct(&mut self, solver: &mut Solver){
+    fn delay_construct(&mut self, solver: &mut Solver) {
 
         // println!("extension:")
     }

@@ -1,5 +1,5 @@
-use std::fmt::Debug;
 use crate::prelude::Solver;
+use std::fmt::Debug;
 
 /* * *
  * @project_name: RuCos
@@ -17,9 +17,9 @@ use crate::prelude::Solver;
  * * */
 
 pub trait RestartTrait: Debug {
-    fn should_restart(&mut self,solver: &mut Solver) -> bool;
+    fn should_restart(&mut self, solver: &mut Solver) -> bool;
 
-    fn initialize(&mut self,solver: &mut Solver);
+    fn initialize(&mut self, solver: &mut Solver);
 
     // fn get_solver(&mut self) -> &mut Rc<RefCell<Solver>>;
 }
