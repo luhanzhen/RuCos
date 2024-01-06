@@ -24,7 +24,6 @@ use std::hash::{Hash, Hasher};
 use std::ops::Index;
 use std::rc::Rc;
 
-#[derive(Debug)]
 pub struct Var {
     cell: Rc<RefCell<Variable>>,
 }
@@ -65,6 +64,12 @@ impl Clone for Var {
         }
     }
 }
+impl Debug for Var {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.cell.borrow())
+    }
+}
+
 impl Display for Var {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.cell.borrow())

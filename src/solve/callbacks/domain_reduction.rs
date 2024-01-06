@@ -1,4 +1,4 @@
-use crate::solve::solver::solver::Solver;
+use crate::solve::solver::solver::InnerSolver;
 use crate::variable::variable::Var;
 use std::fmt::Debug;
 
@@ -18,6 +18,6 @@ use std::fmt::Debug;
  * * */
 
 pub trait DomainReduction: Debug {
-    fn domain_reduction_callback(&mut self, var: &Var, value_idx: usize, solver: &Solver);
-    fn domain_assignment_callback(&mut self, var: &Var, value_idx: usize, solver: &Solver);
+    fn domain_reduction_callback(&mut self, var: &Var, value_idx: usize, solver: &InnerSolver);
+    fn domain_assignment_callback(&mut self, var: &Var, value_idx: usize, solver: &InnerSolver);
 }

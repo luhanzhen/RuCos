@@ -16,8 +16,8 @@ use crate::constraint::comparison::all_different::all_different::AllDifferent;
 use crate::constraint::constraint_factory::XConstraintType;
 use crate::constraint::genecric::extension::extension::Extension;
 use crate::constraint::propagator::PropagatorTrait;
-use crate::solve::seal::Seal;
-use crate::solve::solver::solver::Solver;
+
+use crate::solve::solver::solver::InnerSolver;
 use crate::variable::variable::Var;
 use std::cell::{Ref, RefCell, RefMut};
 use std::fmt::{Debug, Display, Formatter};
@@ -80,7 +80,7 @@ pub(crate) trait ConstraintTrait: Display + Debug {
 
     fn restore_to_level(&mut self, level: usize);
 
-    fn delay_construct(&mut self, solver: &mut Solver);
+    fn delay_construct(&mut self, solver: &InnerSolver);
 
     fn get_type(&self) -> &XConstraintType;
 

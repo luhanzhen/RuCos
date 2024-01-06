@@ -20,23 +20,42 @@ use std::time::Duration;
 #[derive(Debug)]
 pub(crate) struct TimeComponent {
     pub(crate) timer: TimeInterval,
-    pub(crate) init_time: Option<Duration>,
+    pub(crate) construction_timer: Duration,
+    pub(crate) init_time: Duration,
 }
 
-impl TimeComponent {
-    pub(crate) fn new() -> Self {
+impl Clone for TimeComponent {
+    fn clone(&self) -> Self {
         Self {
-            timer: Default::default(),
-            init_time: None,
+            timer: self.timer.clone(),
+            init_time: self.init_time,
+            construction_timer: Duration::default(),
         }
     }
-    pub(crate) fn init(&mut self, timer: Duration) {
-        self.init_time = Some(timer);
+}
+#[allow(dead_code)]
+impl TimeComponent {
+    pub(crate) fn new(du: Duration) -> Self {
+        Self {
+            timer: Default::default(),
+            construction_timer: Duration::default(),
+            init_time: du,
+        }
+    }
+    pub(crate) fn reset(&mut self) {
         self.timer.reset();
     }
 
     pub(crate) fn get_problem_set_time(&self) -> Duration {
-        self.init_time.unwrap()
+        self.init_time
+    }
+
+    pub(crate) fn get_solver_construction_time(&self) -> Duration {
+        self.construction_timer
+    }
+    pub(crate) fn set_solver_construction_time(&mut self) {
+        self.construction_timer = self.timer.get();
+        self.timer.reset()
     }
     pub(crate) fn get_time_interval(&self) -> Duration {
         self.timer.get()

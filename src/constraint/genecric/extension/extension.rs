@@ -16,18 +16,16 @@ use crate::constraint::constraint::ConstraintTrait;
 use crate::constraint::constraint_factory::XConstraintType;
 use crate::constraint::genecric::extension::compact_table::CompactTable;
 use crate::constraint::propagator::PropagatorTrait;
-use crate::solve::solver::solver::Solver;
+use crate::solve::solver::solver::InnerSolver;
 use crate::variable::variable::Var;
 
 use std::fmt::{Display, Formatter};
-
-use crate::solve::seal::Seal;
 
 #[allow(dead_code)]
 #[derive(Debug)]
 pub struct Extension {
     scope: Vec<Var>,
-
+    solver: Option<InnerSolver>,
     propagators: Vec<Box<dyn PropagatorTrait>>,
     r#type: XConstraintType,
 }
@@ -41,10 +39,10 @@ impl Display for Extension {
 
 impl Extension {
     pub fn new(scope: Vec<Var>) -> Self {
-        let propagators: Vec<Box<dyn PropagatorTrait>> = vec![Box::new(CompactTable::new(&scope))];
+        let propagators: Vec<Box<dyn PropagatorTrait>> = vec![];
         Self {
             scope,
-
+            solver: None,
             propagators,
             r#type: XConstraintType::XExtension,
         }
@@ -73,7 +71,10 @@ impl ConstraintTrait for Extension {
         self.scope.len()
     }
 
-    fn delay_construct(&mut self, solver: &mut Solver) {
+    fn delay_construct(&mut self, solver: &InnerSolver) {
+        self.solver = Some(solver.clone());
+        self.propagators
+            .push(Box::new(CompactTable::new(&self.scope)));
 
         // println!("extension:")
     }

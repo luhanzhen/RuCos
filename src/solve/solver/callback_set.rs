@@ -18,7 +18,7 @@ use crate::solve::callbacks::delete_decision::DeleteDecision;
 use crate::solve::callbacks::domain_reduction::DomainReduction;
 use crate::solve::callbacks::new_decision::NewDecision;
 use crate::solve::callbacks::non_consistency::NonConsistency;
-use crate::solve::solver::solver::Solver;
+use crate::solve::solver::solver::InnerSolver;
 use crate::variable::variable::Var;
 
 #[allow(dead_code)]
@@ -41,17 +41,27 @@ impl CallbackSet {
         }
     }
 
-    pub(crate) fn notify_new_decision(&mut self, var: &Var, solver: &Solver) {
+    pub(crate) fn notify_new_decision(&mut self, var: &Var, solver: &InnerSolver) {
         for e in self.new_decision.iter_mut() {
             e.new_decision_callback(var, solver)
         }
     }
-    pub(crate) fn notify_delete_decision(&mut self, var: &Var, value_idx: usize, solver: &Solver) {
+    pub(crate) fn notify_delete_decision(
+        &mut self,
+        var: &Var,
+        value_idx: usize,
+        solver: &InnerSolver,
+    ) {
         for e in self.delete_decision.iter_mut() {
             e.delete_decision_callback(var, value_idx, solver)
         }
     }
-    pub(crate) fn notify_domain_reduction(&mut self, var: &Var, value_idx: usize, solver: &Solver) {
+    pub(crate) fn notify_domain_reduction(
+        &mut self,
+        var: &Var,
+        value_idx: usize,
+        solver: &InnerSolver,
+    ) {
         for e in self.domain_reduction.iter_mut() {
             e.domain_reduction_callback(var, value_idx, solver)
         }
@@ -60,7 +70,7 @@ impl CallbackSet {
         &mut self,
         var: &Var,
         value_idx: usize,
-        solver: &Solver,
+        solver: &InnerSolver,
     ) {
         for e in self.domain_reduction.iter_mut() {
             e.domain_assignment_callback(var, value_idx, solver)
@@ -70,7 +80,7 @@ impl CallbackSet {
         &mut self,
         cons: &Constraint,
         level: usize,
-        solver: &Solver,
+        solver: &InnerSolver,
     ) {
         for e in self.non_consistency.iter_mut() {
             e.non_consistency_callback(cons, level, solver)

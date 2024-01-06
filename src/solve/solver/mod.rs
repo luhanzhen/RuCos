@@ -13,7 +13,7 @@
  *
  * * */
 mod callback_set;
-mod core_component;
+pub mod core_component;
 mod heuristic_component;
 pub mod solver;
 mod status_component;

@@ -206,7 +206,13 @@ use std::time::{Duration, Instant};
 pub struct TimeInterval {
     start: Instant,
 }
-
+impl Clone for TimeInterval {
+    fn clone(&self) -> Self {
+        Self {
+            start: self.start.clone(),
+        }
+    }
+}
 #[allow(dead_code)]
 impl TimeInterval {
     pub fn new() -> Self {

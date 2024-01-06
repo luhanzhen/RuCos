@@ -1,11 +1,7 @@
 use std::cell::{Ref, RefCell, RefMut};
-use std::fmt::{Debug, Display, Formatter};
-
-use crate::domain;
+use std::fmt::Debug;
 use std::rc::Rc;
 
-use crate::prelude::{Domain, Problem};
-use crate::variable::variable::Variable;
 /* * *
  * @project_name: RuCos
  *

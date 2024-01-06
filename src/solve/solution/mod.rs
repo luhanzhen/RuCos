@@ -12,7 +12,7 @@
  * @description:
  *
  * * */
-use crate::utils::time_interval::TimeInterval;
+
 use crate::variable::variable::Var;
 use std::collections::HashMap;
 use std::fmt::{Display, Formatter};
@@ -47,7 +47,17 @@ impl Display for Solution {
         write!(f, "Solution:\n{}", str)
     }
 }
-
+impl Clone for Solution {
+    fn clone(&self) -> Self {
+        Self {
+            variables: self.variables.clone(),
+            variable_index: self.variable_index.clone(),
+            solution: vec![],
+            solution_time: vec![],
+            solution_count: 0,
+        }
+    }
+}
 #[allow(dead_code)]
 impl Solution {
     pub(crate) fn new(variables_in: &Vec<Var>) -> Self {
@@ -67,8 +77,7 @@ impl Solution {
         }
     }
 
-    pub(crate) fn record_solution(&mut self, variables_in: &Vec<Var>, timer: &TimeInterval) {
-        let time = timer.get();
+    pub(crate) fn record_solution(&mut self, variables_in: &Vec<Var>, time: Duration) {
         let mut solution = vec![];
         solution.resize(self.variable_index.len(), 0);
         for var in variables_in.iter() {

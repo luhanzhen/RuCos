@@ -13,18 +13,19 @@
  *
  * * */
 
-use crate::prelude::{Solver, Var};
+use crate::prelude::Var;
 use crate::solve::callbacks::delete_decision::DeleteDecision;
 use crate::solve::callbacks::new_decision::NewDecision;
-use crate::solve::seal::Seal;
+
 use std::collections::HashMap;
 use std::fmt::Debug;
-use std::ptr::NonNull;
+
+use crate::solve::solver::solver::InnerSolver;
 
 #[allow(dead_code)]
 #[derive(Debug)]
 pub struct NoGoodEngine {
-    // solver: Seal<NonNull<Solver>>,
+    solver: InnerSolver,
     current_branch: Vec<u128>,
     nogood_equals_to_one: Vec<u128>,
     watcher_position: HashMap<u128, u32>,
@@ -34,9 +35,9 @@ pub struct NoGoodEngine {
 
 #[allow(dead_code)]
 impl NoGoodEngine {
-    pub fn new(solver: Seal<NonNull<Solver>>) -> Self {
+    pub fn new(solver: &InnerSolver) -> Self {
         Self {
-            // solver,
+            solver: solver.clone(),
             current_branch: vec![],
             nogood_equals_to_one: vec![],
             watcher_position: Default::default(),
@@ -47,13 +48,13 @@ impl NoGoodEngine {
 }
 
 impl NewDecision for NoGoodEngine {
-    fn new_decision_callback(&mut self, var: &Var, solver: &Solver) {
+    fn new_decision_callback(&mut self, var: &Var, solver: &InnerSolver) {
         todo!()
     }
 }
 
 impl DeleteDecision for NoGoodEngine {
-    fn delete_decision_callback(&mut self, var: &Var, value_idx: usize, solver: &Solver) {
+    fn delete_decision_callback(&mut self, var: &Var, value_idx: usize, solver: &InnerSolver) {
         todo!()
     }
 }

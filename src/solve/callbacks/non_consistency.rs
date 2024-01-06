@@ -1,5 +1,5 @@
 use crate::constraint::constraint::Constraint;
-use crate::solve::solver::solver::Solver;
+use crate::solve::solver::solver::InnerSolver;
 
 use std::fmt::Debug;
 
@@ -19,5 +19,5 @@ use std::fmt::Debug;
  * * */
 
 pub trait NonConsistency: Debug {
-    fn non_consistency_callback(&mut self, cons: &Constraint, level: usize, solver: &Solver);
+    fn non_consistency_callback(&mut self, cons: &Constraint, level: usize, solver: &InnerSolver);
 }

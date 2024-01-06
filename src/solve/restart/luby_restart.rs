@@ -16,7 +16,6 @@ use crate::solve::restart::restart_trait::RestartTrait;
 use crate::solve::solver::solver::Solver;
 use rand::random;
 
-use crate::solve::seal::Seal;
 #[derive(Debug)]
 pub struct LubyRestart {
     factor: u64,

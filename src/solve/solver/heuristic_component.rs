@@ -12,13 +12,12 @@
  * @description:
  *
  * * */
-use crate::prelude::Solver;
+
 use crate::solve::heuristics::value::heuristic_value::HeuristicValueTrait;
 use crate::solve::heuristics::value::value_first::ValueFirst;
 use crate::solve::heuristics::variable::heuristic_variable::HeuristicVariableTrait;
 use crate::solve::restart::luby_restart::LubyRestart;
 use crate::solve::restart::restart_trait::RestartTrait;
-use crate::solve::seal::Seal;
 
 #[allow(dead_code)]
 #[derive(Debug)]

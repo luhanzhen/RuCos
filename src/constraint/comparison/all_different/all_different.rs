@@ -16,14 +16,15 @@ use crate::constraint::comparison::all_different::bound_consistency::BoundConsis
 use crate::constraint::constraint::ConstraintTrait;
 use crate::constraint::constraint_factory::XConstraintType;
 use crate::constraint::propagator::PropagatorTrait;
-use crate::solve::seal::Seal;
-use crate::solve::solver::solver::Solver;
+
+use crate::solve::solver::solver::InnerSolver;
 use crate::variable::variable::Var;
 use std::fmt::{Display, Formatter};
 
 #[allow(dead_code)]
 #[derive(Debug)]
 pub struct AllDifferent {
+    solver: Option<InnerSolver>,
     scope: Vec<Var>,
     propagators: Vec<Box<dyn PropagatorTrait>>,
     r#type: XConstraintType,
@@ -39,9 +40,9 @@ impl Display for AllDifferent {
 #[allow(dead_code)]
 impl AllDifferent {
     pub fn new(scope: Vec<Var>) -> Self {
-        let propagators: Vec<Box<dyn PropagatorTrait>> =
-            vec![Box::new(BoundConsistency::new(&scope))];
+        let propagators: Vec<Box<dyn PropagatorTrait>> = vec![];
         Self {
+            solver: None,
             scope,
             propagators,
             r#type: XConstraintType::XAllDifferent,
@@ -54,9 +55,9 @@ impl AllDifferent {
             scope.push(e.clone())
         }
 
-        let propagators: Vec<Box<dyn PropagatorTrait>> =
-            vec![Box::new(BoundConsistency::new(&scope))];
+        let propagators: Vec<Box<dyn PropagatorTrait>> = vec![];
         Self {
+            solver: None,
             scope,
             propagators,
             r#type: XConstraintType::XAllDifferent,
@@ -82,13 +83,15 @@ impl ConstraintTrait for AllDifferent {
         todo!()
     }
 
-    fn delay_construct(&mut self, solver: &mut Solver) {
-
-        // for e in self.solver.as_ref().unwrap().borrow().get_all_variables().iter()
-        // {
-        //     print!("{} ",e.borrow().get_id());
-        // }
+    fn delay_construct(&mut self, solver: &InnerSolver) {
+        self.solver = Some(solver.clone());
+        self.propagators
+            .push(Box::new(BoundConsistency::new(&self.scope)));
+        // solver.borrow().do_something_variables(|var|{
+        //     print!("{} ",var.borrow().get_id());
+        // });
         // println!();
+        // println!("{:?}", self.scope)
     }
 
     fn get_type(&self) -> &XConstraintType {
