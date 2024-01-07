@@ -21,7 +21,8 @@ use crate::variable::domain::Domain;
 use std::cell::{Ref, RefCell, RefMut};
 use std::fmt::{Debug, Display, Formatter};
 use std::hash::{Hash, Hasher};
-use std::ops::Index;
+use std::ops::{Index, SubAssign};
+use std::ptr::addr_of;
 use std::rc::Rc;
 
 pub struct Var {
@@ -56,6 +57,23 @@ impl Var {
         self.cell.borrow_mut()
     }
 }
+
+/// -= (idx:usize,level:usize) ==> delete_idx_at_level(idx,level)
+/// it will discard the result, you need identify the domain size
+impl SubAssign<(usize, usize)> for Var {
+    fn sub_assign(&mut self, rhs: (usize, usize)) {
+        let _ = self.borrow_mut().delete_idx_at_level(rhs.0, rhs.1);
+    }
+}
+
+/// -= (idx:usize,level:usize) ==> delete_idx_at_level(idx,level)
+/// it will discard the result, you need identify the domain size
+impl SubAssign<(i32, usize)> for Var {
+    fn sub_assign(&mut self, rhs: (i32, usize)) {
+        let _ = self.borrow_mut().delete_value_at_level(rhs.0, rhs.1);
+    }
+}
+
 impl Clone for Var {
     #[inline]
     fn clone(&self) -> Self {
@@ -100,12 +118,21 @@ pub struct Variable {
 }
 impl Hash for Variable {
     fn hash<H: Hasher>(&self, state: &mut H) {
-        self.name.hash(state)
+        self.name.hash(state);
+        let p = addr_of!(self);
+        p.hash(state)
     }
 }
 impl Display for Variable {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}[{}]:{}", self.name, self.id, self.domain)
+        write!(
+            f,
+            "{}[{}]:{} hash:{:?}",
+            self.name,
+            self.id,
+            self.domain,
+            addr_of!(self)
+        )
     }
 }
 
@@ -171,22 +198,6 @@ impl Variable {
         self.id = id;
     }
 
-    pub(crate) fn delete_value_at_level(
-        &mut self,
-        value: i32,
-        level: usize,
-    ) -> Result<usize, &Box<dyn ExceptionTrait>> {
-        if self.domain.is_limit_recorded_at_level(level) {
-            self.domain.record_limit(level)
-        }
-        self.domain.delete_value_at_level(value, level);
-        if self.domain.is_empty() {
-            Err(&self.empty_domain_exception)
-        } else {
-            Ok(self.domain.size())
-        }
-    }
-
     pub(crate) fn value(&self) -> Option<i32> {
         if self.domain.size() != 1 {
             None
@@ -245,18 +256,36 @@ impl Variable {
         }
     }
 
-    pub(crate) fn delete_idx_at_level(&mut self, idx: usize, level: usize) {
+    pub(crate) fn delete_idx_at_level(
+        &mut self,
+        idx: usize,
+        level: usize,
+    ) -> Result<usize, &Box<dyn ExceptionTrait>> {
         if self.domain.is_limit_recorded_at_level(level) {
             self.domain.record_limit(level)
         }
         self.domain.delete_idx_at_level(idx, level);
-        // if self.domain.is_empty() {
-        //     Err(&self.empty_domain_exception)
-        // } else {
-        //     Ok(self.domain.size())
-        // }
+        if self.domain.is_empty() {
+            Err(&self.empty_domain_exception)
+        } else {
+            Ok(self.domain.size())
+        }
     }
-
+    pub(crate) fn delete_value_at_level(
+        &mut self,
+        value: i32,
+        level: usize,
+    ) -> Result<usize, &Box<dyn ExceptionTrait>> {
+        if self.domain.is_limit_recorded_at_level(level) {
+            self.domain.record_limit(level)
+        }
+        self.domain.delete_value_at_level(value, level);
+        if self.domain.is_empty() {
+            Err(&self.empty_domain_exception)
+        } else {
+            Ok(self.domain.size())
+        }
+    }
     pub(crate) fn update_idx_upper_bound_at_level(
         &mut self,
         update_idx: usize,

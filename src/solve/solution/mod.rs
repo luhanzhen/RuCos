@@ -14,10 +14,12 @@
  * * */
 
 use crate::variable::variable::Var;
+use comfy_table::modifiers::UTF8_ROUND_CORNERS;
+use comfy_table::presets::UTF8_FULL;
+use comfy_table::*;
 use std::collections::HashMap;
 use std::fmt::{Display, Formatter};
 use std::time::Duration;
-
 #[derive(Debug)]
 pub struct Solution {
     variables: Vec<Var>,
@@ -30,21 +32,48 @@ pub struct Solution {
 
 #[allow(dead_code)]
 impl Display for Solution {
+    // fn fmt(&self, f: &mut Formatter) -> std::fmt::Result {
+    //     let mut str = String::new();
+    //
+    //     for (ith, solution) in self.solution.iter().enumerate() {
+    //         // str.push('\t');
+    //         for (i, s) in solution.iter().enumerate() {
+    //             str.push_str(&format!(
+    //                 "{}={}\t",
+    //                 self.variables[i].borrow().get_name(),
+    //                 *s
+    //             ))
+    //         }
+    //         str.push_str(&format!("\nsolution cost:{:?}\n", &self.solution_time[ith]));
+    //     }
+    //     write!(f, "Solution:\n{}", str)
+    // }
     fn fmt(&self, f: &mut Formatter) -> std::fmt::Result {
-        let mut str = String::new();
+        if self.solution.len() == 0 {
+            write!(f, "No Solution:\n")
+        } else {
+            let mut table = Table::new();
+            table
+                .load_preset(UTF8_FULL)
+                .apply_modifier(UTF8_ROUND_CORNERS)
+                .set_content_arrangement(ContentArrangement::Dynamic);
+            let mut header = vec![String::from("time")];
 
-        for (ith, solution) in self.solution.iter().enumerate() {
-            str.push('\t');
-            for (i, s) in solution.iter().enumerate() {
-                str.push_str(&format!(
-                    "{}={}, ",
-                    self.variables[i].borrow().get_name(),
-                    *s
-                ))
+            for (i, _) in self.solution[0].iter().enumerate() {
+                header.push(self.variables[i].borrow().get_name().to_string())
             }
-            str.push_str(&format!("  cost:{:?}\n", &self.solution_time[ith]));
+
+            table.set_header(header);
+            for (ith, solution) in self.solution.iter().enumerate() {
+                let mut row = vec![format!("{:?}", &self.solution_time[ith])];
+                for s in solution.iter() {
+                    row.push(format!("{}", *s))
+                }
+
+                table.add_row(row);
+            }
+            write!(f, "Solution:\n{}", table.to_string())
         }
-        write!(f, "Solution:\n{}", str)
     }
 }
 impl Clone for Solution {
