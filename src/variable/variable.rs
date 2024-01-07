@@ -187,11 +187,19 @@ impl Variable {
         }
     }
 
-    pub(crate) fn value(&self) -> Option<i32> {
+    pub(crate) fn value_if_decided(&self) -> Option<i32> {
         if self.domain.size() != 1 {
             None
         } else {
             self.domain.values_at_position(0)
+        }
+    }
+
+     pub(crate) fn value_of_idx_if_decided(&self) -> Option<usize> {
+        if self.domain.size() != 1 {
+            None
+        } else {
+            Some(self.domain.first_idx())
         }
     }
     /// if the idx is not in the domain, return None

@@ -47,14 +47,22 @@ impl NoGoodEngine {
     }
 }
 
+impl NoGoodEngine {
+
+}
+
 impl NewDecision for NoGoodEngine {
-    fn new_decision_callback(&mut self, var: &Var, solver: &InnerSolver) {
-        todo!()
+    fn new_decision_callback(&mut self, var: &Var, _solver: &InnerSolver) {
+        if let Some(value) = var.borrow().value_of_idx_if_decided()
+        {
+            self.current_branch.push((var.borrow().get_id() * value) as u128)
+        }
+
     }
 }
 
 impl DeleteDecision for NoGoodEngine {
-    fn delete_decision_callback(&mut self, var: &Var, value_idx: usize, solver: &InnerSolver) {
+    fn delete_decision_callback(&mut self, _var: &Var, _value_idx: usize, _solver: &InnerSolver) {
         todo!()
     }
 }
