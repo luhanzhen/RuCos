@@ -11,6 +11,7 @@ rust-version = "1.74"
 
 [dependencies]
 rand = "*"
+comfy-table = "*"
 #cpu-time = "*"
 
 [[bench]]

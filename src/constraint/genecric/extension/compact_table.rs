@@ -12,7 +12,7 @@
  * @description:
  *
  * * */
-use crate::constraint::propagator::PropagatorTrait;
+use crate::constraint::propagator::{PropagationGrained, PropagatorTrait};
 use crate::exception::exception_factory::ExceptionFactory;
 use crate::exception::exception_trait::ExceptionTrait;
 use crate::exception::ExceptionType;
@@ -23,6 +23,7 @@ use crate::variable::variable::Var;
 pub struct CompactTable {
     scope: Vec<Var>,
     empty_domain_exception: Box<dyn ExceptionTrait>,
+    grained: PropagationGrained,
 }
 
 impl CompactTable {
@@ -37,6 +38,7 @@ impl CompactTable {
                 ExceptionType::EmptyDomainExceptionType,
                 "",
             ),
+            grained: PropagationGrained::Both,
         }
     }
 }
@@ -50,7 +52,7 @@ impl PropagatorTrait for CompactTable {
         if *_dummy == self.scope[0] {
             println!("before {}", self.scope[0].borrow());
             // match
-            self.scope[0].borrow_mut().delete_idx_at_level(0, 0);
+            self.scope[0] -= (0usize, 0usize);
             if self.scope[0].borrow().is_empty() {
                 return Err(&self.empty_domain_exception);
             }
@@ -60,11 +62,11 @@ impl PropagatorTrait for CompactTable {
             println!("before {}", self.scope[1].borrow());
 
             if self.scope[1].borrow().contains_idx(1) {
-                self.scope[1].borrow_mut().delete_idx_at_level(1, 1);
+                self.scope[1] -= (0usize, 0usize);
             } else if self.scope[1].borrow().contains_idx(2) {
-                self.scope[1].borrow_mut().delete_idx_at_level(2, 1);
+                self.scope[1] -= (0usize, 0usize);
             } else if self.scope[1].borrow().contains_idx(3) {
-                self.scope[1].borrow_mut().delete_idx_at_level(3, 1);
+                self.scope[1] -= (0usize, 0usize);
             }
             if self.scope[1].borrow().is_empty() {
                 return Err(&self.empty_domain_exception);
@@ -84,11 +86,17 @@ impl PropagatorTrait for CompactTable {
     }
 
     fn is_coarse_grained(&self) -> bool {
-        todo!()
+        match self.grained {
+            PropagationGrained::Fine => false,
+            .. => true,
+        }
     }
 
     fn is_fine_grained(&self) -> bool {
-        todo!()
+        match self.grained {
+            PropagationGrained::Coarse => false,
+            .. => true,
+        }
     }
 
     fn restore_to_level(&mut self, _level: usize) {

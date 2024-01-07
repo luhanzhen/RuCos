@@ -15,7 +15,7 @@
 use rucos::prelude::*;
 
 fn n_queens(n: usize) -> Problem {
-    let mut problem = problem!();
+    let mut problem = problem!("N-Queen");
     for i in 0..n {
         // let var = Var::new(&mut problem, &format!("row_{}", &i), domain![0=>(n as i32)]);
         problem += var!(format!("row_{}", &i).as_str(); 0=>(n as i32));
@@ -30,7 +30,7 @@ fn n_queens(n: usize) -> Problem {
 }
 
 fn main() {
-    let problem = n_queens(200);
+    let problem = n_queens(25);
     // let mut solver = problem.solver();
     let mut solver = Solver::from(&problem);
 

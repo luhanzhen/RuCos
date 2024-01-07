@@ -28,3 +28,9 @@ pub(crate) trait PropagatorTrait: Debug {
     fn is_fine_grained(&self) -> bool;
     fn restore_to_level(&mut self, level: usize);
 }
+
+pub(crate) enum PropagationGrained {
+    Coarse,
+    Fine,
+    Both,
+}
