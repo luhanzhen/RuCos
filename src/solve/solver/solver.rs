@@ -54,6 +54,8 @@ impl Solver {
         let _ = var
             .borrow_mut()
             .assign_idx(idx, self.core_component.borrow().level);
+        var.borrow_mut()
+            .record_limit(self.core_component.borrow().level)
     }
 
     fn propagate(&mut self) {}
@@ -130,7 +132,17 @@ impl Solver {
             &self.core_component.borrow().variables,
             self.time_component.get_timer().get(),
         );
-        // self.solutions.record_solution(&self.variables, &self.timer);
+        for var in self.core_component.borrow().variables.iter() {
+            var.borrow_mut()
+                .restore_to_limit(self.core_component.borrow().level);
+            let n = random::<usize>() % var.borrow().domain_size();
+
+            self.decide_the_variable_with_idx(var, n);
+        }
+        self.solutions.record_solution(
+            &self.core_component.borrow().variables,
+            self.time_component.get_timer().get(),
+        );
     }
 
     pub fn print_statistics(&self) {

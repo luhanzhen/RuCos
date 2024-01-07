@@ -30,10 +30,11 @@ fn n_queens(n: usize) -> Problem {
 }
 
 fn main() {
-    let problem = n_queens(25);
+    let problem = n_queens(100);
     // let mut solver = problem.solver();
     let mut solver = Solver::from(&problem);
 
     solver.solve();
+
     solver.print_statistics();
 }

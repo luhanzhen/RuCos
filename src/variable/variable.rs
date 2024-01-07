@@ -73,7 +73,6 @@ impl SubAssign<(i32, usize)> for Var {
     }
 }
 
-
 impl Clone for Var {
     #[inline]
     fn clone(&self) -> Self {
@@ -111,7 +110,6 @@ impl Hash for Var {
 pub struct Variable {
     id: usize,
     name: String,
-    // problem: Option<Rc<RefCell<Problem>>>,
     domain: Domain,
     empty_domain_exception: Box<dyn ExceptionTrait>,
     vale_not_found_exception: Box<dyn ExceptionTrait>,
@@ -197,8 +195,15 @@ impl Variable {
         self.id = id;
     }
 
+    pub(crate) fn idx_if_decided(&self) -> Option<usize> {
+        if self.domain.size() != 1 {
+            None
+        } else {
+            Some(self.domain.first_idx())
+        }
+    }
 
-    pub(crate) fn value(&self) -> Option<i32> {
+    pub(crate) fn value_of_idx_if_decided(&self) -> Option<i32> {
         if self.domain.size() != 1 {
             None
         } else {
@@ -256,7 +261,7 @@ impl Variable {
         }
     }
 
-      pub(crate) fn delete_idx_at_level(
+    pub(crate) fn delete_idx_at_level(
         &mut self,
         idx: usize,
         level: usize,
@@ -272,7 +277,7 @@ impl Variable {
         }
     }
 
-     pub(crate) fn delete_value_at_level(
+    pub(crate) fn delete_value_at_level(
         &mut self,
         value: i32,
         level: usize,

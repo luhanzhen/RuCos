@@ -57,17 +57,56 @@ impl Display for Solution {
                 .load_preset(UTF8_FULL)
                 .apply_modifier(UTF8_ROUND_CORNERS)
                 .set_content_arrangement(ContentArrangement::Dynamic);
-            let mut header = vec![String::from("time")];
+            let mut header =
+                vec![Cell::new(String::from("time")).set_alignment(CellAlignment::Center)];
+            const MAX_COLUMNS: usize = 21;
+            let var_size: usize = self.variables.len();
+            if var_size < MAX_COLUMNS {
+                for (i, _) in self.solution[0].iter().enumerate() {
+                    header.push(
+                        Cell::new(self.variables[i].borrow().get_name().to_string())
+                            .set_alignment(CellAlignment::Center),
+                    )
+                }
+            } else {
+                for i in 0..15 {
+                    header.push(
+                        Cell::new(self.variables[i].borrow().get_name().to_string())
+                            .set_alignment(CellAlignment::Center),
+                    )
+                }
+                header.push(Cell::new("...".to_string()).set_alignment(CellAlignment::Center));
 
-            for (i, _) in self.solution[0].iter().enumerate() {
-                header.push(self.variables[i].borrow().get_name().to_string())
+                for i in (var_size - 5)..var_size {
+                    header.push(
+                        Cell::new(self.variables[i].borrow().get_name().to_string())
+                            .set_alignment(CellAlignment::Center),
+                    )
+                }
             }
 
             table.set_header(header);
+
             for (ith, solution) in self.solution.iter().enumerate() {
-                let mut row = vec![format!("{:?}", &self.solution_time[ith])];
-                for s in solution.iter() {
-                    row.push(format!("{}", *s))
+                let mut row = vec![Cell::new(format!("{:?}", &self.solution_time[ith]))];
+                if var_size < MAX_COLUMNS {
+                    for s in solution.iter() {
+                        row.push(Cell::new(format!("{}", *s)).set_alignment(CellAlignment::Center))
+                    }
+                } else {
+                    for i in 0..15 {
+                        row.push(
+                            Cell::new(format!("{}", solution[i]))
+                                .set_alignment(CellAlignment::Center),
+                        )
+                    }
+                    row.push(Cell::new("...".to_string()).set_alignment(CellAlignment::Center));
+                    for i in (var_size - 5)..var_size {
+                        row.push(
+                            Cell::new(format!("{}", solution[i]))
+                                .set_alignment(CellAlignment::Center),
+                        )
+                    }
                 }
 
                 table.add_row(row);
@@ -87,6 +126,7 @@ impl Clone for Solution {
         }
     }
 }
+
 #[allow(dead_code)]
 impl Solution {
     pub(crate) fn new(variables_in: &Vec<Var>) -> Self {

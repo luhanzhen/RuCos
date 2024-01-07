@@ -88,14 +88,14 @@ impl PropagatorTrait for CompactTable {
     fn is_coarse_grained(&self) -> bool {
         match self.grained {
             PropagationGrained::Fine => false,
-            .. => true,
+            _ => true,
         }
     }
 
     fn is_fine_grained(&self) -> bool {
         match self.grained {
             PropagationGrained::Coarse => false,
-            .. => true,
+            _ => true,
         }
     }
 

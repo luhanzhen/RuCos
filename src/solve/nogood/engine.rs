@@ -47,17 +47,14 @@ impl NoGoodEngine {
     }
 }
 
-impl NoGoodEngine {
-
-}
+impl NoGoodEngine {}
 
 impl NewDecision for NoGoodEngine {
     fn new_decision_callback(&mut self, var: &Var, _solver: &InnerSolver) {
-        if let Some(value) = var.borrow().value_of_idx_if_decided()
-        {
-            self.current_branch.push((var.borrow().get_id() * value) as u128)
+        if let Some(value) = var.borrow().idx_if_decided() {
+            self.current_branch
+                .push((var.borrow().get_id() * value) as u128)
         }
-
     }
 }
 
