@@ -20,13 +20,14 @@ use crate::constraint::propagator::PropagatorTrait;
 use crate::solve::solver::solver::InnerSolver;
 use crate::variable::variable::Var;
 use std::fmt::{Display, Formatter};
+use std::rc::Rc;
 
 #[allow(dead_code)]
 #[derive(Debug)]
 pub struct AllDifferent {
     solver: Option<InnerSolver>,
     scope: Vec<Var>,
-    propagators: Vec<Box<dyn PropagatorTrait>>,
+    propagators: Vec<Rc<dyn PropagatorTrait>>,
     r#type: XConstraintType,
 }
 
@@ -40,7 +41,7 @@ impl Display for AllDifferent {
 #[allow(dead_code)]
 impl AllDifferent {
     pub fn new(scope: Vec<Var>) -> Self {
-        let propagators: Vec<Box<dyn PropagatorTrait>> = vec![];
+        let propagators: Vec<Rc<dyn PropagatorTrait>> = vec![];
         Self {
             solver: None,
             scope,
@@ -55,7 +56,7 @@ impl AllDifferent {
             scope.push(e.clone())
         }
 
-        let propagators: Vec<Box<dyn PropagatorTrait>> = vec![];
+        let propagators: Vec<Rc<dyn PropagatorTrait>> = vec![];
         Self {
             solver: None,
             scope,
@@ -67,7 +68,7 @@ impl AllDifferent {
 
 #[allow(dead_code)]
 impl ConstraintTrait for AllDifferent {
-    fn get_propagators(&mut self) -> &mut Vec<Box<dyn PropagatorTrait>> {
+    fn get_propagators(&mut self) -> &mut Vec<Rc<dyn PropagatorTrait>> {
         &mut self.propagators
     }
 
@@ -86,7 +87,7 @@ impl ConstraintTrait for AllDifferent {
     fn delay_construct(&mut self, solver: &InnerSolver) {
         self.solver = Some(solver.clone());
         self.propagators
-            .push(Box::new(BoundConsistency::new(&self.scope)));
+            .push(Rc::new(BoundConsistency::new(&self.scope)));
         // solver.borrow().do_something_variables(|var|{
         //     print!("{} ",var.borrow().get_id());
         // });

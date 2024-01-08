@@ -15,6 +15,7 @@
 use crate::exception::exception_factory::ExceptionFactory;
 use crate::exception::exception_trait::ExceptionTrait;
 use crate::exception::ExceptionType;
+use crate::prelude::Constraint;
 use crate::problem::problem::Problem;
 use crate::variable::domain::domain_trait::DomainTrait;
 use crate::variable::domain::Domain;
@@ -113,6 +114,7 @@ pub struct Variable {
     domain: Domain,
     empty_domain_exception: Box<dyn ExceptionTrait>,
     vale_not_found_exception: Box<dyn ExceptionTrait>,
+    is_in_scope: Vec<Constraint>,
 }
 impl Hash for Variable {
     fn hash<H: Hasher>(&self, state: &mut H) {
@@ -156,6 +158,7 @@ impl Variable {
                 ExceptionType::ValueNotFoundExceptionType,
                 format!("{}'s value is not found.", name).as_str(),
             ),
+            is_in_scope: vec![],
         }));
         problem.add_variable(Var::new_with_rc_cell(var.clone()));
         var
@@ -188,6 +191,7 @@ impl Variable {
                 ExceptionType::ValueNotFoundExceptionType,
                 format!("{}'s value is not found.", name).as_str(),
             ),
+            is_in_scope: vec![],
         }))
     }
     #[inline]
@@ -220,6 +224,16 @@ impl Variable {
     #[inline]
     pub fn idx_to_value(&self, idx: usize) -> Option<i32> {
         self.domain.idx_to_value(idx)
+    }
+
+    #[inline]
+    pub fn belongs_to_the_constraint(&mut self, cons: Constraint) {
+        self.is_in_scope.push(cons)
+    }
+
+    #[inline]
+    pub fn constraints_scoped(&self) -> &Vec<Constraint> {
+        &self.is_in_scope
     }
 
     pub fn record_limit(&mut self, level: usize) {

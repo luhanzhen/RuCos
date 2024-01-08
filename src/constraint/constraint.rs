@@ -72,7 +72,7 @@ impl Display for Constraint {
 }
 
 pub(crate) trait ConstraintTrait: Display + Debug {
-    fn get_propagators(&mut self) -> &mut Vec<Box<dyn PropagatorTrait>>;
+    fn get_propagators(&mut self) -> &mut Vec<Rc<dyn PropagatorTrait>>;
 
     fn is_satisfied(&self) -> bool;
 

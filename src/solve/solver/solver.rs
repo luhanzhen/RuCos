@@ -13,6 +13,7 @@
  *
  * * */
 
+use crate::constraint::propagator::PropagatorTrait;
 use crate::problem::problem::Problem;
 use crate::solve::seal::Seal;
 use crate::solve::solution::Solution;
@@ -23,8 +24,10 @@ use crate::solve::solver::status_component::*;
 use crate::solve::solver::time_component::TimeComponent;
 use crate::variable::variable::Var;
 use rand::prelude::*;
+use std::collections::VecDeque;
 use std::fmt::{Display, Formatter};
 use std::hash::{Hash, Hasher};
+use std::rc::Rc;
 
 pub type InnerSolver = Seal<CoreComponent>;
 #[allow(dead_code)]
@@ -36,6 +39,7 @@ pub struct Solver {
     time_component: TimeComponent,
     heuristic_component: HeuristicComponent,
     callback_set: CallbackSet,
+    queue: VecDeque<Rc<dyn PropagatorTrait>>,
 }
 
 #[allow(dead_code)]
@@ -43,7 +47,10 @@ impl Solver {
     fn delay_construct(&mut self) {
         self.core_component
             .borrow()
-            .do_something_constraint(|c| c.borrow_mut().delay_construct(&self.core_component))
+            .do_something_constraint(|c| c.borrow_mut().delay_construct(&self.core_component));
+        self.core_component
+            .borrow()
+            .add_constraint_to_variable_scoped();
     }
 
     fn choose_strategy(&mut self) {
@@ -58,7 +65,14 @@ impl Solver {
             .record_limit(self.core_component.borrow().level)
     }
 
-    fn propagate(&mut self) {}
+    fn propagate(&mut self) {
+        while !self.queue.is_empty() {
+            if let Some(mut element) = self.queue.pop_back() {
+                let p = element.get_priority();
+                element.restore_to_level(0)
+            }
+        }
+    }
 
     fn first_propagate(&mut self) {}
 
@@ -94,6 +108,7 @@ impl Clone for Solver {
             heuristic_component: self.heuristic_component.clone(),
             callback_set: CallbackSet::new(),
             status_component: self.status_component.clone(),
+            queue: Default::default(),
         }
     }
 }
@@ -112,6 +127,7 @@ impl Solver {
             heuristic_component: HeuristicComponent::new(),
             callback_set: CallbackSet::new(),
             status_component: StatusComponent::new(),
+            queue: Default::default(),
         }
     }
 

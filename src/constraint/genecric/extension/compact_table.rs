@@ -12,7 +12,7 @@
  * @description:
  *
  * * */
-use crate::constraint::propagator::{PropagationGrained, PropagatorTrait};
+use crate::constraint::propagator::{PropagationGrained, PropagationPriority, PropagatorTrait};
 use crate::exception::exception_factory::ExceptionFactory;
 use crate::exception::exception_trait::ExceptionTrait;
 use crate::exception::ExceptionType;
@@ -24,6 +24,7 @@ pub struct CompactTable {
     scope: Vec<Var>,
     empty_domain_exception: Box<dyn ExceptionTrait>,
     grained: PropagationGrained,
+    priority: PropagationPriority,
 }
 
 impl CompactTable {
@@ -39,11 +40,15 @@ impl CompactTable {
                 "",
             ),
             grained: PropagationGrained::Both,
+            priority: PropagationPriority::Binary,
         }
     }
 }
 #[allow(dead_code)]
 impl PropagatorTrait for CompactTable {
+    fn get_priority(&self) -> &PropagationPriority {
+        &self.priority
+    }
     fn initialise(&mut self) {
         todo!()
     }

@@ -63,6 +63,13 @@ impl CoreComponent {
             function(constraint)
         }
     }
+    pub(crate) fn add_constraint_to_variable_scoped(&self) {
+        for cons in self.constraints.iter() {
+            for var in cons.borrow().get_scope().iter() {
+                var.borrow_mut().belongs_to_the_constraint(cons.clone())
+            }
+        }
+    }
 
     pub(crate) fn do_something_variables<P>(&self, mut function: P)
     where

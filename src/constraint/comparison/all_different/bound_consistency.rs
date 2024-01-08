@@ -1,4 +1,4 @@
-use crate::constraint::propagator::PropagatorTrait;
+use crate::constraint::propagator::{PropagationPriority, PropagatorTrait};
 use crate::exception::exception_factory::ExceptionFactory;
 use crate::exception::exception_trait::ExceptionTrait;
 use crate::exception::ExceptionType;
@@ -24,6 +24,7 @@ use crate::variable::variable::Var;
 pub struct BoundConsistency {
     scope: Vec<Var>,
     empty_domain_exception: Box<dyn ExceptionTrait>,
+    priority: PropagationPriority,
 }
 
 #[allow(dead_code)]
@@ -39,12 +40,16 @@ impl BoundConsistency {
                 ExceptionType::EmptyDomainExceptionType,
                 "",
             ),
+            priority: PropagationPriority::Unary,
         }
     }
 }
 
 #[allow(dead_code)]
 impl PropagatorTrait for BoundConsistency {
+    fn get_priority(&self) -> &PropagationPriority {
+        &self.priority
+    }
     fn initialise(&mut self) {
         todo!()
     }

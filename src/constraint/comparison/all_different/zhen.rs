@@ -1,4 +1,4 @@
-use crate::constraint::propagator::PropagatorTrait;
+use crate::constraint::propagator::{PropagationPriority, PropagatorTrait};
 use crate::exception::exception_trait::ExceptionTrait;
 use crate::variable::variable::Var;
 
@@ -17,9 +17,14 @@ use crate::variable::variable::Var;
  *
  * * */
 #[derive(Debug)]
-pub struct GacZhen {}
+pub struct GacZhen {
+    priority: PropagationPriority,
+}
 
 impl PropagatorTrait for GacZhen {
+    fn get_priority(&self) -> &PropagationPriority {
+        &self.priority
+    }
     fn initialise(&mut self) {
         todo!()
     }

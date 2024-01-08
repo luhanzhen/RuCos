@@ -12,11 +12,13 @@
  * @description:
  *
  * * */
-use crate::constraint::propagator::PropagatorTrait;
+use crate::constraint::propagator::{PropagationPriority, PropagatorTrait};
 use crate::exception::exception_trait::ExceptionTrait;
 use crate::variable::variable::Var;
 #[derive(Debug)]
-pub struct GacRegin {}
+pub struct GacRegin {
+    priority: PropagationPriority,
+}
 
 impl PropagatorTrait for GacRegin {
     fn initialise(&mut self) {
@@ -45,5 +47,9 @@ impl PropagatorTrait for GacRegin {
 
     fn restore_to_level(&mut self, _level: usize) {
         todo!()
+    }
+
+    fn get_priority(&self) -> &PropagationPriority {
+        &self.priority
     }
 }
