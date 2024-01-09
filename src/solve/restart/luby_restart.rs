@@ -13,7 +13,9 @@
  *
  * * */
 use crate::solve::restart::restart_trait::RestartTrait;
-use crate::solve::solver::solver::Solver;
+use crate::solve::seal::Seal;
+use crate::solve::solver::core_component::CoreComponent;
+use crate::solve::solver::solver::{InnerSolver, Solver};
 use rand::random;
 
 #[derive(Debug)]
@@ -57,8 +59,8 @@ impl LubyRestart {
 }
 #[allow(dead_code)]
 impl RestartTrait for LubyRestart {
-    fn should_restart(&mut self, solver: &mut Solver) -> bool {
-        let conflicts = solver.get_conflicts() as u64;
+    fn should_restart(&mut self, solver: &InnerSolver) -> bool {
+        let conflicts = solver.borrow().conflicts as u64;
         if conflicts >= self.limit {
             self.restart_counter += 1;
             self.limit = conflicts + (luby(2, self.restart_counter) * self.factor);
@@ -68,8 +70,8 @@ impl RestartTrait for LubyRestart {
         }
     }
 
-    fn initialize(&mut self, solver: &mut Solver) {
+    fn initialize(&mut self, solver: &InnerSolver) {
         self.restart_counter = 0;
-        self.limit = (solver.get_conflicts() + (luby(2, 0) * self.factor) as usize) as u64
+        self.limit = (solver.borrow().conflicts + (luby(2, 0) * self.factor) as usize) as u64
     }
 }

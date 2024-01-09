@@ -20,6 +20,7 @@ use std::collections::HashSet;
 #[allow(dead_code)]
 #[derive(Debug, Clone)]
 pub struct CoreComponent {
+    pub(crate) level_max: usize,
     pub(crate) level: usize,
     pub(crate) decides: usize,
     pub(crate) conflicts: usize,
@@ -40,6 +41,7 @@ impl CoreComponent {
             future.insert(e.clone());
         }
         Self {
+            level_max: vars.len(),
             level: 0usize,
             decides: 0,
             conflicts: 0,

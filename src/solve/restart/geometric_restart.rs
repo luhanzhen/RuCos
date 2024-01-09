@@ -1,5 +1,6 @@
 use crate::solve::restart::restart_trait::RestartTrait;
-use crate::solve::solver::solver::Solver;
+
+use crate::solve::solver::solver::InnerSolver;
 use rand::random;
 
 /* * *
@@ -42,8 +43,8 @@ impl GeometricRestart {
 }
 #[allow(dead_code)]
 impl RestartTrait for GeometricRestart {
-    fn should_restart(&mut self, solver: &mut Solver) -> bool {
-        let conflicts = solver.get_conflicts() as u64;
+    fn should_restart(&mut self, solver: &InnerSolver) -> bool {
+        let conflicts = solver.borrow().conflicts as u64;
 
         if conflicts >= self.limit {
             self.restart_counter *= self.factor;
@@ -54,8 +55,8 @@ impl RestartTrait for GeometricRestart {
         }
     }
 
-    fn initialize(&mut self, solver: &mut Solver) {
+    fn initialize(&mut self, solver: &InnerSolver) {
         self.restart_counter = 100;
-        self.limit = solver.get_conflicts() as u64
+        self.limit = solver.borrow().conflicts as u64
     }
 }

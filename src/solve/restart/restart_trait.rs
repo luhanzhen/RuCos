@@ -1,4 +1,7 @@
 use crate::prelude::Solver;
+use crate::solve::seal::Seal;
+use crate::solve::solver::core_component::CoreComponent;
+use crate::solve::solver::solver::InnerSolver;
 use std::fmt::Debug;
 
 /* * *
@@ -17,9 +20,9 @@ use std::fmt::Debug;
  * * */
 
 pub trait RestartTrait: Debug {
-    fn should_restart(&mut self, solver: &mut Solver) -> bool;
+    fn should_restart(&mut self, solver: &InnerSolver) -> bool;
 
-    fn initialize(&mut self, solver: &mut Solver);
+    fn initialize(&mut self, solver: &InnerSolver);
 
     // fn get_solver(&mut self) -> &mut Rc<RefCell<Solver>>;
 }

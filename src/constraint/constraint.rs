@@ -17,6 +17,7 @@ use crate::constraint::constraint_factory::XConstraintType;
 use crate::constraint::genecric::extension::extension::Extension;
 use crate::constraint::propagator::PropagatorTrait;
 
+use crate::solve::seal::Seal;
 use crate::solve::solver::solver::InnerSolver;
 use crate::variable::variable::Var;
 use std::cell::{Ref, RefCell, RefMut};
@@ -72,7 +73,7 @@ impl Display for Constraint {
 }
 
 pub(crate) trait ConstraintTrait: Display + Debug {
-    fn get_propagators(&mut self) -> &mut Vec<Rc<dyn PropagatorTrait>>;
+    fn get_propagators(&mut self) -> &Vec<Rc<RefCell<dyn PropagatorTrait>>>;
 
     fn is_satisfied(&self) -> bool;
 

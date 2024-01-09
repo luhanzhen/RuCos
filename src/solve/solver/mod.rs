@@ -14,7 +14,9 @@
  * * */
 mod callback_set;
 pub mod core_component;
-mod heuristic_component;
+
+mod branching_component;
+mod propagation_component;
 pub mod solver;
 mod status_component;
 mod time_component;

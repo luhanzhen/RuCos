@@ -18,6 +18,7 @@ use crate::constraint::genecric::extension::compact_table::CompactTable;
 use crate::constraint::propagator::PropagatorTrait;
 use crate::solve::solver::solver::InnerSolver;
 use crate::variable::variable::Var;
+use std::cell::RefCell;
 
 use std::fmt::{Display, Formatter};
 use std::rc::Rc;
@@ -27,7 +28,7 @@ use std::rc::Rc;
 pub struct Extension {
     scope: Vec<Var>,
     solver: Option<InnerSolver>,
-    propagators: Vec<Rc<dyn PropagatorTrait>>,
+    propagators: Vec<Rc<RefCell<dyn PropagatorTrait>>>,
     r#type: XConstraintType,
 }
 
@@ -40,7 +41,7 @@ impl Display for Extension {
 
 impl Extension {
     pub fn new(scope: Vec<Var>) -> Self {
-        let propagators: Vec<Rc<dyn PropagatorTrait>> = vec![];
+        let propagators: Vec<Rc<RefCell<dyn PropagatorTrait>>> = vec![];
         Self {
             scope,
             solver: None,
@@ -52,7 +53,7 @@ impl Extension {
 
 #[allow(dead_code)]
 impl ConstraintTrait for Extension {
-    fn get_propagators(&mut self) -> &mut Vec<Rc<dyn PropagatorTrait>> {
+    fn get_propagators(&mut self) -> &Vec<Rc<RefCell<dyn PropagatorTrait>>> {
         &mut self.propagators
     }
 
@@ -75,7 +76,7 @@ impl ConstraintTrait for Extension {
     fn delay_construct(&mut self, solver: &InnerSolver) {
         self.solver = Some(solver.clone());
         self.propagators
-            .push(Rc::new(CompactTable::new(&self.scope)));
+            .push(Rc::new(RefCell::new(CompactTable::new(&self.scope))));
 
         // println!("extension:")
     }
