@@ -20,4 +20,8 @@ use std::fmt::Debug;
 pub trait DomainReduction: Debug {
     fn domain_reduction_callback(&mut self, var: &Var, value_idx: usize, solver: &InnerSolver);
     fn domain_assignment_callback(&mut self, var: &Var, value_idx: usize, solver: &InnerSolver);
+
+    fn is_implemented(&self) -> bool {
+        return false;
+    }
 }

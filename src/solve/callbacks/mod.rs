@@ -12,8 +12,7 @@
  * @description:
  *
  * * */
-pub mod new_decision;
-
 pub mod delete_decision;
 pub mod domain_reduction;
+pub mod new_decision;
 pub mod non_consistency;

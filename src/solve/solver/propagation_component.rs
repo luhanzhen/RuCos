@@ -1,10 +1,3 @@
-use crate::constraint::propagator::{PropagatorTrait};
-use crate::solve::seal::Seal;
-use crate::solve::solver::core_component::CoreComponent;
-use std::cell::RefCell;
-use std::collections::VecDeque;
-use std::rc::Rc;
-
 /***
  * @project_name: RuCos
  *
@@ -19,6 +12,13 @@ use std::rc::Rc;
  * @description:
  *
  */
+
+use crate::constraint::propagator::PropagatorTrait;
+use crate::solve::seal::Seal;
+use crate::solve::solver::core_component::CoreComponent;
+use std::cell::RefCell;
+use std::collections::VecDeque;
+use std::rc::Rc;
 
 #[allow(dead_code)]
 #[derive(Debug)]
@@ -57,6 +57,8 @@ impl PropagationComponent {
         }
     }
 }
+
+#[allow(dead_code)]
 impl PropagationComponent {
     pub(crate) fn new(core_component: Seal<CoreComponent>) -> Self {
         Self {

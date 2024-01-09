@@ -1,4 +1,4 @@
-use crate::solve::heuristics::value::heuristic_value::HeuristicValueTrait;
+use crate::solve::heuristics::value::heuristic_value_trait::HeuristicValueTrait;
 use crate::variable::variable::Var;
 
 /* * *

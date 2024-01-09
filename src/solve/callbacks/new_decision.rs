@@ -19,4 +19,7 @@ use std::fmt::Debug;
 
 pub trait NewDecision: Debug {
     fn new_decision_callback(&mut self, var: &Var, solver: &InnerSolver);
+    fn is_implemented(&self) -> bool {
+        return false;
+    }
 }

@@ -56,10 +56,22 @@ impl NewDecision for NoGoodEngine {
                 .push((var.borrow().get_id() * value) as u128)
         }
     }
+
+    fn is_implemented(&self) -> bool {
+        return true;
+    }
 }
 
 impl DeleteDecision for NoGoodEngine {
     fn delete_decision_callback(&mut self, _var: &Var, _value_idx: usize, _solver: &InnerSolver) {
         todo!()
+    }
+
+    fn full_backtrack(&mut self) {
+        todo!()
+    }
+
+    fn is_implemented(&self) -> bool {
+        return true;
     }
 }

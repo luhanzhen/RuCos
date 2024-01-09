@@ -45,7 +45,7 @@ impl Index<&str> for Problem {
             None => {
                 panic!("wrong index for variable in the Problem!!!")
             }
-            Some(var) => return var,
+            Some(var) => var,
         }
     }
 }
@@ -54,7 +54,7 @@ impl Index<usize> for Problem {
 
     fn index(&self, index: usize) -> &Self::Output {
         match self.get_variable_by_id(index) {
-            Ok(var) => return var,
+            Ok(var) => var,
             Err(_) => {
                 panic!("wrong index for variable in the Problem!!!")
             }

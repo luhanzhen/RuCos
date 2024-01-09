@@ -49,8 +49,8 @@ impl Display for Solution {
     //     write!(f, "Solution:\n{}", str)
     // }
     fn fmt(&self, f: &mut Formatter) -> std::fmt::Result {
-        if self.solution.len() == 0 {
-            write!(f, "No Solution:\n")
+        if self.solution.is_empty() {
+            writeln!(f, "No Solution:")
         } else {
             let mut table = Table::new();
             table
@@ -111,7 +111,7 @@ impl Display for Solution {
 
                 table.add_row(row);
             }
-            write!(f, "Solution:\n{}", table.to_string())
+            write!(f, "Solution:\n{}", table)
         }
     }
 }

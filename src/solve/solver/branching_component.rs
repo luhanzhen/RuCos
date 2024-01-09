@@ -14,9 +14,9 @@
  * * */
 
 use crate::prelude::Var;
-use crate::solve::heuristics::value::heuristic_value::HeuristicValueTrait;
+use crate::solve::heuristics::value::heuristic_value_trait::HeuristicValueTrait;
 use crate::solve::heuristics::value::value_first::ValueFirst;
-use crate::solve::heuristics::variable::heuristic_variable::HeuristicVariableTrait;
+use crate::solve::heuristics::variable::heuristic_variable_trait::HeuristicVariableTrait;
 use crate::solve::restart::luby_restart::LubyRestart;
 use crate::solve::restart::restart_trait::RestartTrait;
 use crate::solve::seal::Seal;
@@ -31,7 +31,7 @@ pub(crate) struct BranchingComponent {
     value_heuristic: Option<Box<dyn HeuristicValueTrait>>,
     variable_heuristic: Option<Box<dyn HeuristicVariableTrait>>,
 }
-
+#[allow(dead_code)]
 impl BranchingComponent {
     pub(crate) fn new(core_component: Seal<CoreComponent>) -> Self {
         Self {

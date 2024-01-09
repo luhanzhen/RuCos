@@ -12,7 +12,7 @@
  * @description:
  *
  * * */
-pub mod heuristic_value;
+pub mod heuristic_value_trait;
 pub mod value_first;
 pub mod value_last;
 pub mod value_random;

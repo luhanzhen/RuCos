@@ -208,9 +208,7 @@ pub struct TimeInterval {
 }
 impl Clone for TimeInterval {
     fn clone(&self) -> Self {
-        Self {
-            start: self.start.clone(),
-        }
+        Self { start: self.start }
     }
 }
 #[allow(dead_code)]

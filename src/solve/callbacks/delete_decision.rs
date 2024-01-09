@@ -19,4 +19,10 @@ use std::fmt::Debug;
 
 pub trait DeleteDecision: Debug {
     fn delete_decision_callback(&mut self, var: &Var, value_idx: usize, solver: &InnerSolver);
+
+    fn full_backtrack(&mut self);
+
+    fn is_implemented(&self) -> bool {
+        return false;
+    }
 }

@@ -13,9 +13,8 @@
  *
  * * */
 use crate::solve::restart::restart_trait::RestartTrait;
-use crate::solve::seal::Seal;
-use crate::solve::solver::core_component::CoreComponent;
-use crate::solve::solver::solver::{InnerSolver, Solver};
+
+use crate::solve::solver::solver::InnerSolver;
 use rand::random;
 
 #[derive(Debug)]

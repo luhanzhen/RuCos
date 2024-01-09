@@ -115,12 +115,14 @@ pub struct Variable {
     empty_domain_exception: Box<dyn ExceptionTrait>,
     vale_not_found_exception: Box<dyn ExceptionTrait>,
     is_in_scope: Vec<Constraint>,
+    wdeg: f64,
 }
 impl Hash for Variable {
     fn hash<H: Hasher>(&self, state: &mut H) {
+        self.id.hash(state);
         self.name.hash(state);
-        let p = addr_of!(self);
-        p.hash(state)
+        // self.is_in_scope.hash(state);
+        addr_of!(self).hash(state);
     }
 }
 impl Display for Variable {
@@ -159,6 +161,7 @@ impl Variable {
                 format!("{}'s value is not found.", name).as_str(),
             ),
             is_in_scope: vec![],
+            wdeg: 0.0,
         }));
         problem.add_variable(Var::new_with_rc_cell(var.clone()));
         var
@@ -174,6 +177,11 @@ impl Variable {
     #[inline]
     pub fn is_empty(&self) -> bool {
         self.domain.is_empty()
+    }
+
+    #[inline]
+    pub fn wdeg(&mut self) -> &mut f64 {
+        &mut self.wdeg
     }
 
     pub fn new_without_problem(name: &str, dom: Domain) -> Rc<RefCell<Self>> {
@@ -192,6 +200,7 @@ impl Variable {
                 format!("{}'s value is not found.", name).as_str(),
             ),
             is_in_scope: vec![],
+            wdeg: 0.0,
         }))
     }
     #[inline]

@@ -13,7 +13,6 @@
  *
  * * */
 
-use crate::constraint::propagator::PropagatorTrait;
 use crate::problem::problem::Problem;
 use crate::solve::seal::Seal;
 use crate::solve::solution::Solution;
@@ -23,13 +22,9 @@ use crate::solve::solver::core_component::CoreComponent;
 use crate::solve::solver::propagation_component::PropagationComponent;
 use crate::solve::solver::status_component::*;
 use crate::solve::solver::time_component::TimeComponent;
-use crate::variable::variable::Var;
-use rand::prelude::*;
-use std::cell::RefCell;
-use std::collections::{HashSet, VecDeque};
+
 use std::fmt::{Display, Formatter};
 use std::hash::{Hash, Hasher};
-use std::rc::Rc;
 
 pub type InnerSolver = Seal<CoreComponent>;
 #[allow(dead_code)]

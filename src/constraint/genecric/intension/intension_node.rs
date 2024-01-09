@@ -16,43 +16,43 @@
 use crate::prelude::Var;
 use std::cmp::Ordering;
 use std::ops::*;
-
+#[allow(dead_code)]
 enum IntensionNode {
     Var(Var),
     Node(Box<IntensionNode>),
 }
 
 impl PartialEq<Self> for IntensionNode {
-    fn eq(&self, other: &Self) -> bool {
+    fn eq(&self, _other: &Self) -> bool {
         todo!()
     }
 }
 
 impl PartialOrd for IntensionNode {
-    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+    fn partial_cmp(&self, _other: &Self) -> Option<Ordering> {
         todo!()
     }
 
-    fn lt(&self, other: &Self) -> bool {
+    fn lt(&self, _other: &Self) -> bool {
         todo!()
     }
 
-    fn le(&self, other: &Self) -> bool {
+    fn le(&self, _other: &Self) -> bool {
         todo!()
     }
 
-    fn gt(&self, other: &Self) -> bool {
+    fn gt(&self, _other: &Self) -> bool {
         todo!()
     }
 
-    fn ge(&self, other: &Self) -> bool {
+    fn ge(&self, _other: &Self) -> bool {
         todo!()
     }
 }
 impl Add<Self> for IntensionNode {
     type Output = Self;
 
-    fn add(self, rhs: Self) -> Self::Output {
+    fn add(self, _rhs: Self) -> Self::Output {
         todo!()
     }
 }
@@ -60,7 +60,7 @@ impl Add<Self> for IntensionNode {
 impl Rem<Self> for IntensionNode {
     type Output = Self;
 
-    fn rem(self, rhs: Self) -> Self::Output {
+    fn rem(self, _rhs: Self) -> Self::Output {
         todo!()
     }
 }
@@ -74,14 +74,14 @@ impl Neg for IntensionNode {
 impl Mul<Self> for IntensionNode {
     type Output = Self;
 
-    fn mul(self, rhs: Self) -> Self::Output {
+    fn mul(self, _rhs: Self) -> Self::Output {
         todo!()
     }
 }
 impl Sub<Self> for IntensionNode {
     type Output = Self;
 
-    fn sub(self, rhs: Self) -> Self::Output {
+    fn sub(self, _rhs: Self) -> Self::Output {
         todo!()
     }
 }

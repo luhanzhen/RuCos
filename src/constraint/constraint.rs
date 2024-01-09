@@ -17,7 +17,6 @@ use crate::constraint::constraint_factory::XConstraintType;
 use crate::constraint::genecric::extension::extension::Extension;
 use crate::constraint::propagator::PropagatorTrait;
 
-use crate::solve::seal::Seal;
 use crate::solve::solver::solver::InnerSolver;
 use crate::variable::variable::Var;
 use std::cell::{Ref, RefCell, RefMut};

@@ -12,4 +12,6 @@
  * @description:
  *
  * * */
-pub mod heuristic_variable;
+pub mod heuristic_variable_trait;
+pub mod variable_dom_over_ddeg;
+pub mod variable_random;

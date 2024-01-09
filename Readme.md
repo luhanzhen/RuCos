@@ -21,7 +21,7 @@
 ### you can define the problem with the following code:
 ```rust
 fn main(){
-    let  problem = Problem::new();
+    let problem = Problem::new();
 }
 ```
 ### or the following code:
@@ -45,9 +45,9 @@ fn main(){
     problem += var!("var2";1=> 10);
     problem += var!("var3";1=> 10);
     problem += all_different!(
-                problem["var1"].clone(),
-                problem["var2"].clone(),
-                problem["var3"].clone());
+                &problem["var1"],
+                &problem["var2"],
+                &problem["var3"]);
 }
 ```
 ### you can define the variables with following code:

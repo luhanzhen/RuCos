@@ -20,4 +20,7 @@ use std::fmt::Debug;
 
 pub trait NonConsistency: Debug {
     fn non_consistency_callback(&mut self, cons: &Constraint, level: usize, solver: &InnerSolver);
+    fn is_implemented(&self) -> bool {
+        return false;
+    }
 }
