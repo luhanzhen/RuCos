@@ -77,6 +77,7 @@ impl SubAssign<(i32, usize)> for Var {
 impl Clone for Var {
     #[inline]
     fn clone(&self) -> Self {
+        // println!("VVAARR {} clone",self.borrow().name);
         Self {
             cell: Rc::clone(&self.cell),
         }
@@ -116,6 +117,12 @@ pub struct Variable {
     vale_not_found_exception: Box<dyn ExceptionTrait>,
     is_in_scope: Vec<Constraint>,
     wdeg: f64,
+}
+
+impl Drop for Variable {
+    fn drop(&mut self) {
+        println!("Var {} drop", self.name)
+    }
 }
 impl Hash for Variable {
     fn hash<H: Hasher>(&self, state: &mut H) {

@@ -50,7 +50,7 @@ impl PropagationComponent {
 
                 match borrow.get_priority() {
                     _ => {
-                        print!("priority ")
+                        // print!("priority ")
                     }
                 }
             }

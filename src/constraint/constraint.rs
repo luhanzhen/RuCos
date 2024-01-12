@@ -70,7 +70,12 @@ impl Display for Constraint {
         write!(f, "{}", self.cell.borrow())
     }
 }
-
+// impl Drop for Constraint {
+//      fn drop(&mut self)
+//      {
+//          println!("Constraint {:?} drop",self.borrow().get_type())
+//      }
+// }
 pub(crate) trait ConstraintTrait: Display + Debug {
     fn get_propagators(&mut self) -> &Vec<Rc<RefCell<dyn PropagatorTrait>>>;
 
